@@ -13,7 +13,6 @@ const forgetPage = new ForgetPage(); //Creating instance of the class
 describe('My Login application', () => {
     new Promise(resolve => setTimeout(resolve, 15000));
     before(async () => {
-        // await new Promise(resolve => setTimeout(resolve, 10000));
         //Initilizing Session
         console.log("Creating Session...")
         await forgetPage.CreateSession();
