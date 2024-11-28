@@ -4,8 +4,8 @@ import { remote } from 'webdriverio';
 // Define your desired capabilities with vendor prefixes
 const capabilities = {
     platformName: 'Android',
-    'appium:platformVersion': '11',
-    'appium:deviceName': 'Redmi 10A',
+    'appium:platformVersion': '12',
+    'appium:deviceName': 'Galaxy Note10',
     'appium:appPackage': 'com.myzesty',
     'appium:appActivity': 'com.myzesty.MainActivity',
     'appium:automationName': 'UiAutomator2',

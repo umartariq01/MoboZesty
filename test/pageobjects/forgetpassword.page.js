@@ -78,12 +78,14 @@ class ForgetPassword{
     {
         try 
         {
-            // await this.ClosePremiumScreen.click();
+            await this.ClosePremiumScreen.click();
             await this.Profile_Tab.click();
             await this.Login.click();
             await this.ForgetPassword.click();
             await this.InputEmail.setValue(username);
             await this.Resetbutton.click();
+            //  Wait untill the Success alert screen appears
+            await this.Success_Alert.waitForDisplayed({timeout : 10000});
             // await this.Success_Alert.click();
         } 
         catch (error) 
@@ -98,7 +100,7 @@ class ForgetPassword{
         const actualText = await this.Success_Alert.getText();
         assert.strictEqual(actualText, expectedText, "Assertion not Passed!");
         console.log("Assertion passed successfully...") ;
-        await this.Success_Alert.click();
+        await this.Close_Alert.click();
     }
     
 }
