@@ -35,8 +35,8 @@ class Locators{
     //Xpath
     ForgetPassword = '//android.widget.TextView[@text="Forgot Password?"]' ;
     // Forget Password Screen(accessibility ID)
-    ResetEmail = 'reset-email-input' ;
-    ResetButton = 'reset-button' ;
+    ResetEmail = '//android.widget.EditText[@content-desc="reset-email-input"]' ;
+    ResetButton = '//android.widget.Button[@content-desc="reset-button"]' ;
     // Error Alert (Accessibility ID)
     Error_text = 'error-message' ; // Email not found
     Success_text = '//android.widget.TextView[@content-desc="error-message"]' ; //A password reset link has been sent to the email.
@@ -45,11 +45,11 @@ class Locators{
     Go_Back_Arrow = '//android.widget.TextView[@text=""]' ;
 
     // Premium Screen
-    Landing_Close_Button = 'Close' ;
+    Landing_Close_Button = '//android.widget.ImageButton[@content-desc="Close"]' ;
 
     //Landing Screen
     
-    Profile_Button = 'navi-profile-button' ;
+    Profile_Button = '//android.view.View[@content-desc="navi-profile-button"]' ;
     Login_Account = '(//android.widget.TextView[@text="Login"])[2]' ;
     
 

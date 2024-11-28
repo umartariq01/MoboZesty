@@ -3,6 +3,7 @@ import { remote } from 'webdriverio';
 // const Page = require('./page');
 import locators from './locator.js';
 import createSession from './createsession.js';
+import assert from 'assert';
 // const locators = require('./locator');
 // const createSession = require('./createsession');
 
@@ -26,10 +27,10 @@ class ForgetPassword{
     
 
     //Premium Screen Close Button
-    // get ClosePremiumScreen()
-    // {
-        // return this.client.$(locators.Landing_Close_Button)
-    // }
+    get ClosePremiumScreen()
+    {
+        return this.client.$(locators.Landing_Close_Button)
+    }
 
     //Navigation Account Tab
     get Profile_Tab()
@@ -44,7 +45,7 @@ class ForgetPassword{
     }
 
     //Forget Password
-    get Forget_Password()
+    get ForgetPassword()
     {
         return this.client.$(locators.ForgetPassword)
     }
@@ -61,6 +62,18 @@ class ForgetPassword{
             return this.client.$(locators.ResetButton)
         }
 
+    //Verify Reset Success Message
+    get Success_Alert()
+    {
+        return  this.client.$(locators.Success_text)
+    }
+
+    //Success Alert Ok Button
+    get Close_Alert()
+    {
+        return this.client.$(locators.Success_alert_Ok_button)
+    }
+
     async Forget_Password(username)
     {
         try 
@@ -68,15 +81,24 @@ class ForgetPassword{
             // await this.ClosePremiumScreen.click();
             await this.Profile_Tab.click();
             await this.Login.click();
-            await this.Forget_Password.click();
-            await this.InputEmail.sendKeys(username);
+            await this.ForgetPassword.click();
+            await this.InputEmail.setValue(username);
             await this.Resetbutton.click();
+            // await this.Success_Alert.click();
         } 
         catch (error) 
         {
             console.error("Error occur in Function calling:", error)
             throw error;
         }
+    }
+
+    async Assert_Success_message(expectedText)
+    {
+        const actualText = await this.Success_Alert.getText();
+        assert.strictEqual(actualText, expectedText, "Assertion not Passed!");
+        console.log("Assertion passed successfully...") ;
+        await this.Success_Alert.click();
     }
     
 }

@@ -11,7 +11,7 @@ import ForgetPage from '../pageobjects/forgetpassword.page.js';
 const forgetPage = new ForgetPage(); //Creating instance of the class
 
 describe('My Login application', () => {
-    new Promise(resolve => setTimeout(resolve, 15000));
+    new Promise(resolve => setTimeout(resolve, 20000));
     before(async () => {
         //Initilizing Session
         console.log("Creating Session...")
@@ -28,7 +28,9 @@ describe('My Login application', () => {
 
     it('should login with valid credentials', async () => {
         // await ForgetPage.open()
-        await forgetPage.Forget_Password('umart4767@gmail.com')
+        await forgetPage.Forget_Password('umart4767@gmail.com');
+        const expectedText = "A password reset link has been sent to the email." ;
+        await forgetPage.Assert_Success_message(expectedText);
         // await expect(SecurePage.flashAlert).toBeExisting()
         // await expect(SecurePage.flashAlert).toHaveText(
             // expect.stringContaining('You logged into a secure area!'))
