@@ -10,7 +10,8 @@ const capabilities = {
     'appium:appActivity': 'com.myzesty.MainActivity',
     'appium:automationName': 'UiAutomator2',
     'appium:noReset': true,
-    'appium:fullReset': false
+    'appium:fullReset': false,
+    'appium:autoLaunch': true
 };
 
 async function createSession() {

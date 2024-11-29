@@ -1,16 +1,27 @@
-const { expect } = require('@wdio/globals')
-const LoginPage = require('../pageobjects/login.page')
-// const SecurePage = require('../pageobjects/secure.page')
-// const SignupPage = require('../pageobjects/signup.page')
+import LoginPage from '../pageobjects/login.page.js';
 
-
+const login_page = new LoginPage()
 describe('My Login application', () => {
+    // new Promise(resolve => setTimeout(resolve, 20000));
+    before(async () => {
+        //Initilizing Session
+        console.log("Creating Session...")
+        await login_page.CreateSession();
+        new Promise(resolve => setTimeout(resolve, 10000));
+    });
+
+    after (async () => {
+        //Deleting Session
+        if  (login_page.client)
+            {
+                await login_page.client.deleteSession();
+            } 
+    });
     it('should login with valid credentials', async () => {
-        await LoginPage.open()
-        await LoginPage.login('umart4767@gmail.com', 'Myzesty123')
-        // await expect(SecurePage.flashAlert).toBeExisting()
-        // await expect(SecurePage.flashAlert).toHaveText(
-            // expect.stringContaining('You logged into a secure area!'))
-        // await expect(SecurePage.flashAlert).toMatchElementSnapshot('flashAlert')
+        await login_page.login('umart4767@gmail.com', 'Myzesty123');
+        const expected_text_1 = 'Login' ;
+        const expected_text_2 = 'Log in to your account' ;
+        await login_page.Assert_Login_Text(expected_text_1, expected_text_2, 'umart4767@gmail.com', 'Myzesty123') ;
+
     })
 })

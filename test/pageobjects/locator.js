@@ -24,10 +24,14 @@ class Locators{
     // Login Page Locators (Accessibility ID)
 
     Login_text = 'login-to-your-account' ; // Need to verify text
-    UserEmail = "email-input" ;
-    UserPassword = "password-input" ;
-    LoginButton = "login-button" ;
+    UserEmail = '//android.widget.EditText[@content-desc="email-input"]' ;
+    UserPassword = '//android.widget.EditText[@content-desc="password-input"]' ;
+    LoginButton = '//android.widget.Button[@content-desc="login-button"]' ;
     Create_an_Account = '//android.widget.TextView[@text="Create an Account"]' ;
+
+    //Login Screen Text to verify
+    Login_text_1 = '//android.widget.TextView[@content-desc="login-text"]' ;
+    Login_text_2 = '//android.widget.TextView[@content-desc="login-to-your-account"]' ;
 
     // Wrong Login Cridentials Error Alert
     Login_Failed = 'error-message' ; // The email or password you entered is incorrect. Please try again.
