@@ -14,7 +14,10 @@ describe('My Login application', () => {
         //Deleting Session
         if  (login_page.client)
             {
+                await login_page.client.terminateApp('com.myzesty')
+                console.log("Application Closed Successfully.")
                 await login_page.client.deleteSession();
+                console.log("Session deletted Successfully");
             } 
     });
     it('should login with valid credentials', async () => {

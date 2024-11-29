@@ -55,6 +55,9 @@ class Locators{
     
     Profile_Button = '//android.view.View[@content-desc="navi-profile-button"]' ;
     Login_Account = '(//android.widget.TextView[@text="Login"])[2]' ;
+
+    //Profile Screen
+    Notification = '//android.widget.Button[@content-desc="notifications-button"]' ;
     
 
 

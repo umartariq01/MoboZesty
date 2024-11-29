@@ -70,7 +70,13 @@ class LoginPage {
         return this.client.$(locators.LoginButton)
     }
 
-    async login (username, password) 
+    //Notification Tab
+    get Notification_Tab()
+    {
+        return this.client.$(locators.Notification)
+    }
+
+    async login () 
     {
         try
         {
@@ -106,6 +112,7 @@ class LoginPage {
         await this.inputEmail.setValue(username);
         await this.inputPassword.setValue(password);
         await this.btnLogin.click();
+        await this.Notification_Tab.waitForDisplayed({timeout:5000});
     }
 
 }
