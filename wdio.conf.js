@@ -1,4 +1,4 @@
-exports.config = {
+export const config = {
     //
     // ====================
     // Runner Configuration
@@ -21,9 +21,11 @@ exports.config = {
     // The path of the spec files will be resolved relative from the directory of
     // of the config file unless it's absolute.
     //
+
+    
     specs: [
-        // './test/specs/**/*.js',
-        './test/specs/test.forgetpassword.js'
+        './test/specs/**/*.js',
+        // './test/specs/**.js'
     ],
     // Patterns to exclude.
     exclude: [
@@ -53,12 +55,24 @@ exports.config = {
     //
     capabilities: [{
         // capabilities for local Appium web tests on an Android Emulator
-        platformName: 'Android',
-        browserName: 'Chrome',
-        'appium:deviceName': 'Android GoogleAPI Emulator',
-        'appium:platformVersion': '12.0',
-        'appium:automationName': 'UiAutomator2'
+        // platformName: 'Android',
+        // browserName: 'Chrome',
+        // 'appium:deviceName': 'Android GoogleAPI Emulator',
+        // 'appium:platformVersion': '12.0',
+        // 'appium:automationName': 'UiAutomator2'
+            platformName: 'Android',
+            'appium:platformVersion': '12',
+            'appium:deviceName': 'Galaxy Note10',
+            'appium:appPackage': 'com.myzesty',
+            'appium:appActivity': 'com.myzesty.MainActivity',
+            'appium:automationName': 'UiAutomator2',
+            'appium:noReset': true,
+            'appium:fullReset': false,
+            'appium:autoLaunch': true ,
+            'appium:autoGrantPermissions': true,
+            'appium:ignoreHiddenApiPolicyError': true   
     }],
+
 
     //
     // ===================
@@ -101,7 +115,7 @@ exports.config = {
     connectionRetryTimeout: 120000,
     //
     // Default request retries count
-    connectionRetryCount: 3,
+    connectionRetryCount: 1,
     //
     // Test runner services
     // Services take over a specific job you don't want to take care of. They enhance
@@ -138,6 +152,8 @@ exports.config = {
         ui: 'bdd',
         timeout: 60000
     },
+
+    
 
     //
     // =====

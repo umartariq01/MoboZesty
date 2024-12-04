@@ -1,92 +1,153 @@
 // const { $ } = require('@wdio/globals');
 import { remote } from 'webdriverio';
 // const Page = require('./page');
-import locators from './locator.js';
-import createSession from './createsession.js';
 import assert from 'assert';
-// const locators = require('./locator');
-// const createSession = require('./createsession');
+import { $ } from '@wdio/globals' ;
+import { isAllowedSchemaFileExtension } from 'appium/build/lib/schema/schema';
+
 
 
 
 class ForgetPassword{
 
-    //Create Session
-    async CreateSession()
+    // Close Premium Screen
+    get preiumCloseBtn () {
+        return $('//android.widget.ImageButton[@content-desc="Close"]');
+    }
+
+    get profiletab()
+    {
+        return $('//android.view.View[@content-desc="navi-profile-button"]');
+    }
+
+    get logintab()
+    {
+        return $('(//android.widget.TextView[@text="Login"])[2]');
+    }
+
+    get forgetpassword()
+    {
+        return $('//android.widget.TextView[@text="Forgot Password?"]');
+    }
+
+    get resetemail()
+    {
+        return $('//android.widget.EditText[@content-desc="reset-email-input"]');
+    }
+
+    get resetpassword()
+    {
+        return $('//android.widget.Button[@content-desc="reset-button"]');
+    }
+
+    get invalid_email() // Please enter a valid email address
+    {
+        return $('//android.widget.TextView[@content-desc="error-message"]') ;
+    }
+
+    get error_alert_ok_btn()
+    {
+        return $('//android.widget.TextView[@text="Ok"]');
+    }
+
+    get success_alert() // A password reset link has been sent to the email.
+    {
+        return $('//android.widget.TextView[@content-desc="error-message"]');
+    }
+
+    get success_alert_ok_btn()
+    {
+        return $('//android.widget.TextView[@text="Ok"]')
+    }
+
+    //================= Function call to oerfoorm Action ================
+
+    async Close_Premium()
+    {
+        const isDisplayed = await this.preiumCloseBtn.isDisplayed();
+        if (isDisplayed)
+        {
+            await this.preiumCloseBtn.click();
+        }
+        else
+        {
+            console.log("Premium Screen not Displayed!")
+        }
+    }
+    async ClosePremiumScreen() 
+    {
+        await this.preiumCloseBtn.click();
+    }
+
+    async Profile_Tab()
+    {
+        await this.profiletab.click();
+    }
+
+    async Login_Tab()
+    {
+        await this.logintab.click();
+    }
+
+    async Forget_Password()
+    {
+        await this.forgetpassword.click();
+    }
+
+    async Enter_valid_Email(username)
+    {
+        await this.resetemail.setValue(username);
+    }
+
+    async Reset_Button()
+    {
+        await this.resetpassword.click();
+    }
+
+    async Check_Invalid_Email(expected_error) // Need to assert text
+    {
+        await this.invalid_email.waitForDisplayed({timeout:2000});
+        const Error_alert = await this.invalid_email.getText();
+        assert.strictEqual(Error_alert, expected_error, "Invalid email alert not asserted!");
+        console.log("Invalid Email alert asserted successfully...")
+
+    }
+
+    async Error_alert_Ok_btn()
+    {
+        await this.error_alert_ok_btn.click();
+    }
+
+    async Success_Alert(expected_text) //  Need to assert text
+    {
+        await this.success_alert.waitForDisplayed({timeout:2000});
+        const Success_alert = await this.success_alert.getText();
+        assert.strictEqual(Success_alert, expected_text, "Success Alert not asserted!");
+        console.log("Success alert asserted successfully...")
+    }
+
+    async Success_Alert_ok_btn()
+    {
+        await this.success_alert_ok_btn.click();
+    }
+   
+
+    async Forget_Password(username, expected_error, expected_text)
     {
         try 
         {
-            this.client = await createSession();
-        } 
-        catch (error) 
-        {
-            console.error("Error crating Session:",error);
-            throw error;
-        }
-    }
-    
-
-    //Premium Screen Close Button
-    get ClosePremiumScreen()
-    {
-        return this.client.$(locators.Landing_Close_Button)
-    }
-
-    //Navigation Account Tab
-    get Profile_Tab()
-    {
-        return this.client.$(locators.Profile_Button)
-    }
-
-    //Login Button
-    get Login()
-    {
-        return this.client.$(locators.Login_Account)
-    }
-
-    //Forget Password
-    get ForgetPassword()
-    {
-        return this.client.$(locators.ForgetPassword)
-    }
-
-    //Enter Reset Email
-    get InputEmail()
-    {
-        return this.client.$(locators.ResetEmail)
-    }
-
-    //Reset Password Button
-    get Resetbutton()
-        {
-            return this.client.$(locators.ResetButton)
-        }
-
-    //Verify Reset Success Message
-    get Success_Alert()
-    {
-        return  this.client.$(locators.Success_text)
-    }
-
-    //Success Alert Ok Button
-    get Close_Alert()
-    {
-        return this.client.$(locators.Success_alert_Ok_button)
-    }
-
-    async Forget_Password(username)
-    {
-        try 
-        {
-            await this.ClosePremiumScreen.click();
-            await this.Profile_Tab.click();
-            await this.Login.click();
-            await this.ForgetPassword.click();
-            await this.InputEmail.setValue(username);
-            await this.Resetbutton.click();
-            //  Wait untill the Success alert screen appears
-            await this.Success_Alert.waitForDisplayed({timeout : 10000});
-            // await this.Success_Alert.click();
+            await this.Close_Premium();
+            await this.Profile_Tab();
+            await this.Login_Tab();
+            await this.Forget_Password();
+            // Click on Reset button to Check Validation
+            await this.Reset_Button();
+            await this.Check_Invalid_Email(expected_error);
+            await this.Error_alert_Ok_btn();
+            // Enter email to check success Alert
+            await this.Enter_valid_Email(username);
+            await this.Success_Alert_ok_btn();
+            await this.Success_Alert(expected_text);
         } 
         catch (error) 
         {
@@ -94,15 +155,7 @@ class ForgetPassword{
             throw error;
         }
     }
-
-    async Assert_Success_message(expectedText)
-    {
-        const actualText = await this.Success_Alert.getText();
-        assert.strictEqual(actualText, expectedText, "Assertion not Passed!");
-        console.log("Assertion passed successfully...") ;
-        await this.Close_Alert.click();
-    }
     
 }
 
-export default ForgetPassword;
+export default  new ForgetPassword();

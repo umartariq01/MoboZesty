@@ -30,7 +30,7 @@ class Locators{
     Create_an_Account = '//android.widget.TextView[@text="Create an Account"]' ;
 
     //Login Screen Text to verify
-    Login_text_1 = '//android.widget.TextView[@content-desc="login-text"]' ;
+    Login_text_1 = 'login-text' ;
     Login_text_2 = '//android.widget.TextView[@content-desc="login-to-your-account"]' ;
 
     // Wrong Login Cridentials Error Alert
@@ -51,6 +51,7 @@ class Locators{
     // Premium Screen
     Landing_Close_Button = '//android.widget.ImageButton[@content-desc="Close"]' ;
 
+
     //Landing Screen
     
     Profile_Button = '//android.view.View[@content-desc="navi-profile-button"]' ;
@@ -58,6 +59,10 @@ class Locators{
 
     //Profile Screen
     Notification = '//android.widget.Button[@content-desc="notifications-button"]' ;
+    Settings = '//android.widget.Button[@content-desc="settings-button"]' ;
+    Log_Out = '//android.widget.Button[@content-desc="settings-log-out-button"]' ;
+    Account_Profile = '//android.widget.Button[@content-desc="my-profile-button"]' ;
+
     
 
 
