@@ -1,6 +1,5 @@
-const { $ } = require('@wdio/globals')
-// const Page = require('./page');
-import locators from './locator';
+import { $ } from '@wdio/globals' ;
+import assert from 'assert' ;
 
 class SignupPage{
 
@@ -20,7 +19,7 @@ class SignupPage{
 
     get Name()
     {
-        return ('//android.widget.EditText[@content-desc="name-input"]')
+        return $('//android.widget.EditText[@content-desc="name-input"]')
     }
 
     get Email()
@@ -88,10 +87,28 @@ class SignupPage{
         return $('//android.widget.TextView[@text="Login"]')
     }
 
-    //================ Calling the Function to perform Actions ================== 
-    async Close_Premium_Screen()
+    get create_account()
     {
-        await this.preiumCloseBtn.click();
+        return $('//android.widget.TextView[@text="Create an Account"]');
+    }
+
+    get settiing()
+    {
+        return $('//android.widget.TextView[@text="Settings"]');
+    }
+
+    //================ Calling the Function to perform Actions ================== 
+    async Close_Premium()
+    {
+        const isDisplayed = await this.preiumCloseBtn.isDisplayed();
+        if (isDisplayed)
+        {
+            await this.preiumCloseBtn.click();
+        }
+        else
+        {
+            console.log("Premium Screen not Displayed!")
+        }
     }
 
     async Profile_Tab()
@@ -104,7 +121,7 @@ class SignupPage{
         await this.signupTab.click();
     }
 
-    async Enter_Name(name)
+    async EnterName(name)
     {
         await this.Name.setValue(name);
     }
@@ -124,7 +141,7 @@ class SignupPage{
         await this.ConfirmPassword.setValue(confirmpassword);
     }
 
-    async SignUp()
+    async SignUp_btn()
     {
         await this.Signup_Button.click()
     }
@@ -141,7 +158,7 @@ class SignupPage{
     {
         await this.signup_text_2.waitForDisplayed({timeout:5000});
         const actual_text_2 = await this.signup_text_2.getText();
-        assert.trictEqual(actual_text_2, expected_text_2, "Signup Assertion 1 Failed2");
+        assert.strictEqual(actual_text_2, expected_text_2, "Signup Assertion 1 Failed2");
         console.log("Signup assertion 2 passed...")
     }
 
@@ -201,85 +218,102 @@ class SignupPage{
         assert.strictEqual(actual_policy_7, expected_policy_7, "Term 7 assertion Failed!");
         console.log("Term 7 assertion passed...")
     }
+
+    async Create_Account_Link()
+    {
+        await this.create_account.waitForExist({timeout:3000});
+    }
+
+    async Logout_Myzesty(name, email, password, confirmpassword, expected_text_1, expected_text_2 ,expected_policy_1, expected_policy_2,
+        expected_policy_3, expected_policy_4, expected_policy_5, expected_policy_6, expected_policy_7)
+    {
+        await this.click_setting();
+        await this.click_logout();
+        await this.Close_Premium();
+        await this.SignUp();
+        await this.EnterName(name)
+        await this.Enter_Email(email);
+        await this.Enter_Password(password);
+        await this.Confirm_Password(confirmpassword);
+        await this.Text_1(expected_text_1);
+        await this.Text_2(expected_text_2);
+        await this.Term_1(expected_policy_1);
+        await this.Term_2(expected_policy_2);
+        await this.Term_3(expected_policy_3);
+        await this.Term_4(expected_policy_4);
+        await this.Term_5(expected_policy_5);
+        await this.Term_6(expected_policy_6);
+        await this.Term_7(expected_policy_7);
+        await this.SignUp_btn();
+    }
+
+    async Signup_Account(name, email, password, confirmpassword,  expected_text_1, expected_text_2 ,expected_policy_1, expected_policy_2,
+        expected_policy_3, expected_policy_4, expected_policy_5, expected_policy_6, expected_policy_7)
+    {
+        await this.SignUp();
+        await this.EnterName(name)
+        await this.Enter_Email(email);
+        await this.Enter_Password(password);
+        await this.Confirm_Password(confirmpassword);
+        await this.Text_1(expected_text_1);
+        await this.Text_2(expected_text_2);
+        await this.Term_1(expected_policy_1);
+        await this.Term_2(expected_policy_2);
+        await this.Term_3(expected_policy_3);
+        await this.Term_4(expected_policy_4);
+        await this.Term_5(expected_policy_5);
+        await this.Term_6(expected_policy_6);
+        await this.Term_7(expected_policy_7);
+        await this.SignUp_btn();
+    }
+
+    async signupToMyZesty(name, email, password, confirmpassword, expected_text_1, expected_text_2 ,expected_policy_1, expected_policy_2,
+        expected_policy_3, expected_policy_4, expected_policy_5, expected_policy_6, expected_policy_7) 
+    {
+        if(await this.create_account.isDisplayed())
+        {
+            await this.Signup_Account(name, email, password, confirmpassword,expected_text_1, expected_text_2 ,expected_policy_1, expected_policy_2,
+                expected_policy_3, expected_policy_4, expected_policy_5, expected_policy_6, expected_policy_7);
+        }
+
+        else if (await this.settiing.isDisplayed())
+        {
+            await this.Logout_Myzesty(name, email, password, confirmpassword,expected_text_1, expected_text_2 ,expected_policy_1, expected_policy_2,
+                expected_policy_3, expected_policy_4, expected_policy_5, expected_policy_6, expected_policy_7);
+        }
+    }
   
-
-
-
-  
-    async signup (name, email, password, confirmpassword,expected_text_1, expected_text_2 ,expected_policy_1, expected_policy_2,
-        expected_policy_3, expected_policy_4, expected_policy_5, expected_policy_6, expected_policy_7
-     ) 
+    async signup (name, email, password, confirmpassword, expected_text_1, expected_text_2 ,expected_policy_1, expected_policy_2,
+        expected_policy_3, expected_policy_4, expected_policy_5, expected_policy_6, expected_policy_7) 
     {
 
-        try
-        {
-            await this.Enter_Name(name)
-            await this.Enter_Email(email);
-            await this.Enter_Password(password);
-            await this.Confirm_Password(confirmpassword);
-            await this.Text_1(expected_text_1);
-            await this.Text_2(expected_text_2);
-            await this.Term_1(expected_policy_1);
-            await this.Term_2(expected_policy_2);
-            await this.Term_3(expected_policy_3);
-            await this.Term_4(expected_policy_4);
-            await this.Term_5(expected_policy_5);
-            await this.Term_6(expected_policy_6);
-            await this.Term_7(expected_policy_7);
-            // await this.Signup_Button.click();
-        }
-
-        catch(error)
-        {
-            console.error("Error occur in Function calling:", error)
-            throw error;
-        }
+        await this.Close_Premium();
+        await this.Profile_Tab();
+        await this.signupToMyZesty(name, email, password, confirmpassword, expected_text_1, expected_text_2 ,expected_policy_1, expected_policy_2,
+        expected_policy_3, expected_policy_4, expected_policy_5, expected_policy_6, expected_policy_7);
+        // await this.SignUp();
+        // await this.EnterName(name)
+        // await this.Enter_Email(email);
+        // await this.Enter_Password(password);
+        // await this.Confirm_Password(confirmpassword);
 
     }
 
-    async Assert_SignUp_Text(expected_text_1, expected_text_2,
-        term_text_1, term_text_2, term_text_3, term_text_4, term_text_5, term_text_6, term_text_7)
-    {
-        const actual_text_1 = await this.Text_1.getText();
-        assert.strictEqual(actual_text_1, expected_text_1, "Assertion 1 not Passed!");
-        console.log("Text 1 assertion passed successfully...");
-
-        const actual_text_2 = await this.Text_2.getText();
-        assert.strictEqual(actual_text_2, expected_text_2, "Assertion 2 not Passed!" );
-        console.log("Text 2 assertion passed successfully...");
-
-        const term_1 = await this.Term_1.getText();
-        assert.strictEqual(term_1, term_text_1, "Term text 1 not Passed!");
-        console.log("Term text 1 passed successfully... ");
-
-        const term_2 = await this.Term_1.getText();
-        assert.strictEqual(term_2, term_text_2, "Term text 2 not Passed!");
-        console.log("Term text 2 passed successfully... ");
-
-        const term_3 = await this.Term_1.getText();
-        assert.strictEqual(term_3, term_text_3, "Term text 3 not Passed!");
-        console.log("Term text 3 passed successfully... ");
-
-        const term_4 = await this.Term_1.getText();
-        assert.strictEqual(term_4, term_text_4, "Term text 4 not Passed!");
-        console.log("Term text 4 passed successfully... ");
-
-        const term_5 = await this.Term_1.getText();
-        assert.strictEqual(term_5, term_text_5, "Term text 5 not Passed!");
-        console.log("Term text 5 passed successfully... ");
-
-        const term_6 = await this.Term_1.getText();
-        assert.strictEqual(term_6, term_text_6, "Term text 6 not Passed!");
-        console.log("Term text 6 passed successfully... ");
-
-        const term_7 = await this.Term_1.getText();
-        assert.strictEqual(term_7, term_text_7, "Term text 7 not Passed!");
-        console.log("Term text 7 passed successfully... ");
-
-
-        //Call function that need to be executed after assertion
-        await this.Signup_Button.click();
-    }
+    // async AssertSignUpText(expected_text_1, expected_text_2 ,expected_policy_1, expected_policy_2,
+    //     expected_policy_3, expected_policy_4, expected_policy_5, expected_policy_6, expected_policy_7
+    //     )
+    // {
+    //     await this.Text_1(expected_text_1);
+    //     await this.Text_2(expected_text_2);
+    //     await this.Term_1(expected_policy_1);
+    //     await this.Term_2(expected_policy_2);
+    //     await this.Term_3(expected_policy_3);
+    //     await this.Term_4(expected_policy_4);
+    //     await this.Term_5(expected_policy_5);
+    //     await this.Term_6(expected_policy_6);
+    //     await this.Term_7(expected_policy_7);
+    //     await this.SignUp_btn();
+    // }
 
 
 }

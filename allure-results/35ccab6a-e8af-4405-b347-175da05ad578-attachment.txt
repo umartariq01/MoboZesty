@@ -1,0 +1,4 @@
+{
+  "using": "xpath",
+  "value": "//*[@text='A password reset link has been sent to the email.']"
+}

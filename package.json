@@ -5,7 +5,9 @@
     "wido": "wdio run ./wdio.conf.js",
     "login": "wdio run ./wdio.conf.js --spec test.signin.js",
     "signup": "wdio run ./wdio.conf.js --spec test.signup.js",
-    "forgetpassword": "wdio run ./wdio.conf.js --spec test.forgetpassword.js"
+    "forgetpassword": "wdio run ./wdio.conf.js --spec test.forgetpassword.js",
+    "rate" : "wdio run ./wdio.conf.js --spec test.rate.js",
+    "share" : "wdio run ./wdio.conf.js --spec test.sharemedia.js"
   },
   "devDependencies": {
     "@wdio/allure-reporter": "^9.2.2",
