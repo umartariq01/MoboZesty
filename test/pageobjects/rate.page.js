@@ -34,7 +34,7 @@ class Ratezesty
         return $('//android.widget.TextView[@text="Rate Us"]');
     }
 
-    get Cloae_Popup()
+    get Close_Popup()
     {
         return $('//android.widget.TextView[@text=""]');
     }
@@ -86,7 +86,7 @@ class Ratezesty
 
     async Popup_Close()
     {
-        await this.Cloae_Popup.click();
+        await this.Close_Popup.click();
     }
 
     async Rate_Application(expected_text_1, expected_text_2)

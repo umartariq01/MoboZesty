@@ -84,7 +84,9 @@ class LoginPage {
 
     async Enter_Password(password)
     {
-        await this.passwordinput.setValue(password);
+        await  this.passwordinput.click();
+        await this.passwordinput.addValue(password);
+
     }
 
     async Login_Button()
@@ -164,58 +166,12 @@ class LoginPage {
 
     async login (expected_text_1, expected_text_2, username, password ) 
     {
-        // new Promise(resolve => setTimeout(resolve, 5000))
-        // .then(() => {
-        //     console.log("5 seconds have passed");
-        // });
         await this.ClosePremiumScreen();
         await this.Profile_Tab();
         await this.loginToMyZesty(expected_text_1, expected_text_2, username, password);
+        // await this.Login_Button();
 
-
-        // try
-        // {
-        //     // const isLoggedIn = await this.Check_LoggedIn();
-        //     // const notLoggedIn =  await this.Not_SignedIn();
-        //     // console.log(`isLoggedIn: ${isLoggedIn}, notLoggedIn: ${notLoggedIn}`);
-        //     if (this.Check_LoggedIn())
-        //     {
-        //         await this.click_setting();
-        //         await this.click_logout();
-        //         await this.ClosePremiumScreen();
-        //         await this.Profile_Tab();
-        //         await this.Login_Tab();
-        //         await this.getSignin_text_1(expected_text_1);
-        //         await this.getSignin_text_2(expected_text_2);
-        //         await this.Enter_Email(username);
-        //         await this.Enter_Password(password);
-        //         await this.Login_Button();
-
-        //         //If already login then first logout then login again , write all in here
-        //     }
-            
-        //     else if(this.Not_SignedIn())
-        //     {
-        //         await this.Login_Tab();
-        //         await this.getSignin_text_1(expected_text_1);
-        //         await this.getSignin_text_2(expected_text_2);
-        //         await this.Enter_Email(username);
-        //         await this.Enter_Password(password);
-        //         await this.Login_Button();
-        //         // If not signedin then singin first
-        //     }
-        //     else
-        //     {
-        //         console.log("Error checking login/logout")
-        //     }
-        // }
-            
-
-        // catch(error)
-        // {
-        //     console.error("Error occur in Function calling:", error)
-        //     throw error;
-        // }
+       
     }
 
 }

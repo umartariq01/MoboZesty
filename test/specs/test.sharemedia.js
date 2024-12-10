@@ -8,7 +8,11 @@ describe('Share media Tab', () => {
     // });
     it('should login with valid credentials', async () => {
 
-        await Share.sharemedia();
+        const text1 = "New Collection" ;
+        const text2 = "This is description" ;
+        const expected_text = "Your collection has been uploaded! Refresh the page to view it." ;
+
+        await Share.sharemedia(text1, text2, expected_text);
         
     })
 });

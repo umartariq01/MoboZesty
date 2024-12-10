@@ -1,4 +1,5 @@
 {
+  
   "type": "module",
   "name": "mobozesty",
   "scripts": {
@@ -7,7 +8,11 @@
     "signup": "wdio run ./wdio.conf.js --spec test.signup.js",
     "forgetpassword": "wdio run ./wdio.conf.js --spec test.forgetpassword.js",
     "rate" : "wdio run ./wdio.conf.js --spec test.rate.js",
-    "share" : "wdio run ./wdio.conf.js --spec test.sharemedia.js"
+    "share" : "wdio run ./wdio.conf.js --spec test.sharemedia.js",
+    "profile" : "wdio run ./wdio.conf.js --spec test.profile.js",
+    "setting" : "wdio run ./wdio.conf.js --spec test.setting.js",
+    "browse" : "wdio run ./wdio.conf.js --spec test.browse.js",
+    "checklogin" : "wdio run ./wdio.conf.js --spec test.checklogin.js"
   },
   "devDependencies": {
     "@wdio/allure-reporter": "^9.2.2",

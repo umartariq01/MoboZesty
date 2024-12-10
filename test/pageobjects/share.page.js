@@ -1,5 +1,6 @@
-import { $ } from '@wdio/globals' ;
+import { $, browser } from '@wdio/globals' ;
 import LoginPage from '../pageobjects/login.page.js';
+import assert from 'assert';
 // const newlogin = new LoginPage();
 class Share
 {
@@ -54,6 +55,16 @@ class Share
         return $('//android.view.View[@content-desc="Post"]');
     }
 
+    get cancle()
+    {
+        return  $('//android.widget.TextView[@text=""]');
+    }
+
+    get upload_text()
+    {
+        return $('//android.widget.TextView[@text="Your collection has been uploaded! Refresh the page to view it."]');
+    }
+
     //====================== Function to perform actions ==========================
 
     async click_share_tab()
@@ -81,14 +92,14 @@ class Share
         await this.Done.click();
     }
 
-    async collection_name()
+    async collection_name(text1)
     {
-        await this.collect_name.sendKeys();
+        await this.collect_name.sendKeys(text1);
     }
 
-    async collection_desc()
+    async collection_desc(text2)
     {
-        await this.collect_desc.sendKeys();
+        await this.collect_desc.sendKeys(text2);
     }
 
     async add_more_image()
@@ -105,8 +116,21 @@ class Share
     {
         await this.post_btn.click();
     }
+
+    async cancle_media()
+    {
+        await this.cancle.click();
+    }
+
+    async upload_confirm(expected_text)
+    {
+        await this.upload_text.waitForDisplayed({timeout:4000});
+        const actual_text = await this.upload_text.getText();
+        assert.strictEqual(actual_text, expected_text, "Upload colloection text not verified!")
+
+    }
     // ================ Main Function ======================
-    async sharemedia()
+    async sharemedia(text1, text2, expected_text)
     {
         
         await LoginPage.login();
@@ -116,14 +140,15 @@ class Share
         await this.click_media_1();
         await this.click_media_2();
         await this.Done_Btn();
-        await this.collection_name();
-        await this.collection_desc();
+        await this.collection_name(text1);
+        await this.collection_desc(text2);
         await this.add_more_image();
+        await this.click_media_3();
+        await this.cancle_media();
+        await this.click_media_3();
+        await this.Done_Btn();
         await this.post_btn_click();
-
-
-
-
+        await this.upload_confirm(expected_text);
 
     }
 
