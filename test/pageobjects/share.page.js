@@ -1,5 +1,5 @@
 import { $, browser } from '@wdio/globals' ;
-import LoginPage from '../pageobjects/login.page.js';
+import CheckLoginPage from '../pageobjects/checklogin.page.js';
 import assert from 'assert';
 // const newlogin = new LoginPage();
 class Share
@@ -17,12 +17,12 @@ class Share
 
     get media_1()
     {
-        return $('//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[2]');
+        return $('//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[1]/android.view.ViewGroup[1]');
     }
 
     get media_2()
     {
-        return $('//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.view.ViewGroup[2]');
+        return $('//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[2]/android.view.ViewGroup[1]');
     }
 
     get Done()
@@ -47,7 +47,7 @@ class Share
 
     get media_3()
     {
-        return $('//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup/android.widget.ImageView');
+        return $('//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[3]/android.view.ViewGroup[1]');
     }
 
     get post_btn()
@@ -133,7 +133,7 @@ class Share
     async sharemedia(text1, text2, expected_text)
     {
         
-        await LoginPage.login();
+        await CheckLoginPage.login();
         await this.click_share_tab();
         await this.close_tab();
         await this.click_share_tab();

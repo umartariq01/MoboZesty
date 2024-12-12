@@ -1,0 +1,4 @@
+{
+  "using": "xpath",
+  "value": "//android.widget.Button[@content-desc=\"sign-up-button\"]"
+}

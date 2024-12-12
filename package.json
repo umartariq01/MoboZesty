@@ -12,8 +12,9 @@
     "profile" : "wdio run ./wdio.conf.js --spec test.profile.js",
     "setting" : "wdio run ./wdio.conf.js --spec test.setting.js",
     "browse" : "wdio run ./wdio.conf.js --spec test.browse.js",
-    "checklogin" : "wdio run ./wdio.conf.js --spec test.checklogin.js"
-  },
+    "checklogin" : "wdio run ./wdio.conf.js --spec test.checklogin.js",
+    "scroll" : "wdio run ./wdio.conf.js --spec test.scroll.js"
+    },
   "devDependencies": {
     "@wdio/allure-reporter": "^9.2.2",
     "@wdio/appium-service": "^9.4.1",

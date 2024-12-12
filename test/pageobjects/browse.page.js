@@ -1,7 +1,7 @@
 import { remote } from 'webdriverio';
 import assert from 'assert';
 import { $, browser } from '@wdio/globals' ;
-import LoginPage from '../pageobjects/login.page.js';
+import CheckLoginPage from '../pageobjects/checklogin.page.js';
 
 class Browse
 {
@@ -95,6 +95,21 @@ class Browse
         await browser.releaseActions();
     }
 
+    async scrollScreenUp(startX, startY, endX, endY, duration = 4000) {
+        await browser.performActions([{
+            type: 'pointer',
+            id: 'finger2',
+            parameters: { pointerType: 'touch' },
+            actions: [
+                { type: 'pointerMove', duration: 0, x: startX, y: startY },
+                { type: 'pointerDown', button: 0 },
+                { type: 'pointerMove', duration: duration, origin: 'pointer', x: endX, y: endY },
+                { type: 'pointerUp', button: 0 }
+            ]
+        }]);
+        await browser.releaseActions();
+    }
+
     async option_btn_click()
     {
         await this.option_btn.click();
@@ -136,7 +151,7 @@ class Browse
 
     async check_double_thumbs_up()
     {
-        if(double_thumbs_up.isDisplayed())
+        if(this.double_thumbs_up.isDisplayed())
         {
             console.log("Double thumbs Up is present.");
         }
@@ -162,11 +177,13 @@ class Browse
     {
         if(this.comment.isDisplayed())
         {
-            console.log("Comment is present.")
+            console.log("Comment is present.");
+            browser.pause(5000);
         }
         else
         {
-            console.log("Error finding comment!")
+            console.log("Error finding comment!");
+            browser.pause(5000);
         }
     }
 
@@ -174,7 +191,7 @@ class Browse
 
     async run_browse(expected_value, expected_value_1, expected_value_2)
     {
-        LoginPage.login();
+        CheckLoginPage.login();
         await this.click_browse_tab();
         await this.scrollScreen();
         await this.option_btn_click();
@@ -186,6 +203,8 @@ class Browse
         await this.check_double_thumbs_up();
         await this.check_thumbs_down();
         await this.check_comment();
+        await this.scrollScreenUp(500,1260,500,180,2000);
+        // await this.scrollScreenUp();
 
     }
 }

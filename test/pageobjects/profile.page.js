@@ -1,7 +1,7 @@
 import { $ } from '@wdio/globals' ;
 import { remote } from 'webdriverio';
 import assert from 'assert';
-import LoginPage from '../pageobjects/login.page.js';
+import CheckLoginPage from '../pageobjects/checklogin.page.js';
 
 class Profile_Tab
 {
@@ -110,7 +110,7 @@ class Profile_Tab
 
     async Profile_Action_Tab(expected_text_1, expected_text_2, expected_text_3, expected_text_4, expected_text_5)
     {
-        await LoginPage.login();
+        await CheckLoginPage.login();
         await this.Profile_Tab();
         await this.profile_btn_click();
         await this.followers_text(expected_text_1);

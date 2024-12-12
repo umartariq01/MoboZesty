@@ -129,8 +129,8 @@ class LoginPage {
     async Login_Myzesty(expected_text_1, expected_text_2, username, password)
     {
         await this.Login_Tab();
-        // await this.getSignin_text_1(expected_text_1);
-        // await this.getSignin_text_2(expected_text_2);
+        await this.getSignin_text_1(expected_text_1);
+        await this.getSignin_text_2(expected_text_2);
         await this.Enter_Email(username);
         await this.Enter_Password(password);
         await this.Login_Button();
@@ -143,8 +143,8 @@ class LoginPage {
         await this.ClosePremiumScreen();
         await this.Profile_Tab();
         await this.Login_Tab();
-        // await this.getSignin_text_1(expected_text_1);
-        // await this.getSignin_text_2(expected_text_2);
+        await this.getSignin_text_1(expected_text_1);
+        await this.getSignin_text_2(expected_text_2);
         await this.Enter_Email(username);
         await this.Enter_Password(password);
         await this.Login_Button();

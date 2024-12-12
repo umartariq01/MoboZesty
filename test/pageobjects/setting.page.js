@@ -1,7 +1,7 @@
 import { $ } from '@wdio/globals' ;
 import { remote } from 'webdriverio';
 import assert from 'assert';
-import LoginPage from '../pageobjects/login.page.js';
+import CheckLoginPage from '../pageobjects/checklogin.page.js';
 import { constants } from 'buffer';
 
 class Settings
@@ -218,7 +218,7 @@ class Settings
 
     async Edit_profile_run(New_name, Mbl_No, Location_area, Bio_data)
     {
-        LoginPage.login();
+        CheckLoginPage.login();
         await this.Profile_Tab();
         await this.click_setting();
         await this.Edit_profile_btn();

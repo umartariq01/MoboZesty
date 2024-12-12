@@ -1,5 +1,4 @@
 import { $ } from '@wdio/globals' ;
-import LoginPage from './login.page.js';
 import assert from 'assert';
 
 class Ratezesty

@@ -3,7 +3,7 @@ import { remote } from 'webdriverio';
 import assert from 'assert';
 
 
-class LoginPage {
+class CheckLoginPage {
 
     // Get Function calling to return element
 
@@ -178,4 +178,4 @@ class LoginPage {
 }
 
 // module.exports = new LoginPage();
-export default new LoginPage ();
+export default new CheckLoginPage ();

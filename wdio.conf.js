@@ -70,7 +70,7 @@ export const config = {
             'appium:fullReset': false,
             'appium:autoLaunch': true ,
             'appium:autoGrantPermissions': true,
-            'appium:ignoreHiddenApiPolicyError': true   
+            'appium:ignoreHiddenApiPolicyError': true
     }],
 
 
