@@ -1,6 +1,6 @@
 import { remote } from 'webdriverio';
 import assert from 'assert';
-import { $, browser } from '@wdio/globals' ;
+import { $, browser, driver } from '@wdio/globals' ;
 import CheckLoginPage from '../pageobjects/checklogin.page.js';
 
 class Browse
@@ -64,7 +64,7 @@ class Browse
         await  this.browse_tab.click()
     }
 
-    async scrollScreen() 
+    async scrollScreen()
     {
         await browser.performActions([{
             type: 'pointer',
@@ -95,21 +95,29 @@ class Browse
         await browser.releaseActions();
     }
 
-    async scrollScreenUp(startX, startY, endX, endY, duration = 4000) {
-        await browser.performActions([{
-            type: 'pointer',
-            id: 'finger2',
-            parameters: { pointerType: 'touch' },
-            actions: [
-                { type: 'pointerMove', duration: 0, x: startX, y: startY },
-                { type: 'pointerDown', button: 0 },
-                { type: 'pointerMove', duration: duration, origin: 'pointer', x: endX, y: endY },
-                { type: 'pointerUp', button: 0 }
-            ]
-        }]);
-        await browser.releaseActions();
-    }
+    async scrollUp_fun()
+{
+    const strategy = '-android uiautomator'; 
+    const selector = 'new UiSelector().className("android.view.ViewGroup").instance(26)';
+    const direction = 'up';
+    
+    await browser.execute("mobile: scroll", { 
+        strategy: strategy,
+        selector: selector,
+        direction: direction
+    });
 
+    const stop = $(selector);
+    if(await  stop.isDisplayed())
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }    
+}
+ 
     async option_btn_click()
     {
         await this.option_btn.click();
@@ -203,8 +211,17 @@ class Browse
         await this.check_double_thumbs_up();
         await this.check_thumbs_down();
         await this.check_comment();
-        await this.scrollScreenUp(500,1260,500,180,2000);
-        // await this.scrollScreenUp();
+        // await this.scroll_1();
+        // await browser.execute("mobile: scrollGesture", { 
+        //     strategy: '-android uiautomator',
+        //     selector: 'new UiSelector().className("android.view.ViewGroup").instance(32)',
+        //     direction: 'up'
+        //  });
+        // await browser.execute("mobile: scroll", { direction: 'up' });
+        // await driver.execute('mobile: scroll', { direction: 'up' });
+
+        await this.scrollUp_fun();
+
 
     }
 }

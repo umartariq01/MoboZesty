@@ -1,0 +1,9 @@
+{
+  "script": "<script> [14 bytes]",
+  "args": [
+    {
+      "direction": "up",
+      "precent": 0.3
+    }
+  ]
+}

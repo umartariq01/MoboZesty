@@ -1,0 +1,10 @@
+{
+  "script": "<script> [13 bytes]",
+  "args": [
+    {
+      "strategy": "-android uiautomator",
+      "selector": "new UiSelector().className(\"android.view.ViewGroup\").instance(32)",
+      "direction": "up"
+    }
+  ]
+}

@@ -21,8 +21,6 @@ export const config = {
     // The path of the spec files will be resolved relative from the directory of
     // of the config file unless it's absolute.
     //
-
-    
     specs: [
         './test/specs/**/*.js',
         // './test/specs/**.js'
@@ -61,8 +59,8 @@ export const config = {
         // 'appium:platformVersion': '12.0',
         // 'appium:automationName': 'UiAutomator2'
             platformName: 'Android',
-            'appium:platformVersion': '12',
-            'appium:deviceName': 'Galaxy Note10',
+            'appium:platformVersion': '13',
+            'appium:deviceName': 'Redmi Note 13 Pro',
             'appium:appPackage': 'com.myzesty',
             'appium:appActivity': 'com.myzesty.MainActivity',
             'appium:automationName': 'UiAutomator2',

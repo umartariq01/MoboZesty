@@ -1,0 +1,10 @@
+{
+  "script": "<script> [14 bytes]",
+  "args": [
+    {
+      "strategy": "xpath",
+      "selector": "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup[1]",
+      "direction": "up"
+    }
+  ]
+}

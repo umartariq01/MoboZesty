@@ -124,6 +124,8 @@ class ForgetPassword{
     {
         await this.success_alert_ok_btn.click();
     }
+
+    
    
 
     async Forget_Password(username, expected_error, expected_text)
