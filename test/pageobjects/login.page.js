@@ -8,7 +8,8 @@ class LoginPage {
     // Get Function calling to return element
 
     // Close Premium Screen
-    get preiumCloseBtn () {
+    get preiumCloseBtn () 
+    {
         return $('//android.widget.ImageButton[@content-desc="Close"]');
     }
 

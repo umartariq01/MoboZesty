@@ -1,4 +1,4 @@
-import { $ } from '@wdio/globals' ;
+import { $, browser } from '@wdio/globals' ;
 import { remote } from 'webdriverio';
 import assert from 'assert';
 
@@ -7,7 +7,6 @@ class CheckLoginPage {
 
     // Get Function calling to return element
 
-    // Close Premium Screen
     get preiumCloseBtn () {
         return $('//android.widget.ImageButton[@content-desc="Close"]');
     }
@@ -35,16 +34,6 @@ class CheckLoginPage {
     get loginbtn()
     {
         return  $('//android.widget.Button[@content-desc="login-button"]');
-    }
-
-    get login_text_1()
-    {
-        return $('//android.widget.TextView[@content-desc="login-text"]');
-    }
-
-    get login_text_2()
-    {
-        return $('//android.widget.TextView[@content-desc="login-to-your-account"]');
     }
 
     get settiing()
@@ -79,14 +68,15 @@ class CheckLoginPage {
 
     async Enter_Email(username)
     {
-        await this.emailinput.setValue(username);
+        console.log('username: ', username, 'Type: ', typeof username);
+        // await this.emailinput.setValue(username);
+        await this.emailinput.addValue(username);
+        // await browser.keys(username);
     }
 
     async Enter_Password(password)
     {
-        await  this.passwordinput.click();
-        await this.passwordinput.addValue(password);
-
+        await this.passwordinput.setValue(password);
     }
 
     async Login_Button()
@@ -99,23 +89,6 @@ class CheckLoginPage {
         await this.create_account.waitForExist({timeout:3000});
     }
 
-    async getSignin_text_1(expected_text_1)
-    {
-        await this.login_text_1.waitForDisplayed({timeout:5000});
-        const actual_text_1 = await this.login_text_1.getText();
-        assert.strictEqual(actual_text_1, expected_text_1, "Assertion 1 not Passed!");
-        console.log("Text 1 assertion passed successfully...");
-        
-    }
-
-    async getSignin_text_2(expected_text_2)
-    {
-        await this.login_text_2.waitForDisplayed({timeout:5000});
-        const actual_text_2 = await this.login_text_2.getText();
-        assert.strictEqual(actual_text_2, expected_text_2, "Assertion 2 not Passed!" );
-        console.log("Text 2 assertion passed successfully...");
-    }
-
     async click_setting()
     {
         await this.settiing.click();
@@ -126,35 +99,31 @@ class CheckLoginPage {
         await this.logout.click();
     }
 
-    async Login_Myzesty(expected_text_1, expected_text_2, username, password)
+    async Login_Myzesty(username, password)
     {
         await this.Login_Tab();
-        // await this.getSignin_text_1(expected_text_1);
-        // await this.getSignin_text_2(expected_text_2);
         await this.Enter_Email(username);
         await this.Enter_Password(password);
         await this.Login_Button();
     }
 
-    async Logout_Myzesty(expected_text_1, expected_text_2, username, password)
+    async Logout_Myzesty(username, password)
     {
         await this.click_setting();
         await this.click_logout();
         await this.ClosePremiumScreen();
         await this.Profile_Tab();
         await this.Login_Tab();
-        // await this.getSignin_text_1(expected_text_1);
-        // await this.getSignin_text_2(expected_text_2);
         await this.Enter_Email(username);
         await this.Enter_Password(password);
         await this.Login_Button();
     }
 
-    async loginToMyZesty(expected_text_1, expected_text_2, username, password) 
+    async loginToMyZesty(username, password) 
     {
         if(await this.create_account.isDisplayed())
         {
-            await this.Login_Myzesty(expected_text_1, expected_text_2, username, password);
+            await this.Login_Myzesty(username, password);
         }
 
         else if (await this.settiing.isDisplayed())
@@ -165,11 +134,11 @@ class CheckLoginPage {
     }
    
 
-    async login (expected_text_1, expected_text_2, username, password ) 
+    async login (username, password ) 
     {
         await this.ClosePremiumScreen();
         await this.Profile_Tab();
-        await this.loginToMyZesty(expected_text_1, expected_text_2, username, password);
+        await this.loginToMyZesty(username, password);
         // await this.Login_Button();
 
        

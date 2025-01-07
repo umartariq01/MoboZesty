@@ -59,7 +59,7 @@ export const config = {
         // 'appium:platformVersion': '12.0',
         // 'appium:automationName': 'UiAutomator2'
             platformName: 'Android',
-            'appium:platformVersion': '13',
+            'appium:platformVersion': '14',
             'appium:deviceName': 'Redmi Note 13 Pro',
             'appium:appPackage': 'com.myzesty',
             'appium:appActivity': 'com.myzesty.MainActivity',

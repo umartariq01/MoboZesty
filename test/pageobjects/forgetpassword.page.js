@@ -5,7 +5,8 @@ import { $ } from '@wdio/globals' ;
 class ForgetPassword{
 
     // Close Premium Screen
-    get preiumCloseBtn () {
+    get preiumCloseBtn () 
+    {
         return $('//android.widget.ImageButton[@content-desc="Close"]');
     }
 

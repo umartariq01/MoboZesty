@@ -7,9 +7,12 @@ describe('Browse Page', () => {
         const expected_value = "My favorites" ;
         const expected_value_1 = "Share" ;
         const expected_value_2 = "Report" ;
+        const expected_collection = "Edit My Collection" ;
+        const expected_media = "Save media to your device" ;
+        const expected_delete = "Delete" ;
 
         
-        await Browse.run_browse(expected_value, expected_value_1, expected_value_2);
+        await Browse.run_browse(expected_value, expected_value_1, expected_value_2, expected_collection, expected_media, expected_delete);
         
     })
 });

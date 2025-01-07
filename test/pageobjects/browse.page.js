@@ -21,6 +21,17 @@ class Browse
         return $('//android.widget.TextView[@content-desc="feed-screen-kebab-my-favorites-text"]');
     }
 
+    get edit_collection()
+    {
+        return $('//android.widget.TextView[@content-desc="feed-screen-kebab-edit-collection-text"]') ;
+    }
+
+    get save_media()
+    {
+        return $('//android.widget.TextView[@content-desc="feed-screen-kebab-save-media-text"]');
+    }
+
+
     get share() // Share
     {
         return $('//android.widget.TextView[@content-desc="feed-screen-kebab-share-text"]');
@@ -56,6 +67,126 @@ class Browse
         return $('//android.widget.TextView[@text=""]');
     }
 
+    get delete()
+    {
+        return $('//android.widget.TextView[@content-desc="feed-screen-kebab-delete-text"]') ;
+    }
+
+    //=========================== Check Login Functionality =================================
+
+    get preiumCloseBtn () {
+        return $('//android.widget.ImageButton[@content-desc="Close"]');
+    }
+
+    get profiletab()
+    {
+        return $('//android.view.View[@content-desc="navi-profile-button"]');
+    }
+
+    get logintab()
+    {
+        return $('(//android.widget.TextView[@text="Login"])[2]');
+    }
+
+    get emailinput()
+    {
+        return $('//android.widget.EditText[@content-desc="email-input"]');
+    }
+
+    get passwordinput()
+    {
+        return  $('//android.widget.EditText[@content-desc="password-input"]');
+    }
+
+    get loginbtn()
+    {
+        return  $('//android.widget.Button[@content-desc="login-button"]');
+    }
+
+    get login_text_1()
+    {
+        return $('//android.widget.TextView[@content-desc="login-text"]');
+    }
+
+    get login_text_2()
+    {
+        return $('//android.widget.TextView[@content-desc="login-to-your-account"]');
+    }
+
+    get settiing()
+    {
+        return $('//android.widget.TextView[@text="Settings"]');
+    }
+
+    get logout()
+    {
+        return $('//android.widget.Button[@content-desc="settings-log-out-button"]');
+    }
+
+    get create_account()
+    {
+        return $('//android.widget.TextView[@text="Create an Account"]');
+    }
+    //=======================================================================================
+
+    // ========================= Login Function Action ======================================
+    async Close_Premium()
+    {
+        await this.preiumCloseBtn.waitForDisplayed({timeout:5000});
+        const isDisplayed = await this.preiumCloseBtn.isDisplayed();
+        if (isDisplayed)
+        {
+            await this.preiumCloseBtn.click();
+        }
+        else
+        {
+            console.log("Premium Screen not Displayed!")
+        }
+    }
+    
+        async Profile_Tab()
+        {
+            await this.profiletab.click();
+        }
+    
+        async Login_Tab()
+        {
+            await this.logintab.click();
+        }
+    
+        async Enter_Email(username)
+        {
+            await this.emailinput.setValue(username);
+        }
+    
+        async Enter_Password(password)
+        {
+            await  this.passwordinput.click();
+            await this.passwordinput.addValue(password);
+    
+        }
+    
+        async Login_Button()
+        {
+            await this.loginbtn.click();
+        }
+    
+        async Create_Account_Link()
+        {
+            await this.create_account.waitForExist({timeout:3000});
+        }
+    
+        async click_setting()
+        {
+            await this.settiing.click();
+        }
+    
+        async click_logout()
+        {
+            await this.logout.click();
+        }
+    
+    // ======================================================================================
 
 
     // ========== Action perfom function =========
@@ -117,7 +248,12 @@ class Browse
         return false;
     }    
 }
- 
+
+    async testscroll()
+    {
+
+    }
+
     async option_btn_click()
     {
         await this.option_btn.click();
@@ -130,11 +266,32 @@ class Browse
         assert.strictEqual(actual_value, expected_value, "My favourite text is not verified!")
     }
 
+    async Edit_My_Collection(expected_collection)
+    {
+        await this.edit_collection.waitForDisplayed();
+        const actual_collection = await this.edit_collection.getText();
+        assert.strictEqual(actual_collection, expected_collection, "Edit My Collection text not asserted.")
+    }
+
+    async Save_Media_Device(expected_media)
+    {
+        await this.save_media.waitForDisplayed();
+        const actual_media = await this.save_media.getText();
+        assert.strictEqual(actual_media, expected_media, "Save media to your device text not asserted.")
+    }
+
     async share_text(expected_value_1)
     {
         await this.share.waitForDisplayed();
         const actual_value_1 = await this.share.getText();
         assert.strictEqual(actual_value_1, expected_value_1, "Share text is not verified!");
+    }
+
+    async Delete_Text(expected_delete)
+    {
+        await this.delete.waitForDisplayed();
+        const actual_delete = await this.delete.getText();
+        assert.strictEqual(actual_delete, expected_delete, "Delete text not asserted." )
     }
 
     async report_text(expected_value_2)
@@ -195,11 +352,9 @@ class Browse
         }
     }
 
-    // ============ Main Function =================
-
-    async run_browse(expected_value, expected_value_1, expected_value_2)
+    
+    async Logout_Browse(expected_value, expected_value_1, expected_value_2)
     {
-        CheckLoginPage.login();
         await this.click_browse_tab();
         await this.scrollScreen();
         await this.option_btn_click();
@@ -211,17 +366,49 @@ class Browse
         await this.check_double_thumbs_up();
         await this.check_thumbs_down();
         await this.check_comment();
-        // await this.scroll_1();
-        // await browser.execute("mobile: scrollGesture", { 
-        //     strategy: '-android uiautomator',
-        //     selector: 'new UiSelector().className("android.view.ViewGroup").instance(32)',
-        //     direction: 'up'
-        //  });
-        // await browser.execute("mobile: scroll", { direction: 'up' });
-        // await driver.execute('mobile: scroll', { direction: 'up' });
+        await this.scrollUp_fun();
+    }
 
+    async Login_Browse(expected_value, expected_value_1, expected_value_2, expected_collection, expected_media, expected_delete)
+    {
+        await this.click_browse_tab();
+        await this.scrollScreen();
+        await this.option_btn_click();
+        await this.my_fav_text(expected_value);
+        await this.Edit_My_Collection(expected_collection);
+        await this.Save_Media_Device(expected_media);
+        await this.share_text(expected_value_1);
+        await this.Delete_Text(expected_delete);
+        await this.tapScreen(540,812);
+        await this.check_thumbs_up();
+        await this.check_double_thumbs_up();
+        await this.check_thumbs_down();
+        await this.check_comment();
         await this.scrollUp_fun();
 
+
+    }
+
+    async loginToMyZesty(expected_value, expected_value_1, expected_value_2, expected_collection, expected_media, expected_delete)
+    {
+        if(await this.create_account.isDisplayed())
+        {
+            await this.Logout_Browse(expected_value, expected_value_1, expected_value_2);
+        }
+
+        else if (await this.settiing.isDisplayed())
+        {
+            await this.Login_Browse(expected_value, expected_value_1, expected_value_2, expected_collection, expected_media, expected_delete)
+        }
+    }
+
+    // ============ Main Function =================
+
+    async run_browse(expected_value, expected_value_1, expected_value_2, expected_collection, expected_media, expected_delete)
+    {
+        await this.Close_Premium();
+        await this.Profile_Tab();
+        await this.loginToMyZesty(expected_value, expected_value_1, expected_value_2, expected_collection, expected_media, expected_delete);
 
     }
 }
