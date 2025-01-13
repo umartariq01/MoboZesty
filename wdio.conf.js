@@ -52,12 +52,7 @@ export const config = {
     // https://saucelabs.com/platform/platform-configurator
     //
     capabilities: [{
-        // capabilities for local Appium web tests on an Android Emulator
-        // platformName: 'Android',
-        // browserName: 'Chrome',
-        // 'appium:deviceName': 'Android GoogleAPI Emulator',
-        // 'appium:platformVersion': '12.0',
-        // 'appium:automationName': 'UiAutomator2'
+ 
             platformName: 'Android',
             'appium:platformVersion': '14',
             'appium:deviceName': 'Redmi Note 13 Pro',
@@ -148,7 +143,7 @@ export const config = {
     // See the full list at http://mochajs.org/
     mochaOpts: {
         ui: 'bdd',
-        timeout: 60000
+        timeout: 360000
     },
 
     

@@ -249,10 +249,6 @@ class Browse
     }    
 }
 
-    async testscroll()
-    {
-
-    }
 
     async option_btn_click()
     {

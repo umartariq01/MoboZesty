@@ -17,7 +17,10 @@
   "scroll": "wdio run ./wdio.conf.js --spec test.scroll.js",
   "landingscreen": "wdio run ./wdio.conf.js --spec test.landingpage.js",
   "aboutus": "wdio run ./wdio.conf.js --spec test.about.js",
-  "quickcut": "wdio run ./wdio.conf.js --spec test.qcrun.js"
+  "qcimg": "wdio run ./wdio.conf.js --spec test.qcimgrun.js",
+  "qcvideo": "wdio run ./wdio.conf.js --spec test.qcvidrun.js",
+  "qcmain": "wdio run ./wdio.conf.js --spec test.qcmain.js",
+  "qcedit": "wdio run ./wdio.conf.js --spec test.qcedit.js"
   },
   
   "devDependencies": {
