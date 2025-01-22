@@ -318,8 +318,9 @@ class SignupPage{
         await this.Click_error_Ok();
     }
 
-    async Logout_Myzesty(name, email, password, confirmpassword, expected_text_1, expected_text_2 ,expected_policy_1, expected_policy_2,
-        expected_policy_3, expected_policy_4, expected_policy_5, expected_policy_6, expected_policy_7, 
+    async Logout_Myzesty(name, email, password, confirmpassword, expected_text_1, 
+        expected_text_2 ,expected_policy_1, expected_policy_2,expected_policy_3, 
+        expected_policy_4, expected_policy_5, expected_policy_6, expected_policy_7, 
         expected_error, invalid_username, expected_error_1, invalid_email, expected_error_2)
     {
         await this.click_setting();
@@ -344,8 +345,9 @@ class SignupPage{
         await this.SignUp_btn();
     }
 
-    async Signup_Account(name, email, password, confirmpassword,  expected_text_1, expected_text_2 ,expected_policy_1, expected_policy_2,
-        expected_policy_3, expected_policy_4, expected_policy_5, expected_policy_6, expected_policy_7, 
+    async Signup_Account(name, email, password, confirmpassword,  expected_text_1, 
+        expected_text_2 ,expected_policy_1, expected_policy_2,expected_policy_3, 
+        expected_policy_4, expected_policy_5, expected_policy_6, expected_policy_7, 
         expected_error, invalid_username, expected_error_1, invalid_email, expected_error_2)
     {
         await this.SignUp();
@@ -366,35 +368,40 @@ class SignupPage{
         await this.SignUp_btn();
     }
 
-    async signupToMyZesty(name, email, password, confirmpassword, expected_text_1, expected_text_2 ,expected_policy_1, expected_policy_2,
-        expected_policy_3, expected_policy_4, expected_policy_5, expected_policy_6, expected_policy_7, 
+    async signupToMyZesty(name, email, password, confirmpassword, expected_text_1, 
+        expected_text_2 ,expected_policy_1, expected_policy_2,expected_policy_3, 
+        expected_policy_4, expected_policy_5, expected_policy_6, expected_policy_7, 
         expected_error, invalid_username, expected_error_1, invalid_email, expected_error_2) 
     {
         if(await this.create_account.isDisplayed())
         {
-            await this.Signup_Account(name, email, password, confirmpassword,expected_text_1, expected_text_2 ,expected_policy_1, expected_policy_2,
-                expected_policy_3, expected_policy_4, expected_policy_5, expected_policy_6, expected_policy_7, 
+            await this.Signup_Account(name, email, password, confirmpassword,expected_text_1, 
+                expected_text_2 ,expected_policy_1, expected_policy_2,expected_policy_3, 
+                expected_policy_4, expected_policy_5, expected_policy_6, expected_policy_7, 
                 expected_error, invalid_username, expected_error_1, invalid_email, expected_error_2);
                 
         }
 
         else if (await this.settiing.isDisplayed())
         {
-            await this.Logout_Myzesty(name, email, password, confirmpassword,expected_text_1, expected_text_2 ,expected_policy_1, expected_policy_2,
-                expected_policy_3, expected_policy_4, expected_policy_5, expected_policy_6, expected_policy_7, 
+            await this.Logout_Myzesty(name, email, password, confirmpassword,expected_text_1, 
+                expected_text_2 ,expected_policy_1, expected_policy_2,expected_policy_3, 
+                expected_policy_4, expected_policy_5, expected_policy_6, expected_policy_7, 
                 expected_error, invalid_username, expected_error_1, invalid_email, expected_error_2);
                 
         }
     }
   
-    async signup (name, email, password, confirmpassword, expected_text_1, expected_text_2 ,expected_policy_1, expected_policy_2,
-        expected_policy_3, expected_policy_4, expected_policy_5, expected_policy_6, expected_policy_7, 
+    async signup (name, email, password, confirmpassword, expected_text_1,
+        expected_text_2 ,expected_policy_1, expected_policy_2,expected_policy_3, 
+        expected_policy_4, expected_policy_5, expected_policy_6, expected_policy_7, 
         expected_error, invalid_username, expected_error_1, invalid_email, expected_error_2) 
     {
         await this.Close_Premium();
         await this.Profile_Tab();
-        await this.signupToMyZesty(name, email, password, confirmpassword, expected_text_1, expected_text_2 ,expected_policy_1, expected_policy_2,
-        expected_policy_3, expected_policy_4, expected_policy_5, expected_policy_6, expected_policy_7, 
+        await this.signupToMyZesty(name, email, password, confirmpassword, expected_text_1, 
+        expected_text_2 ,expected_policy_1, expected_policy_2,expected_policy_3, expected_policy_4,
+        expected_policy_5, expected_policy_6, expected_policy_7, 
         expected_error, invalid_username, expected_error_1, invalid_email, expected_error_2);
 
     }

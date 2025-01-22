@@ -85,7 +85,7 @@ class LoginPage {
 
     async Enter_Password(password)
     {
-        await  this.passwordinput.click();
+       // await  this.passwordinput.click();
         await this.passwordinput.addValue(password);
 
     }
@@ -113,7 +113,7 @@ class LoginPage {
     {
         await this.login_text_2.waitForDisplayed({timeout:5000});
         const actual_text_2 = await this.login_text_2.getText();
-        assert.strictEqual(actual_text_2, expected_text_2, "Assertion 2 not Passed!" );
+        assert.strictEqual(actual_text_2, expected_text_2, "Assertion message 'Log in to your account' is not Passed!" );
         console.log("Text 2 assertion passed successfully...");
     }
 

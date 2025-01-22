@@ -310,6 +310,7 @@ class Browse
         
     }
 
+
     async check_double_thumbs_up()
     {
         if(this.double_thumbs_up.isDisplayed())
