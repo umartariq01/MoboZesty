@@ -7,7 +7,8 @@ class CheckLoginPage {
 
     // Get Function calling to return element
 
-    get preiumCloseBtn () {
+    get preiumCloseBtn () 
+    {
         return $('//android.widget.ImageButton[@content-desc="Close"]');
     }
 

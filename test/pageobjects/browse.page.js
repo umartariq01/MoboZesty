@@ -1,7 +1,7 @@
 import { remote } from 'webdriverio';
 import assert from 'assert';
 import { $, browser, driver } from '@wdio/globals' ;
-import CheckLoginPage from '../pageobjects/checklogin.page.js';
+import Sliders from '../pageobjects/sliders.page.js';
 
 class Browse
 {
@@ -226,30 +226,6 @@ class Browse
         await browser.releaseActions();
     }
 
-    async scrollUp_fun()
-{
-    const strategy = '-android uiautomator'; 
-    const selector = 'new UiSelector().className("android.view.ViewGroup").instance(26)';
-    const direction = 'up';
-    
-    await browser.execute("mobile: scroll", { 
-        strategy: strategy,
-        selector: selector,
-        direction: direction
-    });
-
-    const stop = $(selector);
-    if(await  stop.isDisplayed())
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }    
-}
-
-
     async option_btn_click()
     {
         await this.option_btn.click();
@@ -363,7 +339,7 @@ class Browse
         await this.check_double_thumbs_up();
         await this.check_thumbs_down();
         await this.check_comment();
-        await this.scrollUp_fun();
+        await Sliders.scrollScreen(500, 2000, 500, 300, 2)
     }
 
     async Login_Browse(expected_value, expected_value_1, expected_value_2, expected_collection, expected_media, expected_delete)
@@ -381,7 +357,7 @@ class Browse
         await this.check_double_thumbs_up();
         await this.check_thumbs_down();
         await this.check_comment();
-        await this.scrollUp_fun();
+        await Sliders.scrollScreen(500, 2000, 500, 300, 2)
 
 
     }

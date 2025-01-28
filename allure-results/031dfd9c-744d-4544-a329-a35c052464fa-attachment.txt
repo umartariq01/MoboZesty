@@ -1,0 +1,11 @@
+{
+  "actions": [
+    {
+      "action": "press",
+      "options": {
+        "x": 203,
+        "y": 146
+      }
+    }
+  ]
+}

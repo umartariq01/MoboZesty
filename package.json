@@ -30,7 +30,9 @@
   "test3": "wdio run ./wdio.conf.js --spec test.QCtest3.js",
   "test4": "wdio run ./wdio.conf.js --spec test.QCtest4.js",
   "test5": "wdio run ./wdio.conf.js --spec test.QCtest5.js",
-  "test6": "wdio run ./wdio.conf.js --spec test.QCtest6.js"
+  "test6": "wdio run ./wdio.conf.js --spec test.QCtest6.js",
+  "dehazer": "wdio run ./wdio.conf.js --spec test.dehazer.js",
+  "bokeh": "wdio run ./wdio.conf.js --spec test.bokeh.js"
   
   },
 

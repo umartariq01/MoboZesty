@@ -209,10 +209,10 @@ class QC_Adv_Edit
     //     return $('(//android.widget.LinearLayout[@resource-id="com.myzesty:id/icon_area"])[1]');
     // }
 
-    // get record_audio()
-    // {
-    //     return  $('(//android.widget.LinearLayout[@resource-id="com.myzesty:id/icon_area"])[2]');
-    // }
+    get record_audio()
+    {
+        return  $('(//android.widget.LinearLayout[@resource-id="com.myzesty:id/icon_area"])[2]');
+    }
     get edit_audio()
     {
         return $('//android.widget.TextView[@text="Edit Audio"]');
@@ -220,7 +220,7 @@ class QC_Adv_Edit
 
     get audio_bar()
     {
-        return $('//android.view.ViewGroup[@resource-id="com.myzesty:id/range_slider"]');
+        return $('//android.view.ViewGroup[@resource-id="com.myzesty:id/range_slider"]' || '(//android.view.ViewGroup[@resource-id="com.myzesty:id/range_slider"])[1]');
     }
 
     get return_button()
@@ -228,13 +228,127 @@ class QC_Adv_Edit
         return $('//android.widget.FrameLayout[@resource-id="com.myzesty:id/back"]/android.widget.ImageView');
     }
 
-    
+    get start_record()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/record_button"]');
+    }
+
+    get Done_record()
+    {
+        return $('//android.widget.ImageView[@resource-id="com.myzesty:id/done"]');
+    }
+
+    get Voice_recorsd()
+    {
+        return $('(//android.view.ViewGroup[@resource-id="com.myzesty:id/range_slider"])[2]' || '(//android.view.ViewGroup[@resource-id="com.myzesty:id/range_slider"])[3]');
+    }
+
+    get close_editing()
+    {
+        return $('//android.widget.ImageView[@resource-id="com.myzesty:id/cancel"]');
+    }
+
+    get first_draft()
+    {
+        return $('(//android.widget.ImageView[@resource-id="com.myzesty:id/img"])[1]');
+    }
+
+    get maximize_minimize_screen()
+    {
+        return $('//android.widget.ImageView[@resource-id="com.myzesty:id/btn_full_screen"]');
+    }
+
+    get undo()
+    {
+        return $('//android.widget.ImageView[@resource-id="com.myzesty:id/undo"]');
+    }
+
+    get redo()
+    {
+        return $('//android.widget.ImageView[@resource-id="com.myzesty:id/redo"]')
+    }
+
 
 
 
 
     //=========================================================================
 
+    async Undo_changes() 
+    {
+        try 
+        {
+
+            while (await this.undo.getAttribute('enabled') === 'true') 
+                {
+                    await this.undo.click();
+                    await browser.pause(500);
+                }
+        } 
+        catch (error) 
+        {
+            console.log('Error while undoing changes:', error.message);
+        }
+    }
+    
+    async Redo_changes()
+    {
+        try
+        {
+            while(await this.undo.getAttribute('enabled') === 'true')
+                {
+                    await this.redo.click();
+                    await browser.pause(500);
+                }
+        }
+        catch(error)
+        {
+            console.log("Error while redoing changes:", error.message);
+        }
+        
+    }
+
+    async  Click_maximize_minimize()
+    {
+        await this.maximize_minimize_screen.click();
+    }
+
+
+    async Open_draft()
+    {
+        await this.first_draft.click();
+        await browser.pause(3000);
+    }
+    async Click_close_editing()
+    {
+        await this.close_editing.click();
+    }
+    async Confirm_voice_record()
+    {
+        const record_visible = await this.Voice_recorsd.isDisplayed();
+        if(record_visible)
+        {
+            console.log("Voiceover is attached.")
+        }
+        else
+        {
+            console.log("Voiceover is not attached.")
+            console.error("Error finding voiceover...");
+        }
+    }
+    async Click_done_record()
+    {
+        await this.Done_record.click();
+    }
+    async Click_start_record() 
+    {
+        await this.start_record.click();
+    }
+    
+    async Click_record_audio()
+    {
+        await this.record_audio.click();
+    }
     async Click_Edit_Audio()
     {
         await this.edit_audio.click();
@@ -382,8 +496,6 @@ class QC_Adv_Edit
             console.log("Subscription Processing is not visible...")
         }
 
-        // await this.verify_processing(expected_text)
-
     }
 
     async verify_processing(expected_text)
@@ -424,9 +536,9 @@ class QC_Adv_Edit
         await this.resolution.click();
     }
 
-    async close_resolution_or_record()
+    async Cliick_close_resolution_or_record()
     {
-        await this.close_resolution.click();
+        await this.close_resolution_or_record.click();
     }
 
     async click_resolution_720()
@@ -440,10 +552,10 @@ class QC_Adv_Edit
         await this.edit.click();
     }
 
-    // async play_video()
-    // {
-    //     await this.play_button.click();
-    // }
+    async play_video()
+    {
+        await this.play_button.click();
+    }
 
     Play_video()
     {
@@ -486,6 +598,7 @@ class QC_Adv_Edit
         await this.Mute_all.click();
     }
 
+    // Sliding seekbar from rright to left
     async Timeline_slider(startX, endX, y, duration = 200, maxAttempts = 10) {
         for (let attempt = 0; attempt < maxAttempts; attempt++) {
             // Check if the element is visible
@@ -589,7 +702,7 @@ class QC_Adv_Edit
         // await this.Click_done();
         // await browser.pause(5000);
         // await this.click_edit();
-        // await this.Advance_edit(expected_text);
+        await this.Advance_edit(expected_text);
         // await this.Click_wizard_popup();
         // // await browser.pause(5000);
         // await this.Click_full_editor();
@@ -601,12 +714,12 @@ class QC_Adv_Edit
         // await this.Adv_add_img();
         // await this.select_img_tab();
         // await this.select_img10();
-        // await this.Click_done();
+        await this.Click_done();
 
         // await this.Adv_add_img();
         // await this.select_video_tab();
         // await this.click_sort();
-        Sliders.scrollScreen(500, 400, 500, 1700);
+        // Sliders.scrollScreen(500, 400, 500, 1700);
         // await this.Select_vid7();
         // await this.Click_done();
         // await this.waitForUploadToComplete();
@@ -625,26 +738,58 @@ class QC_Adv_Edit
         // await browser.pause(2000);
         // await Sliders.Single_slide(950, 100, 1630);
 
-        await Sliders.scrollScreen(534, 1635, 50, 1635);
+
+
+        //== This slides the timeline in Advance editor==
+        // await Sliders.scrollScreen(534, 1635, 50, 1635);
         
-        await this.zoomin  
-        (
-            500, 1630, // Stary X1, Y1
-            600, 1630, // Start X2, Y2
-            100, 1630, // End X1, Y1
-            900, 1630 // End X2, Y2
+        // await this.zoomin  
+        // (
+        //     500, 1630, // Stary X1, Y1
+        //     600, 1630, // Start X2, Y2
+        //     100, 1630, // End X1, Y1
+        //     900, 1630 // End X2, Y2
         
-        );
-        await Sliders.zoomout
-        (
-            50, 1630,  // Start X1, y1
-            940, 1630, // Start X2, Y2
-            400, 1630, // End X1, Y1
-            580, 1630 // End X2, Y2
-        );
-        await this.Click_Edit_Audio();
-        await this.Verify_Audio_Bar();
-        await this.Main_return_button();
+        // );
+        // await Sliders.zoomout
+        // (
+        //     50, 1630,  // Start X1, y1
+        //     940, 1630, // Start X2, Y2
+        //     400, 1630, // End X1, Y1
+        //     580, 1630 // End X2, Y2
+        // );
+        // await this.Click_Edit_Audio();
+        // await this.Verify_Audio_Bar();
+        // // Need to add record audio below
+        // await this.Click_record_audio();
+        // await this.Click_start_record();
+        // await this.Click_done_record();
+        // await this.Confirm_voice_record();
+
+        // await this.Click_record_audio();
+        // await this.Click_start_record();
+        // await this.Cliick_close_resolution_or_record()
+        // Sliders.scrollScreen(33, 1833, 900, 1833);
+        // await this.Main_return_button();
+
+        // await this.Click_close_editing();
+        // await this.Open_draft();
+        // await this.Click_maximize_minimize();
+        // await this.play_video();
+        // await this.Click_maximize_minimize();
+        // await this.play_video();
+
+        // await this.Undo_changes();
+        await browser.pause(1000);
+        await this.Redo_changes(); // Its not working
+
+
+
+
+        // await browser.pause(2000)
+        // await this.Cliick_close_resolution_or_record();
+
+        // await this.Main_return_button();
 
         // add change audio fromm all three tabs
         // Maximize and minimize screen
@@ -657,7 +802,7 @@ class QC_Adv_Edit
 
         
         // await this.click_resolution();
-        await this.close_resolution_or_record();
+        // await this.close_resolution_or_record();
         // await this.click_resolution();
         // await this.click_resolution_720();
         // await this.Click_export();

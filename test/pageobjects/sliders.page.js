@@ -1,3 +1,5 @@
+import { $, browser } from '@wdio/globals' ;
+
 class Sliders
 {
 
@@ -59,8 +61,24 @@ class Sliders
         }
     }
 
+    // Vertical screen sliding function
+    // async scrollScreen(startX, startY, endX, endY, duration = 1000) {
+    //         await browser.performActions([{
+    //             type: 'pointer',
+    //             id: 'finger1',
+    //             parameters: { pointerType: 'touch' },
+    //             actions: [
+    //                 { type: 'pointerMove', duration: 0, x: startX, y: startY }, // Move to the start position
+    //                 { type: 'pointerDown', button: 0 }, // Press down
+    //                 { type: 'pointerMove', duration: duration, x: endX, y: endY }, // Move to the end position over the specified duration
+    //                 { type: 'pointerUp', button: 0 } // Release
+    //             ]
+    //         }]);
+    //         await browser.releaseActions();
+    //     }
 
-    async scrollScreen(startX, startY, endX, endY, duration = 1000) {
+    async scrollScreen(startX, startY, endX, endY, repetitions=1, duration = 1000) {
+        for (let i = 0; i < repetitions; i++) { // Loop based on the repetitions parameter
             await browser.performActions([{
                 type: 'pointer',
                 id: 'finger1',
@@ -72,11 +90,14 @@ class Sliders
                     { type: 'pointerUp', button: 0 } // Release
                 ]
             }]);
-            await browser.releaseActions();
+            await browser.releaseActions(); // Release the actions after each iteration
         }
+    }
+    
+    
    
-
-    async Single_slide(startX, endX, y, duration = 300) {
+        // Horizental screeen sliding function
+    async Single_slide(startX, endX, y, duration = 1500) {
             // Horizontal swipe: startX -> endX at a fixed vertical position (y)
             await browser.performActions([{
                 type: 'pointer',
@@ -137,12 +158,12 @@ class Sliders
 
 
     async zoomout(startX1, startY1, startX2, startY2, endX1, endY1, endX2, endY2, repetitions = 2) {
-                    console.log('Zoom-in Start Coordinates:', { startX1, startY1, startX2, startY2 });
-                    console.log('Zoom-in End Coordinates:', { endX1, endY1, endX2, endY2 });
+                    console.log('Zoom-out Start Coordinates:', { startX1, startY1, startX2, startY2 });
+                    console.log('Zoom-out End Coordinates:', { endX1, endY1, endX2, endY2 });
                     console.log(`Number of repetitions: ${repetitions}`);
                 
                     for (let i = 0; i < repetitions; i++) {
-                        console.log(`Performing zoom-in gesture ${i + 1} of ${repetitions}`);
+                        console.log(`Performing zoom-out gesture ${i + 1} of ${repetitions}`);
                         
                         await browser.performActions([
                             {
@@ -175,7 +196,7 @@ class Sliders
                         await browser.pause(1000);
                     }
                 
-                    console.log('Zoom-in gesture performed successfully for all repetitions.');
+                    console.log('Zoom-out gesture performed successfully for all repetitions.');
         }
 
         get text_expander()
@@ -183,6 +204,8 @@ class Sliders
                 return $('//android.view.ViewGroup[@resource-id="com.myzesty:id/range_slider"]/android.view.View[2]');
             }
 
+
+            // Function to stretch the text, sticket or effects 
     async dragSliderWithBounds(sliderXpath, dragDistance, sliderBounds) {
                 // Locate the slider element using XPath
                 const sliderElement = await $(sliderXpath);
@@ -288,9 +311,172 @@ class Sliders
             
               
 
-
-              
+    async Music_tab_Click() 
+        {
+    
+            const maxRetries = 3; // Maximum number of retry attempts
+            let attempt = 0;
+            let downloadComplete = false;
+    
+            // Start in the Music tab
+            console.log("Starting in the Music tab.");
+            let audio_visible = await this.audioFX_Song_1.waitForDisplayed({ timeout: 5000 }).catch(() => false);
         
+            if (!audio_visible) {
+                console.log("Audio is not visible in the Music tab. Navigating to the AudioFX tab.");
+                await this.audioFX.click(); // Switch to the AudioFX tab
+                await browser.pause(500); // Wait for 0.5 seconds
+                await this.Music_Tab.click();
+        
+                // Check visibility in the AudioFX tab
+                audio_visible = await this.audioFX_Song_1.waitForDisplayed({ timeout: 5000 }).catch(() => false);
+        
+                if (audio_visible) {
+                    console.log("Audio is visible in the Music tab.");
+                    await this.audioFX_Song_1.click()
+                }
+            }
+        
+            // Check the "selected" attribute
+            while (attempt < maxRetries) {
+                attempt++;
+                console.log(`Attempt ${attempt} to download the song.`);
+        
+                // Check if the song is already downloaded
+                const isSelected = await this.audioFX_Song_1.getAttribute('selected');
+                
+                if (isSelected === 'true') {
+                    console.log("Song is already downloaded. Selecting the song.");
+                    await this.audioFX_Song_1.click(); // Select the song
+                    downloadComplete = true;
+                    break;
+                } else {
+                    console.log("Song is not downloaded. Downloading the song first.");
+                    await this.audioFX_Song_1.click(); // Start downloading the song
+        
+                    // Wait for the song to be downloaded
+                    downloadComplete = await browser.waitUntil(
+                        async () => {
+                            const status = await this.audioFX_Song_1.getAttribute('selected');
+                            return status === 'true';
+                        },
+                        {
+                            timeout: 15000, // Adjust the timeout based on your app's expected download time
+                            timeoutMsg: "Song download did not complete within the expected time."
+                        }
+                    ).catch(() => false);
+        
+                    if (downloadComplete) {
+                        console.log("Download complete. Selecting the song.");
+                        await this.audioFX_Song_1.click();
+                        break; // Exit the loop if download succeeds
+                    } else {
+                        console.log("Download failed. Retrying...");
+                    }
+                }
+            }
+        
+            if (!downloadComplete) {
+                throw new Error("Failed to download the song after multiple attempts.");
+            }
+        }
+
+
+    async AudioFX_tab() 
+        {
+            const maxRetries = 3; // Maximum number of retry attempts
+            let attempt = 0;
+            let downloadComplete = false;
+        
+            // Start in the Music tab and navigate to AudioFX tab
+            await this.audioFX.click();
+            let audio_visible = await this.audioFX_Song_1.waitForDisplayed({ timeout: 5000 }).catch(() => false);
+        
+            if (!audio_visible) {
+                console.log("Audio is not visible in the AudioFX tab. Navigating to the Music tab.");
+                await this.Music_Tab.click(); // Switch to the Music tab
+                await browser.pause(500); // Wait for 0.5 seconds
+                await this.audioFX.click();
+        
+                // Check visibility in the AudioFX tab again
+                audio_visible = await this.audioFX_Song_1.waitForDisplayed({ timeout: 5000 }).catch(() => false);
+                if (!audio_visible) {
+                    throw new Error("Audio is not visible in the AudioFX tab after multiple attempts.");
+                }
+            }
+        
+            console.log("Audio is visible in the AudioFX tab.");
+        
+            // Retry loop for downloading the song
+            while (attempt < maxRetries) {
+                attempt++;
+                console.log(`Attempt ${attempt} to download the song.`);
+        
+                // Check if the song is already downloaded
+                const isSelected = await this.audioFX_Song_1.getAttribute('selected');
+                if (isSelected === 'true') {
+                    console.log("Song is already downloaded. Selecting the song.");
+                    await this.audioFX_Song_1.click(); // Select the song
+                    downloadComplete = true;
+                    break;
+                } else {
+                    console.log("Song is not downloaded. Downloading the song first.");
+                    await this.audioFX_Song_1.click(); // Start downloading the song
+        
+                    // Wait for the song to be downloaded
+                    downloadComplete = await browser.waitUntil(
+                        async () => {
+                            const status = await this.audioFX_Song_1.getAttribute('selected');
+                            return status === 'true';
+                        },
+                        {
+                            timeout: 15000, // Adjust the timeout based on your app's expected download time
+                            timeoutMsg: "Song download did not complete within the expected time."
+                        }
+                    ).catch(() => false);
+        
+                    if (downloadComplete) {
+                        console.log("Download complete. Selecting the song.");
+                        await this.audioFX_Song_1.click();
+                        break; // Exit the loop if download succeeds
+                    } else {
+                        console.log("Download failed. Retrying...");
+                    }
+                }
+            }
+        
+            if (!downloadComplete) {
+                throw new Error("Failed to download the song after multiple attempts.");
+            }
+        }
+    
+    async CompareButton(xpath, duration = 2000) 
+    {
+        const compareButton = await $ (xpath) ;
+        // Find the location of the compare button
+        const compareElement = compareButton;
+        const { x, y } = await compareElement.getLocation(); // Get the element's location
+    
+        // Perform long press using touch actions
+        await browser.performActions([
+            {
+                type: 'pointer',
+                id: 'finger1',
+                parameters: { pointerType: 'touch' },
+                actions: [
+                    { type: 'pointerMove', duration: 0, x: x + 1, y: y + 1 }, // Move to the button (offset slightly to ensure tap)
+                    { type: 'pointerDown', button: 0 }, // Press down
+                    { type: 'pause', duration: duration }, // Pause to simulate long press
+                    { type: 'pointerUp', button: 0 } // Release the press
+                ]
+            }
+        ]);
+        await browser.releaseActions();
+    
+        console.log(`Long pressed the compare button for ${duration} ms.`);
+    }
+
+   
 }
 
 export default new Sliders();
