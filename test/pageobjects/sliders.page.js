@@ -77,7 +77,7 @@ class Sliders
     //         await browser.releaseActions();
     //     }
 
-    async scrollScreen(startX, startY, endX, endY, repetitions=1, duration = 1000) {
+    async scrollScreen(startX, startY, endX, endY, repetitions=1, duration = 500) {
         for (let i = 0; i < repetitions; i++) { // Loop based on the repetitions parameter
             await browser.performActions([{
                 type: 'pointer',
@@ -104,14 +104,15 @@ class Sliders
                 id: 'finger1',
                 parameters: { pointerType: 'touch' },
                 actions: [
-                    { type: 'pointerMove', duration: 0, x: startX, y: y }, // Move to the starting horizontal position
-                    { type: 'pointerDown', button: 0 }, // Press down
-                    { type: 'pointerMove', duration: duration, x: endX, y: y }, // Slide horizontally to the end position
-                    { type: 'pointerUp', button: 0 } // Release
+                    { type: 'pointerMove', duration: 0, x: startX, y: y }, // Move to start position
+                    { type: 'pointerDown' }, // Press down (no need for button: 0)
+                    { type: 'pause', duration: 100 }, // Small delay before moving
+                    { type: 'pointerMove', duration: duration, x: endX, y: y }, // Slide to end position
+                    { type: 'pointerUp' } // Release (no need for button: 0)
                 ]
             }]);
-            await browser.releaseActions();
         }
+        
 
 
     async zoomin(startX1, startY1, startX2, startY2, endX1, endY1, endX2, endY2, repetitions = 2) {

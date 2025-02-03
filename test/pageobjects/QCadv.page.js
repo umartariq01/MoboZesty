@@ -295,7 +295,7 @@ class QC_Adv_Edit
     {
         try
         {
-            while(await this.undo.getAttribute('enabled') === 'true')
+            while(await this.redo.getAttribute('enabled') === 'true')
                 {
                     await this.redo.click();
                     await browser.pause(500);
@@ -372,10 +372,6 @@ class QC_Adv_Edit
     {
         await this.return_button.click();
     }
-
-
-
-
 
     async Close_Premium()
     {
@@ -507,9 +503,9 @@ class QC_Adv_Edit
 
     async Click_wizard_popup()
     {
-        const isavailable = await this.wizard_popup.isDisplayed();
+        const Wizard_visible = await this.wizard_popup.isDisplayed();
 
-        if(isavailable)
+        if(Wizard_visible)
         {
             await this.wizard_popup.click();
         }
@@ -570,27 +566,26 @@ class QC_Adv_Edit
 
     async waitForUploadToComplete() {
     
-        // Check if the progress bar is visible
-        const isVisible = await this.progress.isDisplayed();
+        console.log("Checking import progress...");
     
-        if (isVisible) {
-            console.log("Progress bar is visible. Monitoring upload progress...");
-            
-            // // Wait until the progress bar text becomes "100%"
-            // await browser.waitUntil(async () => {
-            //     const progressText = await progress.getText();
-            //     console.log(`Current progress: ${progressText}`);
-            //     return progressText === '100%';
-            // }, {
-            //     timeout: 60000, // Timeout after 60 seconds
-            //     interval: 100,  // Check every 500ms
-            //     timeoutMsg: "Upload did not complete within the expected time."
-            // });
+        let progress_bar = 0;
+        await this.progress.waitForDisplayed();
     
-            // console.log("Upload completed successfully.");
-        } else {
-            console.error("Progress bar is missing.");
+        // Wait until the progress reaches 100%
+        while (progress_bar < 100) {
+            // Get the text of the progress bar
+            const progressText = await this.progress.getText();
+            console.log(`Current progress: ${progressText}`)    
+            // Break if the progress reaches 100%
+            if (progressText >= 100) {
+                console.log("Import is complete!");
+                break;
+            }
+    
+            await browser.pause(500);
         }
+    
+        console.log("Video successfully imported!");
     }
 
     async Click_mute_all()
@@ -673,6 +668,8 @@ class QC_Adv_Edit
     
         console.log('Zoom-in gesture performed successfully for all repetitions.');
     }
+
+
     
     
     
@@ -686,120 +683,104 @@ class QC_Adv_Edit
     async Adv_Edit_Run(expected_text)
     {
 
-        // await this.Close_Premium();
-        // await this.Try_QC();
+        await this.Close_Premium();
+        await this.Try_QC();
 
-        // await this.select_img_tab();
-        // await this.select_img1();
-        // await this.select_img2();
+        await this.select_img_tab();
+        await this.select_img1();
+        await this.select_img2();
 
-        // // await this.select_video_tab();
-        // // await this.click_sort();
-        // // await this.scrollScreen(500, 400, 500, 1700);
-        // // await  this.Select_vid1();
-        // // await this.Select_vid2();
+        // await this.select_video_tab();
+        // await this.click_sort();
+        // await this.scrollScreen(500, 400, 500, 1700);
+        // await  this.Select_vid1();
+        // await this.Select_vid2();
 
-        // await this.Click_done();
+        await this.Click_done();
         // await browser.pause(5000);
-        // await this.click_edit();
+        await browser.pause(3000);
+        await this.click_edit();
         await this.Advance_edit(expected_text);
-        // await this.Click_wizard_popup();
-        // // await browser.pause(5000);
-        // await this.Click_full_editor();
-        // await this.play_video();
+        await this.Click_wizard_popup();
+        await browser.pause(5000);
+        await this.Click_full_editor();
+        await this.play_video();
 
-        // await this.Click_mute_all();
-        // await this.play_video();
+        await this.Click_mute_all();
+        await this.play_video();
 
-        // await this.Adv_add_img();
-        // await this.select_img_tab();
-        // await this.select_img10();
+        await this.Adv_add_img();
+        await this.select_img_tab();
+        await this.select_img10();
         await this.Click_done();
 
-        // await this.Adv_add_img();
-        // await this.select_video_tab();
-        // await this.click_sort();
-        // Sliders.scrollScreen(500, 400, 500, 1700);
-        // await this.Select_vid7();
-        // await this.Click_done();
+        await this.Adv_add_img();
+        await this.select_video_tab();
+        await this.click_sort();
+        Sliders.scrollScreen(500, 400, 500, 1700);
+        await this.Select_vid7();
+        await this.Click_done();
+        await  browser.pause(5000);
+
         // await this.waitForUploadToComplete();
 
-        // await this.Adv_add_img();
-        // await this.select_img_tab();
-        // await this.select_img11();
-        // await this.select_video_tab();
-        // await this.click_sort();
-        // Sliders.scrollScreen(500, 400, 500, 1700);
-        // await this.Select_vid8();
-        // await this.Click_done();
+        await this.Adv_add_img();
+        await this.select_img_tab();
+        await this.select_img11();
+        await this.select_video_tab();
+        await this.click_sort();
+        Sliders.scrollScreen(500, 400, 500, 1700);
+        await this.Select_vid8();
+        await this.Click_done();
         // await this.waitForUploadToComplete();
 
-        // await this.Timeline_slider(0, 1080, 1630);
-        // await browser.pause(2000);
-        // await Sliders.Single_slide(950, 100, 1630);
-
-
+        await this.Timeline_slider(0, 1080, 1630);
+        await browser.pause(2000);
+        await Sliders.Single_slide(950, 100, 1630);
 
         //== This slides the timeline in Advance editor==
-        // await Sliders.scrollScreen(534, 1635, 50, 1635);
+        await Sliders.scrollScreen(534, 1635, 50, 1635);
         
-        // await this.zoomin  
-        // (
-        //     500, 1630, // Stary X1, Y1
-        //     600, 1630, // Start X2, Y2
-        //     100, 1630, // End X1, Y1
-        //     900, 1630 // End X2, Y2
+        await this.zoomin  
+        (
+            500, 1630, // Stary X1, Y1
+            600, 1630, // Start X2, Y2
+            100, 1630, // End X1, Y1
+            900, 1630 // End X2, Y2
         
-        // );
-        // await Sliders.zoomout
-        // (
-        //     50, 1630,  // Start X1, y1
-        //     940, 1630, // Start X2, Y2
-        //     400, 1630, // End X1, Y1
-        //     580, 1630 // End X2, Y2
-        // );
-        // await this.Click_Edit_Audio();
-        // await this.Verify_Audio_Bar();
-        // // Need to add record audio below
-        // await this.Click_record_audio();
-        // await this.Click_start_record();
-        // await this.Click_done_record();
-        // await this.Confirm_voice_record();
+        );
+        await Sliders.zoomout
+        (
+            50, 1630,  // Start X1, y1
+            940, 1630, // Start X2, Y2
+            400, 1630, // End X1, Y1
+            580, 1630 // End X2, Y2
+        );
 
-        // await this.Click_record_audio();
-        // await this.Click_start_record();
-        // await this.Cliick_close_resolution_or_record()
-        // Sliders.scrollScreen(33, 1833, 900, 1833);
-        // await this.Main_return_button();
+        await this.Click_Edit_Audio();
+        await this.Verify_Audio_Bar();
+        // Need to add record audio below
+        await this.Click_record_audio();
+        await this.Click_start_record();
+        await this.Click_done_record();
+        await this.Confirm_voice_record();
 
-        // await this.Click_close_editing();
-        // await this.Open_draft();
-        // await this.Click_maximize_minimize();
-        // await this.play_video();
-        // await this.Click_maximize_minimize();
-        // await this.play_video();
+        await this.Click_record_audio();
+        await this.Click_start_record();
+        await this.Cliick_close_resolution_or_record()
+        Sliders.scrollScreen(33, 1833, 900, 1833);
+        await this.Main_return_button();
 
-        // await this.Undo_changes();
+        await this.Click_close_editing();
+        await this.Open_draft();
+        await this.Click_maximize_minimize();
+        await this.play_video();
+        await this.Click_maximize_minimize();
+        await this.play_video();
+
+        await this.Undo_changes();
         await browser.pause(1000);
-        await this.Redo_changes(); // Its not working
-
-
-
-
-        // await browser.pause(2000)
-        // await this.Cliick_close_resolution_or_record();
-
-        // await this.Main_return_button();
-
-        // add change audio fromm all three tabs
-        // Maximize and minimize screen
-        // Undo and redo
-
-
-
-
-
-
+        await this.Redo_changes(); 
         
         // await this.click_resolution();
         // await this.close_resolution_or_record();

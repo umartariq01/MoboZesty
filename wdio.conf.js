@@ -61,9 +61,10 @@ export const config = {
             'appium:automationName': 'UiAutomator2',
             'appium:noReset': true,
             'appium:fullReset': false,
-            'appium:autoLaunch': true ,
+            'appium:autoLaunch': false ,
             'appium:autoGrantPermissions': true,
-            'appium:ignoreHiddenApiPolicyError': true
+            'appium:ignoreHiddenApiPolicyError': true,
+            'appium:dontStopAppOnReset': true
     }],
 
 

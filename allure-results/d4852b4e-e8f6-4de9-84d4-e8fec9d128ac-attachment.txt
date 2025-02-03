@@ -1,0 +1,4 @@
+{
+  "using": "-android uiautomator",
+  "value": "new UiSelector().resourceId(\"00000000-0000-28e3-ffff-ffff00000521\")"
+}

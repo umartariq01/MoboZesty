@@ -1,4 +1,4 @@
-import Bokeh_effect from '../pageobjects/Bokeh.page.js' ;
+import Verify_Bokeh_templet from '../pageobjects/Bokeh.page.js' ;
 
 describe('Bokeh', () => {
 
@@ -7,7 +7,7 @@ describe('Bokeh', () => {
 
         const expected_text = "Processing" ;
 
-        await Bokeh_effect.Run_Bokeh(expected_text);
+        await Verify_Bokeh_templet.Run_Bokeh_temp(expected_text);
         
 
     })

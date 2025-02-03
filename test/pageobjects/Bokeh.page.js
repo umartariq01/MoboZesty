@@ -2,7 +2,7 @@ import { $, browser } from '@wdio/globals' ;
 import Sliders from '../pageobjects/sliders.page.js';
 import assert from 'assert';
 
-class Bokeh_effect
+class Verify_Bokeh_templet
 {
 
     get preiumCloseBtn () 
@@ -321,7 +321,7 @@ async processAllEffects() {
 
     //--------- Main Function -----------
 
-    async Run_Bokeh(expected_text)
+    async Run_Bokeh_temp(expected_text)
     {
         await this.Close_Premium();
         await this.Try_Bokeh();
@@ -332,7 +332,7 @@ async processAllEffects() {
         await this.Select_img1();
 
         await this.processAllEffects();
-        await this.longPressCompareButton(); 
+        // await this.longPressCompareButton(); 
 
         await this.Click_done();
         await this.Check_premium(expected_text);
@@ -347,4 +347,4 @@ async processAllEffects() {
 
 }
 
-export default new Bokeh_effect();
+export default new Verify_Bokeh_templet();
