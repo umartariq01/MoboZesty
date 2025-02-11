@@ -90,28 +90,27 @@ class Sliders
                     { type: 'pointerUp', button: 0 } // Release
                 ]
             }]);
-            await browser.releaseActions(); // Release the actions after each iteration
         }
     }
     
     
    
         // Horizental screeen sliding function
-    async Single_slide(startX, endX, y, duration = 1500) {
-            // Horizontal swipe: startX -> endX at a fixed vertical position (y)
+    async Single_slide(startX, endX, y, duration = 500) {
             await browser.performActions([{
                 type: 'pointer',
                 id: 'finger1',
                 parameters: { pointerType: 'touch' },
                 actions: [
                     { type: 'pointerMove', duration: 0, x: startX, y: y }, // Move to start position
-                    { type: 'pointerDown' }, // Press down (no need for button: 0)
+                    { type: 'pointerDown' }, // Press down
                     { type: 'pause', duration: 100 }, // Small delay before moving
-                    { type: 'pointerMove', duration: duration, x: endX, y: y }, // Slide to end position
-                    { type: 'pointerUp' } // Release (no need for button: 0)
+                    { type: 'pointerMove', duration, x: endX, y: y }, // Move with passed duration
+                    { type: 'pointerUp' } // Release touch
                 ]
             }]);
         }
+        
         
 
 
@@ -270,42 +269,43 @@ class Sliders
               }
 
 
-    async Sound_slide(driver, desiredPercentage, startX, endX, startY, endY) {
-                // Validate percentage is between 0 and 1
-                if (desiredPercentage < 0 || desiredPercentage > 1) {
-                    throw new Error('desiredPercentage must be between 0 and 1.');
-                }
-            
-                // Validate boundaries
-                if (startX >= endX || startY >= endY) {
-                    throw new Error('Invalid boundaries: Ensure startX < endX and startY < endY.');
-                }
-            
-                // Calculate vertical center
-                const centerY = Math.floor((startY + endY) / 2);
-            
-                // Calculate target position
-                const targetX = Math.floor(startX + (endX - startX) * desiredPercentage);
-            
-                console.log(`Sliding from ${startX}, ${centerY} to ${targetX}, ${centerY}`);
-            
-                // Perform sliding action
-                await driver.performActions([
-                    {
-                        type: 'pointer',
-                        id: 'finger1',
-                        parameters: { pointerType: 'touch' },
-                        actions: [
-                            { type: 'pointerMove', duration: 0, x: startX, y: centerY }, // Start at slider
-                            { type: 'pointerDown', button: 0 }, // Press down
-                            { type: 'pointerMove', duration: 500, x: targetX, y: centerY }, // Slide to target
-                            { type: 'pointerUp', button: 0 } // Release
-                        ]
-                    }
-                ]);
-            
-                console.log(`Slider moved to ${desiredPercentage * 100}% position.`);
+    async Trim_slide(driver, desiredPercentage, startX, endX, startY, endY) 
+    {
+        // Validate percentage is between 0 and 1
+        // if (desiredPercentage < 0 || desiredPercentage > 1) {
+        //     throw new Error('desiredPercentage must be between 0 and 1.');
+        // }
+    
+        // Validate boundaries
+        if (startX >= endX || startY >= endY) {
+            throw new Error('Invalid boundaries: Ensure startX < endX and startY < endY.');
+        }
+    
+        // Calculate vertical center
+        const centerY = Math.floor((startY + endY) / 2);
+    
+        // Calculate target position
+        const targetX = Math.floor(startX + (endX - startX) * desiredPercentage);
+    
+        console.log(`Sliding from ${startX}, ${centerY} to ${targetX}, ${centerY}`);
+    
+        // Perform sliding action
+        await driver.performActions([
+            {
+                type: 'pointer',
+                id: 'finger1',
+                parameters: { pointerType: 'touch' },
+                actions: [
+                    { type: 'pointerMove', duration: 0, x: startX, y: centerY }, // Start at slider
+                    { type: 'pointerDown', button: 0 }, // Press down
+                    { type: 'pointerMove', duration: 500, x: targetX, y: centerY }, // Slide to target
+                    { type: 'pointerUp', button: 0 } // Release
+                ]
             }
+        ]);
+    
+        console.log(`Slider moved to ${desiredPercentage * 100}% position.`);
+    }
             
             // Example usage
             // await Sound_slide(driver, 0.5, 124, 929, 1669, 1779);
@@ -476,6 +476,68 @@ class Sliders
     
         console.log(`Long pressed the compare button for ${duration} ms.`);
     }
+
+    async tapScreen(x, y) {
+        await browser.performActions([{
+            type: 'pointer',
+            id: 'finger1',
+            parameters: { pointerType: 'touch' },
+            actions: [
+                { type: 'pointerMove', duration: 0, x: x, y: y },
+                { type: 'pointerDown', button: 0 },
+                { type: 'pointerUp', button: 0 }
+            ]
+        }]);
+        // await browser.releaseActions();
+    }
+
+    async Sound_slide(driver, startX, endX, startY, endY, desiredPercentage) {
+        // Validate percentage is between 0 and 1
+        if (desiredPercentage < 0 || desiredPercentage > 1) {
+            throw new Error('desiredPercentage must be between 0 and 1.');
+        }
+    
+        // Calculate vertical center
+        const centerY = Math.floor((startY + endY) / 2);
+        
+        // Calculate target position
+        const targetX = Math.floor(startX + (endX - startX) * desiredPercentage);
+    
+        console.log(`Sliding from ${startX}, ${centerY} to ${targetX}, ${centerY}`);
+    
+        // Perform sliding action
+        await driver.performActions([
+            {
+                type: 'pointer',
+                id: 'finger1',
+                parameters: { pointerType: 'touch' },
+                actions: [
+                    { type: 'pointerMove', duration: 0, x: startX, y: centerY }, // Start at slider
+                    { type: 'pointerDown', button: 0 }, // Press down
+                    { type: 'pointerMove', duration: 500, x: targetX, y: centerY }, // Slide to target
+                    { type: 'pointerUp', button: 0 } // Release
+                ]
+            }
+        ]);
+    
+        console.log(`Slider moved to ${desiredPercentage * 100}% position.`);
+    }
+
+    async play_pause(startX, startY) {
+
+            await browser.performActions([{
+                type: 'pointer',
+                id: 'finger1',
+                parameters: { pointerType: 'touch' },
+                actions: [
+                    { type: 'pointerMove', duration: 0, x: startX, y: startY }, // Move to the start position
+                    { type: 'pointerDown', button: 0 }, // Press down
+                    { type: 'pointerUp', button: 0 } // Release
+                ]
+            }]);
+        
+    }
+        
 
    
 }

@@ -27,6 +27,28 @@ class Common_function
         return $('//android.widget.TextView[@resource-id="com.android.vending:id/0_resource_name_obfuscated"]');
     }
 
+    //=====================================================================
+
+    get preiumCloseBtn () 
+    {
+        return $('//android.widget.ImageButton[@content-desc="Close"]');
+    }
+
+    async Close_Premium()
+    {
+        const isDisplayed = await this.preiumCloseBtn.isDisplayed();
+        if (isDisplayed)
+        {
+            await this.preiumCloseBtn.click();
+        }
+        else
+        {
+            console.log("Premium Screen not Displayed!")
+        }
+    }
+
+    // ========================================================================
+
 
 
     async Advance_edit(expected_text)

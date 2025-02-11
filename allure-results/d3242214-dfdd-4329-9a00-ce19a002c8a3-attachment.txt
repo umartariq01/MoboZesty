@@ -1,0 +1,4 @@
+{
+  "using": "xpath",
+  "value": "(//androidx.cardview.widget.CardView[@resource-id=\"com.myzesty:id/card_view\"])[6]"
+}

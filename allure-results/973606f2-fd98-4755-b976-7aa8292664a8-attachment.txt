@@ -1,0 +1,58 @@
+{
+  "actions": [
+    {
+      "type": "pointer",
+      "id": "finger1",
+      "parameters": {
+        "pointerType": "touch"
+      },
+      "actions": [
+        {
+          "type": "pointerMove",
+          "duration": 0,
+          "x": 50,
+          "y": 1630
+        },
+        {
+          "type": "pointerDown"
+        },
+        {
+          "type": "pointerMove",
+          "duration": 500,
+          "x": 400,
+          "y": 1630
+        },
+        {
+          "type": "pointerUp"
+        }
+      ]
+    },
+    {
+      "type": "pointer",
+      "id": "finger2",
+      "parameters": {
+        "pointerType": "touch"
+      },
+      "actions": [
+        {
+          "type": "pointerMove",
+          "duration": 0,
+          "x": 940,
+          "y": 1630
+        },
+        {
+          "type": "pointerDown"
+        },
+        {
+          "type": "pointerMove",
+          "duration": 500,
+          "x": 580,
+          "y": 1630
+        },
+        {
+          "type": "pointerUp"
+        }
+      ]
+    }
+  ]
+}

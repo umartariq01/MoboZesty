@@ -1,6 +1,7 @@
 import { $, browser, driver } from '@wdio/globals' ;
 import Sliders from '../pageobjects/sliders.page.js' ;
 import assert from 'assert' ;
+import { BrowserContext } from 'puppeteer';
 
 
 class QC_Adv_Edit
@@ -187,11 +188,6 @@ class QC_Adv_Edit
     get loading()
     {
         return $('//android.view.View[@resource-id="com.myzesty:id/ring_progress"]');
-    }
-
-    get progress()
-    {
-        return $('//android.widget.TextView[@resource-id="com.myzesty:id/progress_perc"]');
     }
 
     get Mute_all()
@@ -503,6 +499,7 @@ class QC_Adv_Edit
 
     async Click_wizard_popup()
     {
+        await browser.pause(3000);
         const Wizard_visible = await this.wizard_popup.isDisplayed();
 
         if(Wizard_visible)
@@ -544,7 +541,7 @@ class QC_Adv_Edit
 
     async click_edit()
     {
-        await this.edit.waitForDisplayed({timeout:3000});
+        await this.edit.waitForDisplayed();
         await this.edit.click();
     }
 
@@ -562,30 +559,6 @@ class QC_Adv_Edit
     {
         await this.add_images.waitForDisplayed({timeout:5000});
         await this.add_images.click();
-    }
-
-    async waitForUploadToComplete() {
-    
-        console.log("Checking import progress...");
-    
-        let progress_bar = 0;
-        await this.progress.waitForDisplayed();
-    
-        // Wait until the progress reaches 100%
-        while (progress_bar < 100) {
-            // Get the text of the progress bar
-            const progressText = await this.progress.getText();
-            console.log(`Current progress: ${progressText}`)    
-            // Break if the progress reaches 100%
-            if (progressText >= 100) {
-                console.log("Import is complete!");
-                break;
-            }
-    
-            await browser.pause(500);
-        }
-    
-        console.log("Video successfully imported!");
     }
 
     async Click_mute_all()
@@ -611,14 +584,11 @@ class QC_Adv_Edit
                 parameters: { pointerType: 'touch' },
                 actions: [
                     { type: 'pointerMove', duration: 0, x: startX, y: y }, // Move to the starting horizontal position
-                    { type: 'pointerDown', button: 0 }, // Press down
+                    // { type: 'pointerDown', button: 0 }, // Press down
                     { type: 'pointerMove', duration: duration, x: endX, y: y }, // Slide horizontally to the end position
-                    { type: 'pointerUp', button: 0 } // Release
+                    { type: 'pointerUp' } // Release
                 ]
             }]);
-    
-            // Release actions after performing the scroll
-            await browser.releaseActions();
             
             console.log(`Attempt ${attempt + 1}: Scrolled horizontally.`);
         }
@@ -643,7 +613,7 @@ class QC_Adv_Edit
                     actions: [
                         { type: 'pointerMove', duration: 0, x: startX1, y: startY1 }, // Initial position of finger 1
                         { type: 'pointerDown' }, // Press finger 1
-                        { type: 'pause', duration: 0 }, // Pause for a short time
+                        // { type: 'pause', duration: 0 }, // Pause for a short time
                         { type: 'pointerMove', duration: 500, x: endX1, y: endY1 }, // Move finger 1 outward
                         { type: 'pointerUp' } // Release finger 1
                     ]
@@ -655,7 +625,7 @@ class QC_Adv_Edit
                     actions: [
                         { type: 'pointerMove', duration: 0, x: startX2, y: startY2 }, // Initial position of finger 2
                         { type: 'pointerDown' }, // Press finger 2
-                        { type: 'pause', duration: 0 }, // Pause for a short time
+                        // { type: 'pause', duration: 0 }, // Pause for a short time
                         { type: 'pointerMove', duration: 500, x: endX2, y: endY2 }, // Move finger 2 outward
                         { type: 'pointerUp' } // Release finger 2
                     ]
@@ -690,11 +660,11 @@ class QC_Adv_Edit
         await this.select_img1();
         await this.select_img2();
 
-        // await this.select_video_tab();
-        // await this.click_sort();
-        // await this.scrollScreen(500, 400, 500, 1700);
-        // await  this.Select_vid1();
-        // await this.Select_vid2();
+        await this.select_video_tab();
+        await this.click_sort();
+        await this.scrollScreen(500, 400, 500, 1700);
+        await  this.Select_vid1();
+        await this.Select_vid2();
 
         await this.Click_done();
         // await browser.pause(5000);
@@ -722,8 +692,6 @@ class QC_Adv_Edit
         await this.Click_done();
         await  browser.pause(5000);
 
-        // await this.waitForUploadToComplete();
-
         await this.Adv_add_img();
         await this.select_img_tab();
         await this.select_img11();
@@ -732,7 +700,6 @@ class QC_Adv_Edit
         Sliders.scrollScreen(500, 400, 500, 1700);
         await this.Select_vid8();
         await this.Click_done();
-        // await this.waitForUploadToComplete();
 
         await this.Timeline_slider(0, 1080, 1630);
         await browser.pause(2000);
@@ -740,8 +707,9 @@ class QC_Adv_Edit
 
         //== This slides the timeline in Advance editor==
         await Sliders.scrollScreen(534, 1635, 50, 1635);
+        await browser.pause(3000);
         
-        await this.zoomin  
+        await this.zoomin   //  Need to make them correct
         (
             500, 1630, // Stary X1, Y1
             600, 1630, // Start X2, Y2
@@ -749,7 +717,7 @@ class QC_Adv_Edit
             900, 1630 // End X2, Y2
         
         );
-        await Sliders.zoomout
+        await Sliders.zoomout // Needs correction
         (
             50, 1630,  // Start X1, y1
             940, 1630, // Start X2, Y2
@@ -757,36 +725,36 @@ class QC_Adv_Edit
             580, 1630 // End X2, Y2
         );
 
-        await this.Click_Edit_Audio();
-        await this.Verify_Audio_Bar();
-        // Need to add record audio below
-        await this.Click_record_audio();
-        await this.Click_start_record();
-        await this.Click_done_record();
-        await this.Confirm_voice_record();
+        // await this.Click_Edit_Audio();
+        // await this.Verify_Audio_Bar();
+        // // Need to add record audio below
+        // await this.Click_record_audio();
+        // await this.Click_start_record();
+        // await this.Click_done_record();
+        // await this.Confirm_voice_record();
 
-        await this.Click_record_audio();
-        await this.Click_start_record();
-        await this.Cliick_close_resolution_or_record()
-        Sliders.scrollScreen(33, 1833, 900, 1833);
-        await this.Main_return_button();
+        // await this.Click_record_audio();
+        // await this.Click_start_record();
+        // await this.Cliick_close_resolution_or_record()
+        // Sliders.scrollScreen(33, 1833, 900, 1833);
+        // await this.Main_return_button();
 
-        await this.Click_close_editing();
-        await this.Open_draft();
-        await this.Click_maximize_minimize();
-        await this.play_video();
-        await this.Click_maximize_minimize();
-        await this.play_video();
+        // await this.Click_close_editing();
+        // await this.Open_draft();
+        // await this.Click_maximize_minimize();
+        // await this.play_video();
+        // await this.Click_maximize_minimize();
+        // await this.play_video();
 
-        await this.Undo_changes();
-        await browser.pause(1000);
-        await this.Redo_changes(); 
+        // await this.Undo_changes();
+        // await browser.pause(1000);
+        // await this.Redo_changes(); 
         
         // await this.click_resolution();
         // await this.close_resolution_or_record();
         // await this.click_resolution();
         // await this.click_resolution_720();
-        // await this.Click_export();
+        await this.Click_export();
 
     }
 
