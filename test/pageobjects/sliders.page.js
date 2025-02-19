@@ -77,7 +77,7 @@ class Sliders
     //         await browser.releaseActions();
     //     }
 
-    async scrollScreen(startX, startY, endX, endY, repetitions=1, duration = 500) {
+    async scrollScreen(startX, startY, endX, endY, repetitions=1, duration = 1000) {
         for (let i = 0; i < repetitions; i++) { // Loop based on the repetitions parameter
             await browser.performActions([{
                 type: 'pointer',
@@ -472,7 +472,6 @@ class Sliders
                 ]
             }
         ]);
-        await browser.releaseActions();
     
         console.log(`Long pressed the compare button for ${duration} ms.`);
     }
@@ -531,7 +530,7 @@ class Sliders
                 parameters: { pointerType: 'touch' },
                 actions: [
                     { type: 'pointerMove', duration: 0, x: startX, y: startY }, // Move to the start position
-                    { type: 'pointerDown', button: 0 }, // Press down
+                    { type: 'pointerDown', button: 0, duration:100 }, // Press down
                     { type: 'pointerUp', button: 0 } // Release
                 ]
             }]);

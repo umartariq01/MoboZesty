@@ -2,7 +2,7 @@ import { $ } from '@wdio/globals' ;
 import { remote } from 'webdriverio';
 import assert from 'assert';
 import CheckLoginPage from '../pageobjects/checklogin.page.js';
-import { constants } from 'buffer';
+import { faker } from '@faker-js/faker';
 
 class Settings
 {
@@ -50,7 +50,7 @@ class Settings
 
     get back_btn()
     {
-        return $('//android.widget.ImageButton[@content-desc="Navigate up"]');
+        return $('//android.widget.TextView[@text=""]');
     }
 
     // ==============Privacy Tab===========
@@ -99,6 +99,16 @@ class Settings
         return $('//android.widget.TextView[@text="Your account will be deactivated for 30 days, and during this time it will not be accessible to the public. To reactivate your account, simply log in at any time within the 30-day period. If you don’t reactivate your account, it will be permanently deleted along with all of your posts and information."]');
     }
 
+    get Info_text()
+    {
+        return $('//android.widget.TextView[@content-desc="profile-update-success-message-text"]');
+    }
+
+    get success_ok_btn()
+    {
+        return $('//android.widget.Button[@content-desc="profile-update-success-message-ok-button"]')
+    }
+
 
     //========= Function to Perfom Actions =========
 
@@ -143,6 +153,19 @@ class Settings
     {
         await this.save_btn.click();
     }
+
+    async Info_Updated(expected_updated_text)
+    {
+        await this.Info_text.waitForDisplayed();
+        const actual_update_text = await this.Info_text.getText();
+        assert.strictEqual(actual_update_text, expected_updated_text, "Information Updated assertion Failed.");
+    }
+
+    async Info_Update_Btn()
+    {
+        await this.success_ok_btn.click();
+    }
+
 
     async Go_Back()
     {
@@ -216,18 +239,19 @@ class Settings
 
     //=========  Main Function =========
 
-    async Edit_profile_run(New_name, Mbl_No, Location_area, Bio_data)
+    async Edit_profile_run(New_name, Mbl_No, Location_area, Bio_data, expected_updated_text)
     {
         CheckLoginPage.login();
         await this.Profile_Tab();
         await this.click_setting();
         await this.Edit_profile_btn();
-        await  this.Edit_name(New_name);
+        await this.Edit_name(New_name);
         await this.Phone_No(Mbl_No);
-        await  this.Enter_Location(Location_area);
+        await this.Enter_Location(Location_area);
         await this.Enter_Bio(Bio_data);
         await this.click_save_btn();
-        await this.Go_Back();
+        await this.Info_Updated(expected_updated_text)
+        await this.Info_Update_Btn();
         await this.Go_Back();
 
     }

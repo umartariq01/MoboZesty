@@ -89,11 +89,70 @@ class Common_function
     }
 
     async verify_processing(expected_text)
-        {
-            await this.processing_text.waitForDisplayed({timeout:5000});
-            const actual_text = await this.processing_text.getText();
-            assert.strictEqual(actual_text, expected_text, "Subscription Processing text not asserted!")
+    {
+        await this.processing_text.waitForDisplayed({timeout:5000});
+        const actual_text = await this.processing_text.getText();
+        assert.strictEqual(actual_text, expected_text, "Subscription Processing text not asserted!")
+    }
+
+    async Check_Upload_progress() {
+        console.log("Checking upload progress...");
+    
+        let progress = 0;
+    
+        // Wait until the progress reaches 100% or matches the target text
+        while (progress < 100) {
+            // Locate the element dynamically using a partial match
+            const progress_element = await $("//android.widget.TextView[contains(@text, 'Uploading Media')]");
+            const progressText = await progress_element.getText();
+            console.log(`Progress text: ${progressText}`);
+    
+            // Check if progress text matches the expected completion text
+            if (progressText.trim() >= "Uploading Media  (95%)...") {
+                console.log("Upload is about to complete!");
+                break;
+            }
+    
+            // Parse the progress percentage from the text (if applicable)
+            const match = progressText.match(/(\d+)%/);
+            if (match) {
+                progress = parseInt(match[1], 10);
+                console.log(`Current progress: ${progress}%`);
+            }
+    
+            await browser.pause(1000);
         }
+    
+        console.log("Media uploaded successfully.");
+    }
+
+    async play_pause(selector) 
+    {
+        try {
+            const element = await $(selector); // Locate the element
+            const location = await element.getLocation(); // Get element coordinates
+    
+            await driver.performActions([
+                {
+                    type: "pointer",
+                    id: "finger1",
+                    parameters: { pointerType: "touch" },
+                    actions: [
+                        { type: "pointerMove", duration: 0, x: location.x, y: location.y },
+                        { type: "pointerDown", button: 0 },
+                        { type: "pause", duration: 100 },
+                        { type: "pointerUp", button: 0 }
+                    ]
+                }
+            ]);
+    
+            console.log("Tapped on the element successfully");
+        } catch (error) {
+            console.error("Error while tapping the element:", error);
+        }
+    }
+    
+    
 }
 
 export default new Common_function();

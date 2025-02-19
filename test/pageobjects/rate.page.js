@@ -96,10 +96,7 @@ class Ratezesty
         await this.Verify_1(expected_text_1);
         await this.Verify_2(expected_text_2);
         await this.Popup_Close();
-        
-        
     }
-
     
 }
 

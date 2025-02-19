@@ -1,7 +1,7 @@
 import { $, browser, driver } from '@wdio/globals' ;
 import Common_function from '../pageobjects/commonfun.page.js';
 import Sliders from '../pageobjects/sliders.page.js';
-import { readSync } from 'fs';
+
 
 
 class Slideshow
@@ -185,7 +185,7 @@ class Slideshow
 
 
     async Music_tab_Click() 
-        {
+    {
     
             const maxRetries = 3; // Maximum number of retry attempts
             let attempt = 0;
@@ -252,7 +252,7 @@ class Slideshow
             if (!downloadComplete) {
                 throw new Error("Failed to download the song after multiple attempts.");
             }
-        }
+    }
     // ...................................................................
 
     get audio_trim()
@@ -358,17 +358,18 @@ class Slideshow
         await this.Select_Videos();
         await this.Click_Done();
         await browser.pause(3000);
-
         await Sliders.play_pause(539, 1422);
+
+        // await Sliders.play_pause(539, 1422);
         await Sliders.Drag_Drop(driver, 798, 1743, 307, 1743);
         await this.Click_Dlt_Media();
         await this.Click_Add_Media();
         await this.select_img_tab();
         await this.Add_Images();
         await this.Click_Done();
+        await browser.pause(3000);
 
         await Sliders.play_pause(539, 1422);
-        // await this.Click_Play_Pause();
         await this.Click_Dlt_Music();
         await this.Click_Add_Music();
         await this.Music_tab_Click()
@@ -378,6 +379,7 @@ class Slideshow
         await this.Click_Audio_Trim();
         await this.Click_Apply_Trim();
         await this.Click_Audio_Trim();
+        
         Sliders.Trim_slide(driver, 8, 154, 195, 1738, 1906);
         await this.Click_Apply_Trim();
 
@@ -387,21 +389,7 @@ class Slideshow
         await this.Click_Audio();
         Sliders.Sound_slide(driver, 124, 929, 1669, 1779, 0.6)
         await this.Click_Apply_Trim();
-
-        // await this.Click_export();
-
-
-
-
-
-
-
-
-
-
-
-
-
+        await this.Click_export();
 
     }
 

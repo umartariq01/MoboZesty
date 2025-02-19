@@ -1,6 +1,6 @@
-import { remote } from 'webdriverio';
 import assert from 'assert';
 import { $ } from '@wdio/globals' ;
+import CheckLoginPage from '../pageobjects/checklogin.page.js';
 
 class ForgetPassword{
 
@@ -133,6 +133,7 @@ class ForgetPassword{
     {
         try 
         {
+            await CheckLoginPage.Run_logout();
             await this.Close_Premium();
             await this.Profile_Tab();
             await this.Login_Tab();

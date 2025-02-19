@@ -1,0 +1,4 @@
+{
+  "using": "xpath",
+  "value": "//android.widget.TextView[@text=\"Your collection has been uploaded! Refresh the page to view it.\"]"
+}

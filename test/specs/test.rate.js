@@ -1,5 +1,4 @@
-// import Ratezesty from '../pageobjects/ratemyzesty.js';
-import Ratezesty from  "../pageobjects/rate.page"
+import Ratezesty from '../pageobjects/rate.page.js';
 
 describe('Rate My Application', () => {
 
@@ -9,7 +8,7 @@ describe('Rate My Application', () => {
         const expected_text_1 = "Enjoying MyZesty?"; 
         const expected_text_2 = "Rate Us";
 
-        Ratezesty.Rate_Application(expected_text_1, expected_text_2);
+        await Ratezesty.Rate_Application(expected_text_1, expected_text_2);
         
     })
 });

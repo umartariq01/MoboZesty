@@ -1,16 +1,12 @@
 import { $, browser } from '@wdio/globals' ;
 import { remote } from 'webdriverio';
 import assert from 'assert';
+import Common_function from '../pageobjects/commonfun.page.js';
 
 
 class CheckLoginPage {
 
     // Get Function calling to return element
-
-    get preiumCloseBtn () 
-    {
-        return $('//android.widget.ImageButton[@content-desc="Close"]');
-    }
 
     get profiletab()
     {
@@ -52,10 +48,6 @@ class CheckLoginPage {
         return $('//android.widget.TextView[@text="Create an Account"]');
     }
     // Calling Function to perform actions
-    async ClosePremiumScreen() 
-    {
-        await this.preiumCloseBtn.click();
-    }
 
     async Profile_Tab()
     {
@@ -108,16 +100,10 @@ class CheckLoginPage {
         await this.Login_Button();
     }
 
-    async Logout_Myzesty(username, password)
+    async Logout_Myzesty()
     {
         await this.click_setting();
         await this.click_logout();
-        await this.ClosePremiumScreen();
-        await this.Profile_Tab();
-        await this.Login_Tab();
-        await this.Enter_Email(username);
-        await this.Enter_Password(password);
-        await this.Login_Button();
     }
 
     async loginToMyZesty(username, password) 
@@ -133,16 +119,34 @@ class CheckLoginPage {
             // await this.Logout_Myzesty(expected_text_1, expected_text_2, username, password);
         }
     }
+
+    async Logout_of_MyZesty()
+    {
+        if(await this.settiing.isDisplayed())
+        {
+            await this.Logout_Myzesty();
+        }
+        else
+        {
+            console.log("Already logged Out.")
+        }
+    }
    
 
     async login (username, password ) 
     {
-        await this.ClosePremiumScreen();
+        await Common_function.Close_Premium();
         await this.Profile_Tab();
         await this.loginToMyZesty(username, password);
         // await this.Login_Button();
+    }
 
-       
+    async Run_logout()
+    {
+        await Common_function.Close_Premium();
+        await this.Profile_Tab();
+        await this.Logout_of_MyZesty();
+
     }
 
 }

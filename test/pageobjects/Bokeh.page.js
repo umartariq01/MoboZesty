@@ -1,14 +1,10 @@
 import { $, browser } from '@wdio/globals' ;
 import Sliders from '../pageobjects/sliders.page.js';
 import assert from 'assert';
+import Subscription from '../pageobjects/BuyPremium.page.js';
 
 class Verify_Bokeh_templet
 {
-
-    get preiumCloseBtn () 
-    {
-        return $('//android.widget.ImageButton[@content-desc="Close"]');
-    }
     
     get bokeh()
     {
@@ -184,19 +180,6 @@ async processAllEffects() {
 }
 //=============================================================================================================================
 
-    async Close_Premium()
-    {
-        const isDisplayed = await this.preiumCloseBtn.isDisplayed();
-        if (isDisplayed)
-        {
-            await this.preiumCloseBtn.click();
-        }
-        else
-        {
-            console.log("Premium Screen not Displayed!")
-        }
-    }
-
     async Try_Bokeh()
     {
         await this.bokeh.click();
@@ -323,7 +306,7 @@ async processAllEffects() {
 
     async Run_Bokeh_temp(expected_text)
     {
-        await this.Close_Premium();
+        await Subscription.Check_Subscription('Processing');
         await this.Try_Bokeh();
         await this.Select_img1();
         await this.Click_cancell_editing();

@@ -1,45 +1,45 @@
 {
   
   "type": "module",
-  
   "name": "mobozesty",
   
   "scripts": {
-  
-    
   "wido": "wdio run ./wdio.conf.js",
-  "login": "wdio run ./wdio.conf.js --spec test.signin.js",  
-  "signup": "wdio run ./wdio.conf.js --spec test.signup.js",   
-  "forgetpassword": "wdio run ./wdio.conf.js --spec test.forgetpassword.js",  
-  "rate": "wdio run ./wdio.conf.js --spec test.rate.js", 
-  "share": "wdio run ./wdio.conf.js --spec test.sharemedia.js",  
+  "login": "wdio run ./wdio.conf.js --spec test.signin.js", 
+  "signup": "wdio run ./wdio.conf.js --spec test.signup.js",
+  "forgetpassword": "wdio run ./wdio.conf.js --spec test.forgetpassword.js",
+  "rate": "wdio run ./wdio.conf.js --spec test.rate.js",
+  "share": "wdio run ./wdio.conf.js --spec test.sharemedia.js",
   "profile": "wdio run ./wdio.conf.js --spec test.profile.js",
   "setting": "wdio run ./wdio.conf.js --spec test.setting.js",
-  "browse": "wdio run ./wdio.conf.js --spec test.browse.js",
+  "browse": "wdio run ./wdio.conf.js --spec test.browse.js", 
   "checklogin": "wdio run ./wdio.conf.js --spec test.checklogin.js",
-  "scroll": "wdio run ./wdio.conf.js --spec test.scroll.js", 
+  "scroll": "wdio run ./wdio.conf.js --spec test.scroll.js",
   "landingscreen": "wdio run ./wdio.conf.js --spec test.landingpage.js",
   "aboutus": "wdio run ./wdio.conf.js --spec test.about.js",
   "qcimg": "wdio run ./wdio.conf.js --spec test.qcimgrun.js", 
   "qcvideo": "wdio run ./wdio.conf.js --spec test.qcvidrun.js", 
-  "qcmain": "wdio run ./wdio.conf.js --spec test.qcmain.js", 
-  "qcedit": "wdio run ./wdio.conf.js --spec test.qcedit.js",  
-  "qcadv": "wdio run ./wdio.conf.js --spec test.qcadv.js",  
-  "test1": "wdio run ./wdio.conf.js --spec test.QCtest1.js",  
-  "test2": "wdio run ./wdio.conf.js --spec test.QCtest2.js",  
+  "qcmain": "wdio run ./wdio.conf.js --spec test.qcmain.js",
+  "qcedit": "wdio run ./wdio.conf.js --spec test.qcedit.js", 
+  "qcadv": "wdio run ./wdio.conf.js --spec test.qcadv.js",
+  "test1": "wdio run ./wdio.conf.js --spec test.QCtest1.js",
+  "test2": "wdio run ./wdio.conf.js --spec test.QCtest2.js", 
   "test3": "wdio run ./wdio.conf.js --spec test.QCtest3.js", 
-  "test4": "wdio run ./wdio.conf.js --spec test.QCtest4.js",
-  "test5": "wdio run ./wdio.conf.js --spec test.QCtest5.js",
+  "test4": "wdio run ./wdio.conf.js --spec test.QCtest4.js", 
+  "test5": "wdio run ./wdio.conf.js --spec test.QCtest5.js", 
   "test6": "wdio run ./wdio.conf.js --spec test.QCtest6.js",
-  "dehazer": "wdio run ./wdio.conf.js --spec test.dehazer.js",
-  "bokeh": "wdio run ./wdio.conf.js --spec test.bokeh.js",
-  "bokehtemp": "wdio run ./wdio.conf.js --spec test.bokehtemp.js",
-  "removebg": "wdio run ./wdio.conf.js --spec test.removebg.js",
+  "dehazer": "wdio run ./wdio.conf.js --spec test.dehazer.js", 
+  "bokeh": "wdio run ./wdio.conf.js --spec test.bokeh.js",  
+  "bokehtemp": "wdio run ./wdio.conf.js --spec test.bokehtemp.js",  
+  "removebg": "wdio run ./wdio.conf.js --spec test.removebg.js", 
   "slideshow": "wdio run ./wdio.conf.js --spec test.slideshow.js"
   
   },
   
   "devDependencies": {
+  
+    
+  "@faker-js/faker": "^9.5.0",
   
     
   "@wdio/allure-reporter": "^9.2.2",
@@ -48,7 +48,7 @@
   "@wdio/appium-service": "^9.4.1",
   
     
-  "@wdio/cli": "^9.4.1",
+  "@wdio/cli": "^8.42.0",
   
     
   "@wdio/local-runner": "^9.2.12",
@@ -63,7 +63,7 @@
   "@wdio/visual-service": "^6.2.2",
   
     
-  "appium": "^1.22.3",
+  "appium": "^2.15.0",
   
     
   "appium-uiautomator2-driver": "^2.2.0"

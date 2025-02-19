@@ -1,6 +1,7 @@
 import { $, browser } from '@wdio/globals' ;
 import CheckLoginPage from '../pageobjects/checklogin.page.js';
 import assert from 'assert';
+import Common_function from '../pageobjects/commonfun.page.js';
 // const newlogin = new LoginPage();
 class Share
 {
@@ -62,7 +63,7 @@ class Share
 
     get upload_text()
     {
-        return $('//android.widget.TextView[@text="Your collection has been uploaded! Refresh the page to view it."]');
+        return $('//android.widget.TextView[@text="Uploading completed successfully"]');
     }
 
     //====================== Function to perform actions ==========================
@@ -94,12 +95,14 @@ class Share
 
     async collection_name(text1)
     {
-        await this.collect_name.sendKeys(text1);
+        await this.collect_name.setValue(text1);
+        // await this.collect_name.sendKeys(text1);
     }
 
     async collection_desc(text2)
     {
-        await this.collect_desc.sendKeys(text2);
+        await this.collect_desc.setValue(text2);
+        // await this.collect_desc.sendKeys(text2);
     }
 
     async add_more_image()
@@ -124,7 +127,7 @@ class Share
 
     async upload_confirm(expected_text)
     {
-        await this.upload_text.waitForDisplayed({timeout:4000});
+        await this.upload_text.waitForDisplayed();
         const actual_text = await this.upload_text.getText();
         assert.strictEqual(actual_text, expected_text, "Upload colloection text not verified!")
 
@@ -133,7 +136,7 @@ class Share
     async sharemedia(text1, text2, expected_text)
     {
         
-        await CheckLoginPage.login();
+        await CheckLoginPage.login("umart4767@gmail.com", "Myzesty123")
         await this.click_share_tab();
         await this.close_tab();
         await this.click_share_tab();
@@ -148,6 +151,7 @@ class Share
         await this.click_media_3();
         await this.Done_Btn();
         await this.post_btn_click();
+        await Common_function.Check_Upload_progress();
         await this.upload_confirm(expected_text);
 
     }

@@ -1,11 +1,9 @@
 import { $ } from '@wdio/globals' ;
 import assert from 'assert' ;
+import Common_function from '../pageobjects/commonfun.page.js';
 
 class SignupPage{
 
-    get preiumCloseBtn () {
-        return $('//android.widget.ImageButton[@content-desc="Close"]');
-    }
 
     get profiletab()
     {
@@ -151,20 +149,6 @@ class SignupPage{
         assert.strictEqual(actual_error, expected_error, "Please enter a valid name Error not verified!")
     }
 
-    async Close_Premium()
-    {
-        await this.preiumCloseBtn.waitForDisplayed({timeout:5000});
-        const isDisplayed = await this.preiumCloseBtn.isDisplayed();
-        if (isDisplayed)
-        {
-            await this.preiumCloseBtn.click();
-        }
-        else
-        {
-            console.log("Premium Screen not Displayed!")
-        }
-    }
-
     async Profile_Tab()
     {
         await this.profiletab.click();
@@ -298,17 +282,22 @@ class SignupPage{
         await this.logout.click();
     }
 
-    async check_validation(expected_error,invalid_username,expected_error_1,name,invalid_email,expected_error_2)
+    async check_validation(
+        name, email, password, confirm_password, expected_text_1,
+        expected_text_2, expected_policy_1, expected_policy_2,
+        expected_policy_3, expected_policy_4, expected_policy_5,
+        expected_policy_6, expected_policy_7, expected_error,
+        expected_error_1, invalid_username, invalid_email, expected_error_2
+    )
     {
         await this.SignUp_btn();
         // Checking validation when fields are empty
         await this.Name_Error(expected_error)
         await this.Click_error_Ok();
         // Checking validation when Name is short
-        // console.log("===================Check Validation>>", invalid_username)
         await this.EnterInvalidName(invalid_username);
         await this.SignUp_btn();
-        // await this.Short_name_alert(expected_error_1);
+        await this.Short_name_alert(expected_error_1);
         await this.Click_error_Ok();
         // Checking validation by entering invalid email
         await this.EnterName(name);
@@ -318,21 +307,30 @@ class SignupPage{
         await this.Click_error_Ok();
     }
 
-    async Logout_Myzesty(name, email, password, confirmpassword, expected_text_1, 
-        expected_text_2 ,expected_policy_1, expected_policy_2,expected_policy_3, 
-        expected_policy_4, expected_policy_5, expected_policy_6, expected_policy_7, 
-        expected_error, invalid_username, expected_error_1, invalid_email, expected_error_2)
+    async Logout_Myzesty(
+        name, email, password, confirm_password, expected_text_1,
+        expected_text_2, expected_policy_1, expected_policy_2,
+        expected_policy_3, expected_policy_4, expected_policy_5,
+        expected_policy_6, expected_policy_7, expected_error,
+        expected_error_1, invalid_username, invalid_email, expected_error_2
+    )
     {
         await this.click_setting();
         await this.click_logout();
-        await this.Close_Premium();
+        await Common_function.Close_Premium();
         await this.Profile_Tab();
         await this.SignUp();
-        await this.check_validation(expected_error, invalid_username, expected_error_1, name, invalid_email, expected_error_2);
+        await this.check_validation(
+            name, email, password, confirm_password, expected_text_1,
+            expected_text_2, expected_policy_1, expected_policy_2,
+            expected_policy_3, expected_policy_4, expected_policy_5,
+            expected_policy_6, expected_policy_7, expected_error,
+            expected_error_1, invalid_username, invalid_email, expected_error_2
+        );
         await this.EnterName(name);
         await this.Enter_Email(email);
         await this.Enter_Password(password);
-        await this.Confirm_Password(confirmpassword);
+        await this.Confirm_Password(confirm_password);
         await this.Text_1(expected_text_1);
         await this.Text_2(expected_text_2);
         await this.Term_1(expected_policy_1);
@@ -345,17 +343,26 @@ class SignupPage{
         await this.SignUp_btn();
     }
 
-    async Signup_Account(name, email, password, confirmpassword,  expected_text_1, 
-        expected_text_2 ,expected_policy_1, expected_policy_2,expected_policy_3, 
-        expected_policy_4, expected_policy_5, expected_policy_6, expected_policy_7, 
-        expected_error, invalid_username, expected_error_1, invalid_email, expected_error_2)
+    async Signup_Account(
+        name, email, password, confirm_password, expected_text_1,
+        expected_text_2, expected_policy_1, expected_policy_2,
+        expected_policy_3, expected_policy_4, expected_policy_5,
+        expected_policy_6, expected_policy_7, expected_error,
+        expected_error_1, invalid_username, invalid_email, expected_error_2
+    )
     {
         await this.SignUp();
-        await this.check_validation(expected_error, invalid_username, expected_error_1, name, invalid_email, expected_error_2);
+        await this.check_validation(
+            name, email, password, confirm_password, expected_text_1,
+            expected_text_2, expected_policy_1, expected_policy_2,
+            expected_policy_3, expected_policy_4, expected_policy_5,
+            expected_policy_6, expected_policy_7, expected_error,
+            expected_error_1, invalid_username, invalid_email, expected_error_2
+        );
         await this.EnterName(name);
         await this.Enter_Email(email);
         await this.Enter_Password(password);
-        await this.Confirm_Password(confirmpassword);
+        await this.Confirm_Password(confirm_password);
         await this.Text_1(expected_text_1);
         await this.Text_2(expected_text_2);
         await this.Term_1(expected_policy_1);
@@ -368,41 +375,56 @@ class SignupPage{
         await this.SignUp_btn();
     }
 
-    async signupToMyZesty(name, email, password, confirmpassword, expected_text_1, 
-        expected_text_2 ,expected_policy_1, expected_policy_2,expected_policy_3, 
-        expected_policy_4, expected_policy_5, expected_policy_6, expected_policy_7, 
-        expected_error, invalid_username, expected_error_1, invalid_email, expected_error_2) 
+    async signupToMyZesty(
+            name, email, password, confirm_password, expected_text_1,
+            expected_text_2, expected_policy_1, expected_policy_2,
+            expected_policy_3, expected_policy_4, expected_policy_5,
+            expected_policy_6, expected_policy_7, expected_error,
+            expected_error_1, invalid_username, invalid_email, expected_error_2
+    ) 
     {
         if(await this.create_account.isDisplayed())
         {
-            await this.Signup_Account(name, email, password, confirmpassword,expected_text_1, 
-                expected_text_2 ,expected_policy_1, expected_policy_2,expected_policy_3, 
-                expected_policy_4, expected_policy_5, expected_policy_6, expected_policy_7, 
-                expected_error, invalid_username, expected_error_1, invalid_email, expected_error_2);
+            await this.Signup_Account(
+                name, email, password, confirm_password, expected_text_1,
+                expected_text_2, expected_policy_1, expected_policy_2,
+                expected_policy_3, expected_policy_4, expected_policy_5,
+                expected_policy_6, expected_policy_7, expected_error,
+                expected_error_1, invalid_username, invalid_email, expected_error_2
+            );
                 
         }
 
         else if (await this.settiing.isDisplayed())
         {
-            await this.Logout_Myzesty(name, email, password, confirmpassword,expected_text_1, 
-                expected_text_2 ,expected_policy_1, expected_policy_2,expected_policy_3, 
-                expected_policy_4, expected_policy_5, expected_policy_6, expected_policy_7, 
-                expected_error, invalid_username, expected_error_1, invalid_email, expected_error_2);
+            await this.Logout_Myzesty(
+                name, email, password, confirm_password, expected_text_1,
+                expected_text_2, expected_policy_1, expected_policy_2,
+                expected_policy_3, expected_policy_4, expected_policy_5,
+                expected_policy_6, expected_policy_7, expected_error,
+                expected_error_1, invalid_username, invalid_email, expected_error_2
+            );
                 
         }
     }
   
-    async signup (name, email, password, confirmpassword, expected_text_1,
-        expected_text_2 ,expected_policy_1, expected_policy_2,expected_policy_3, 
-        expected_policy_4, expected_policy_5, expected_policy_6, expected_policy_7, 
-        expected_error, invalid_username, expected_error_1, invalid_email, expected_error_2) 
+    async signup (
+            name, email, password, confirm_password, expected_text_1,
+            expected_text_2, expected_policy_1, expected_policy_2,
+            expected_policy_3, expected_policy_4, expected_policy_5,
+            expected_policy_6, expected_policy_7, expected_error,
+            expected_error_1, invalid_username, invalid_email, expected_error_2
+    ) 
     {
-        await this.Close_Premium();
+        await Common_function.Close_Premium();
         await this.Profile_Tab();
-        await this.signupToMyZesty(name, email, password, confirmpassword, expected_text_1, 
-        expected_text_2 ,expected_policy_1, expected_policy_2,expected_policy_3, expected_policy_4,
-        expected_policy_5, expected_policy_6, expected_policy_7, 
-        expected_error, invalid_username, expected_error_1, invalid_email, expected_error_2);
+        await this.signupToMyZesty(
+            name, email, password, confirm_password, expected_text_1,
+            expected_text_2, expected_policy_1, expected_policy_2,
+            expected_policy_3, expected_policy_4, expected_policy_5,
+            expected_policy_6, expected_policy_7, expected_error,
+            expected_error_1, invalid_username, invalid_email, expected_error_2
+        );
 
     }
 

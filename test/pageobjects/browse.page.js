@@ -2,6 +2,7 @@ import { remote } from 'webdriverio';
 import assert from 'assert';
 import { $, browser, driver } from '@wdio/globals' ;
 import Sliders from '../pageobjects/sliders.page.js';
+import Subscription from '../pageobjects/BuyPremium.page.js';
 
 class Browse
 {
@@ -74,10 +75,6 @@ class Browse
 
     //=========================== Check Login Functionality =================================
 
-    get preiumCloseBtn () {
-        return $('//android.widget.ImageButton[@content-desc="Close"]');
-    }
-
     get profiletab()
     {
         return $('//android.view.View[@content-desc="navi-profile-button"]');
@@ -130,19 +127,6 @@ class Browse
     //=======================================================================================
 
     // ========================= Login Function Action ======================================
-    async Close_Premium()
-    {
-        await this.preiumCloseBtn.waitForDisplayed({timeout:5000});
-        const isDisplayed = await this.preiumCloseBtn.isDisplayed();
-        if (isDisplayed)
-        {
-            await this.preiumCloseBtn.click();
-        }
-        else
-        {
-            console.log("Premium Screen not Displayed!")
-        }
-    }
     
         async Profile_Tab()
         {
@@ -209,7 +193,7 @@ class Browse
                 { type: 'pointerUp', button: 0 }
             ]
         }]);
-        await browser.releaseActions();
+        
     }
 
     async tapScreen(x, y) {
@@ -223,7 +207,7 @@ class Browse
                 { type: 'pointerUp', button: 0 }
             ]
         }]);
-        await browser.releaseActions();
+        
     }
 
     async option_btn_click()
@@ -233,7 +217,7 @@ class Browse
 
     async my_fav_text(expected_value)
     {
-        await this.my_fav.waitForDisplayed({timeout:2000});
+        await this.my_fav.waitForDisplayed();
         const actual_value = await this.my_fav.getText();
         assert.strictEqual(actual_value, expected_value, "My favourite text is not verified!")
     }
@@ -330,6 +314,7 @@ class Browse
     {
         await this.click_browse_tab();
         await this.scrollScreen();
+        await browser.pause(2000);
         await this.option_btn_click();
         await this.my_fav_text(expected_value);
         await this.share_text(expected_value_1);
@@ -346,6 +331,7 @@ class Browse
     {
         await this.click_browse_tab();
         await this.scrollScreen();
+        await browser.pause(2000);
         await this.option_btn_click();
         await this.my_fav_text(expected_value);
         await this.Edit_My_Collection(expected_collection);
@@ -379,7 +365,7 @@ class Browse
 
     async run_browse(expected_value, expected_value_1, expected_value_2, expected_collection, expected_media, expected_delete)
     {
-        await this.Close_Premium();
+        await Subscription.Check_Subscription('Processing');
         await this.Profile_Tab();
         await this.loginToMyZesty(expected_value, expected_value_1, expected_value_2, expected_collection, expected_media, expected_delete);
 

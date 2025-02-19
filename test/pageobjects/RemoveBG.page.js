@@ -2,6 +2,7 @@ import { $, browser } from '@wdio/globals' ;
 import Common_function from '../pageobjects/commonfun.page.js';
 import Sliders from '../pageobjects/sliders.page.js';
 import assert from 'assert';
+import Subscription from '../pageobjects/BuyPremium.page.js';
 
 
 class Remove_BG
@@ -258,6 +259,7 @@ class Remove_BG
 
     async Run_Remove_BG(expected_text)
     {
+        await Subscription.Check_Subscription("Processing");
         await Common_function.Close_Premium();
         await this.BG_Remove();
         await this.Select_Img();
