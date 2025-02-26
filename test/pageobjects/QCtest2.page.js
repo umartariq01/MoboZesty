@@ -1,14 +1,11 @@
 import { $, browser, driver } from '@wdio/globals' ;
 import assert from 'assert' ;
 import Sliders from '../pageobjects/sliders.page.js';
+import  Subscription from '../pageobjects/BuyPremium.page.js';
 
 
 class Adv_test2
 {
-    get preiumCloseBtn () 
-    {
-        return $('//android.widget.ImageButton[@content-desc="Close"]');
-    }
 
     get QC()
     {
@@ -137,20 +134,22 @@ class Adv_test2
         return $('//android.widget.TextView[@text="Your media is saved to your phone gallery"]');
     }
 
-    //=========================================================================
-
-    async Close_Premium()
+    get rate_us()
     {
-        const isDisplayed = await this.preiumCloseBtn.isDisplayed();
-        if (isDisplayed)
-        {
-            await this.preiumCloseBtn.click();
-        }
-        else
-        {
-            console.log("Premium Screen not Displayed!")
-        }
+        return $('//android.widget.Button[@content-desc="rate-us-button"]');
     }
+
+    get cancel_rate_us()
+    {
+        return $('//android.widget.TextView[@text=""]');
+    }
+
+    get export_done()
+    {
+        return $('//android.view.ViewGroup[@content-desc="Done"]');
+    }
+
+    //=========================================================================
 
     async Try_QC()
     {
@@ -323,6 +322,24 @@ class Adv_test2
         await this.pause.click();
     }
 
+    async Click_Rate_Us()
+    {
+        const isDisplayed = await this.rate_us.isDisplayed() ;
+        if(isDisplayed)
+        {
+            await this.cancel_rate_us.click();
+        }
+        else
+        {
+            console.log('Rate Us popup not Appeared.')
+        }
+    }
+
+    async Click_export_done()
+    {
+        await this.export_done.click();
+    }
+
 
 
     // ========= Main Function =======
@@ -330,8 +347,7 @@ class Adv_test2
     async test2(expected_text, expected_export_text)
     {
 
-        await browser.pause(3000);
-        await this.Close_Premium();
+        await Subscription.Check_Subscription('Processing');
         await this.Try_QC();
 
         await this.select_video_tab();
@@ -343,7 +359,8 @@ class Adv_test2
         await this.Select_vid8();
         await this.Click_done();
 
-        await browser.pause(5000);
+        await browser.pause(3000);
+        await Sliders.play_pause(539, 1422);
         await this.click_edit();
         await this.Advance_edit(expected_text);
         await this.Click_wizard_popup();
@@ -361,7 +378,9 @@ class Adv_test2
         await this.Click_export();
 
         await browser.pause(10000);
+        await this.Click_Rate_Us();
         await this.Verify_export_success(expected_export_text);
+        await this.Click_export_done();
 
     }
 

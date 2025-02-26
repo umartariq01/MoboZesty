@@ -1,8 +1,7 @@
 import { $ } from '@wdio/globals' ;
-import { remote } from 'webdriverio';
 import assert from 'assert';
-import CheckLoginPage from '../pageobjects/checklogin.page.js';
-import { faker } from '@faker-js/faker';
+import Subscription from '../pageobjects/BuyPremium.page.js';
+import Sliders from '../pageobjects/sliders.page.js';
 
 class Settings
 {
@@ -109,8 +108,43 @@ class Settings
         return $('//android.widget.Button[@content-desc="profile-update-success-message-ok-button"]')
     }
 
+    get gender()
+    {
+        return $('//android.widget.CheckedTextView[@resource-id="android:id/text1" and @text="Male"]');
+    }
+
+    get public_checkbox()
+    {
+        return $('//android.widget.Button[@content-desc="privacy-followers-public-checkbox"]');
+    }
+
+    get follower_checkbox()
+    {
+        return $('//android.widget.Button[@content-desc="privacy-followers-followers-checkbox"]');
+    }
+
+    get following_checkbox()
+    {
+        return $('//android.widget.Button[@content-desc="privacy-following-followers-checkbox"]');
+    }
+
 
     //========= Function to Perfom Actions =========
+
+    async Click_Public_Checkbox()
+    {
+        await this.public_checkbox.click();
+    }
+
+    async Click_Follower_Checkbox()
+    {
+        await this.follower_checkbox.click();
+    }
+
+    async Click_Following_Checkbox()
+    {
+        await this.following_checkbox.click();
+    }
 
     async click_setting()
     {
@@ -179,6 +213,11 @@ class Settings
         await this.privacy.click();
     }
 
+    async Select_Gender()
+    {
+        await this.gender.click();
+    }
+
 
     async Public_text(expected_public)
     {
@@ -241,12 +280,14 @@ class Settings
 
     async Edit_profile_run(New_name, Mbl_No, Location_area, Bio_data, expected_updated_text)
     {
-        CheckLoginPage.login();
+        await Subscription.Check_Subscription('Processing');
         await this.Profile_Tab();
         await this.click_setting();
         await this.Edit_profile_btn();
         await this.Edit_name(New_name);
         await this.Phone_No(Mbl_No);
+        await Sliders.tapScreen(987, 869);
+        await this.Select_Gender();
         await this.Enter_Location(Location_area);
         await this.Enter_Bio(Bio_data);
         await this.click_save_btn();
@@ -261,6 +302,9 @@ class Settings
     {
         // Privacy Function calling
         await this.Click_Privacy();
+        await this.Click_Follower_Checkbox();
+        await this.Click_Public_Checkbox();
+        await this.Click_Following_Checkbox();
         await this.Public_text(expected_public);
         await this.Followers_text(expected_followers);
         await this.Only_me_text(expected_onlyme);

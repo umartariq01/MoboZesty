@@ -1,11 +1,9 @@
 import { $, browser } from '@wdio/globals' ;
+import Subscription from '../pageobjects/BuyPremium.page.js' ;
+import Sliders from '../pageobjects/sliders.page.js';
 
 class QC_Main
 {
-    get preiumCloseBtn () 
-    {
-        return $('//android.widget.ImageButton[@content-desc="Close"]');
-    }
 
     get QC()
     {
@@ -90,22 +88,6 @@ class QC_Main
     get resolution_720()
     {
         return $('//androidx.recyclerview.widget.RecyclerView[@resource-id="com.myzesty:id/option_recycle"]/android.widget.FrameLayout[3]/android.view.ViewGroup');
-    }
-
-
-
-    async Close_Premium()
-    {
-        await this.preiumCloseBtn.waitForDisplayed({timeout:5000});
-        const isDisplayed = await this.preiumCloseBtn.isDisplayed();
-        if (isDisplayed)
-        {
-            await this.preiumCloseBtn.click();
-        }
-        else
-        {
-            console.log("Premium Screen not Displayed!")
-        }
     }
 
     async Try_QC()
@@ -210,7 +192,7 @@ class QC_Main
     async Main_Run()
     {
 
-        await this.Close_Premium();
+        await Subscription.Check_Subscription('Processing')
         await this.Try_QC();
         await this.select_img_tab();
         await this.select_img1();
@@ -222,7 +204,9 @@ class QC_Main
         // await this.Select_vid2();
         await this.Click_done();
         await this.Filter_check2();
+        await Sliders.play_pause(539, 1422);
         await this.Filter_check3();
+        // await Sliders.play_pause(539, 1422);
         await this.Filter_check4();
 
         await this.click_resolution();

@@ -1,14 +1,11 @@
 import { $, browser, driver } from '@wdio/globals' ;
 import assert from 'assert' ;
 import Sliders from '../pageobjects/sliders.page.js';
+import Subscription from '../pageobjects/BuyPremium.page.js';
 
 
 class Adv_test5
 {
-    get preiumCloseBtn () 
-    {
-        return $('//android.widget.ImageButton[@content-desc="Close"]');
-    }
 
     get QC()
     {
@@ -82,26 +79,6 @@ class Adv_test5
         return $('//android.widget.TextView[@resource-id="com.myzesty:id/advanceEdit"]');
     }
 
-    get premium()
-    {
-        return $('//android.widget.ImageView[@content-desc="Premium"]');
-    }
-
-    get subscriptioon()
-    {
-        return $('//android.widget.Button[@resource-id="com.myzesty:id/btnContinue"]');
-    }
-
-    get subscripe_pkg()
-    {
-        return $('//android.widget.Button[@resource-id="com.android.vending:id/0_resource_name_obfuscated"]');
-    }
-
-    get confirm_subscribe()
-    {
-        return $('')
-    }
-
     get wizard_popup()
     {
         return $('//android.widget.FrameLayout[@resource-id="com.myzesty:id/done"]');
@@ -110,11 +87,6 @@ class Adv_test5
     get full_editor()
     {
         return $('//android.widget.TextView[@text="Full Editor"]');
-    }
-
-    get processing_text()
-    {
-        return $('//android.widget.TextView[@resource-id="com.android.vending:id/0_resource_name_obfuscated"]');
     }
 
     get Edit_effect()
@@ -153,20 +125,22 @@ class Adv_test5
         return $('(//android.widget.ImageView[@resource-id="com.myzesty:id/image"])[9]');
     }
 
-    //=========================================================================
-
-    async Close_Premium()
+    get rate_us()
     {
-        const isDisplayed = await this.preiumCloseBtn.isDisplayed();
-        if (isDisplayed)
-        {
-            await this.preiumCloseBtn.click();
-        }
-        else
-        {
-            console.log("Premium Screen not Displayed!")
-        }
+        return $('//android.widget.Button[@content-desc="rate-us-button"]');
     }
+
+    get cancel_rate_us()
+    {
+        return $('//android.widget.TextView[@text=""]');
+    }
+
+    get export_done()
+    {
+        return $('//android.view.ViewGroup[@content-desc="Done"]');
+    }
+
+    //=========================================================================
 
     async Try_QC()
     {
@@ -209,48 +183,9 @@ class Adv_test5
         await this.done.click();
     }
 
-    async Advance_edit(expected_text)
-    {
-        const isvisible = await this.premium.isDisplayed();
-
-        if(!isvisible)
-        {
-            console.log("Already have premium subscription...")
-            await this.adv_edit.click()
-        }
-        else
-        {
-            await this.Buy_Subscription(expected_text);
-        }
-
-    }
-
-    async Buy_Subscription(expected_text)
+    async Advance_edit()
     {
         await this.adv_edit.click()
-        await this.subscriptioon.waitForDisplayed({timeout:3000}).catch(() => false) ;
-        await this.subscriptioon.click();
-
-        await this.subscripe_pkg.waitForDisplayed({timeout:5000}).catch(() => false);
-        await this.subscripe_pkg.click();
-
-        const processing_visible = await  this.processing_text.isDisplayed();
-        if(processing_visible)
-        {
-            await this.verify_processing(expected_text)
-        }
-        else
-        {
-            console.log("Subscription Processing is not visible...")
-        }
-
-    }
-
-    async verify_processing(expected_text)
-    {
-        await this.processing_text.waitForDisplayed({timeout:5000});
-        const actual_text = await this.processing_text.getText();
-        assert.strictEqual(actual_text, expected_text, "Subscription Processing text not asserted!")
     }
 
     async Click_wizard_popup()
@@ -357,13 +292,30 @@ class Adv_test5
         await this.slider_path.waitForDisplayed({timeout:5000})
     }
 
+    async Click_Rate_Us()
+    {
+        const isDisplayed = await this.rate_us.isDisplayed() ;
+        if(isDisplayed)
+        {
+            await this.cancel_rate_us.click();
+        }
+        else
+        {
+            console.log('Rate Us popup not Appeared.')
+        }
+    }
+
+    async Click_export_done()
+    {
+        await this.export_done.click();
+    }
+
     // ========= Main Function =======
 
-    async test5(expected_text, text, slider_xpath, expected_export_text)
+    async test5( slider_xpath, expected_export_text)
     {
 
-        await browser.pause(3000);
-        await this.Close_Premium();
+        await Subscription.Check_Subscription('Processing');
         await this.Try_QC();
 
         await this.select_img_tab();
@@ -372,11 +324,11 @@ class Adv_test5
         await this.select_img10();
         await this.select_img11();
         await this.Click_done();
-        await  browser.pause(5000);
+        await  browser.pause(3000);
 
-        // await this.pause_video();
+        await Sliders.play_pause(539, 1422);
         await this.click_edit();
-        await this.Advance_edit(expected_text);
+        await this.Advance_edit();
         await this.Click_wizard_popup();
         await browser.pause(5000);
         await this.Click_full_editor();
@@ -397,6 +349,8 @@ class Adv_test5
 
         await browser.pause(10000);
         await this.Verify_export_success(expected_export_text);
+        await this.Click_Rate_Us();
+        await this.Click_export_done();
 
     }
 

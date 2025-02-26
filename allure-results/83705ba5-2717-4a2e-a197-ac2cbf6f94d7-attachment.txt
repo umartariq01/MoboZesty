@@ -1,0 +1,4 @@
+{
+  "using": "css selector",
+  "value": "This is text"
+}

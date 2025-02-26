@@ -1,5 +1,6 @@
 import { $, browser } from '@wdio/globals' ;
 import assert from 'assert';
+import Subscription from '../pageobjects/BuyPremium.page.js';
 
 
 class AboutUs
@@ -34,7 +35,7 @@ class AboutUs
 
     async Close_Premium()
     {
-        await this.preiumCloseBtn.waitForDisplayed({timeout:5000});
+        // await this.preiumCloseBtn.waitForDisplayed({timeout:5000});
         const isDisplayed = await this.preiumCloseBtn.isDisplayed();
         if (isDisplayed)
         {
@@ -74,7 +75,8 @@ class AboutUs
 
     async Run_AboutUs(expected_text_1, expected_text_2)
     {
-        await this.Close_Premium();
+        await Subscription.Check_Subscription('Processing');
+        // await this.Close_Premium();
         await this.Profile_Tab();
         await this.About_US();
         await this.About_Us_1(expected_text_1);

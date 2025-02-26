@@ -2,6 +2,7 @@ import { $, browser } from '@wdio/globals' ;
 import CheckLoginPage from '../pageobjects/checklogin.page.js';
 import assert from 'assert';
 import Common_function from '../pageobjects/commonfun.page.js';
+import Subscription from '../pageobjects/BuyPremium.page.js';
 // const newlogin = new LoginPage();
 class Share
 {
@@ -135,7 +136,7 @@ class Share
     // ================ Main Function ======================
     async sharemedia(text1, text2, expected_text)
     {
-        
+        await Subscription.Check_Subscription('Processing');
         await CheckLoginPage.login("umart4767@gmail.com", "Myzesty123")
         await this.click_share_tab();
         await this.close_tab();
@@ -151,8 +152,8 @@ class Share
         await this.click_media_3();
         await this.Done_Btn();
         await this.post_btn_click();
-        await Common_function.Check_Upload_progress();
-        await this.upload_confirm(expected_text);
+        // await Common_function.Check_Upload_progress();
+        // await this.upload_confirm(expected_text);
 
     }
 

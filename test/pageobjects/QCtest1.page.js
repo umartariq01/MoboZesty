@@ -1,6 +1,7 @@
 import { $, browser, driver } from '@wdio/globals' ;
 import assert from 'assert' ;
 import Sliders from '../pageobjects/sliders.page.js';
+import  Subscription from '../pageobjects/BuyPremium.page.js';
 
 
 class Adv_test1
@@ -369,7 +370,7 @@ class Adv_test1
     async test1(expected_text)
     {
 
-        await this.Close_Premium();
+        await Subscription.Check_Subscription('Processing');
         await this.Try_QC();
 
         await this.select_img_tab();

@@ -11,7 +11,7 @@ describe('QC to advance edit', () => {
         const text = "This is text";
         const slider_xpath = '(//android.view.ViewGroup[@resource-id="com.myzesty:id/range_slider"])[5]/android.view.View[2]' ;
         
-        await Adv_test5.test5(expected_text, text, slider_xpath, expected_export_text)
+        await Adv_test5.test5(slider_xpath, expected_export_text)
 
     })
 });

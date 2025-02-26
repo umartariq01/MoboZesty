@@ -11,11 +11,6 @@ class Verify_Bokeh_templet
         return $('//android.view.ViewGroup[@content-desc="Try Now, Bokeh Effect"]/android.view.ViewGroup');
     }
 
-    // get close_gallery()
-    // {
-    //     return $('//android.widget.TextView[@text="Close"]');
-    // }
-
     get cancel_editing()
     {
         return $('//android.widget.ImageView[@resource-id="com.myzesty:id/cancel"]');
@@ -65,39 +60,24 @@ class Verify_Bokeh_templet
         return $('//android.widget.TextView[@resource-id="com.myzesty:id/action_text"]');
     }
 
-    get premium()
-    {
-        return $('(//android.widget.ImageView[@resource-id="com.myzesty:id/icon_premium"])[1]');
-    }
-
     get save()
     {
         return $('//android.widget.TextView[@resource-id="com.myzesty:id/action_text"]');
     }
 
-    get join_myzesty()
-    {
-        return $('//android.widget.FrameLayout[@resource-id="com.myzesty:id/btnJoin"]')
-    }
-
-    get subscripe_pkg()
-    {
-        return $('//android.widget.Button[@resource-id="com.myzesty:id/btnContinue"]');
-    }
-
-    get subscribe()
-    {
-        return $('//android.widget.Button[@resource-id="com.android.vending:id/0_resource_name_obfuscated"]');
-    }
-
-    get processing()
-    {
-        return  $('//android.widget.TextView[@resource-id="com.android.vending:id/0_resource_name_obfuscated"]');
-    }
-
     get export_done()
     {
         return $('//android.view.ViewGroup[@content-desc="Done"]');
+    }
+
+    get rate_us()
+    {
+        return $('//android.widget.Button[@content-desc="rate-us-button"]');
+    }
+
+    get cancel_rate_us()
+    {
+        return $('//android.widget.TextView[@text=""]');
     }
 
 //=============================================================================================================================
@@ -253,46 +233,9 @@ async processAllEffects() {
         await this.done.click();
     }
 
-    async Check_premium(expected_text)
+    async Click_Save()
     {
-        const isVisible = await this.premium.isDisplayed();
-
-        if(!isVisible)
-        {
-            console.log("Already have premium subscription.")
-            await this.save.click();
-        }
-        else
-        {
-            await this.save.click();
-            await this.join_myzesty.waitForDisplayed();
-            await this.join_myzesty.click();
-            //buy subscription module
-
-            await this.subscripe_pkg.waitForDisplayed();
-            await this.subscripe_pkg.click();
-
-            await this.subscribe.waitForDisplayed();
-            await this.subscribe.click();
-
-            const processing_visible = await this.processing.waitForDisplayed();
-            if(processing_visible)
-            {
-                await this.verify_processing(expected_text)
-            }
-            else
-            {
-                console.log("Subscription Processing is not visible...")
-            }
-            
-        }
-    }
-
-    async verify_processing(expected_text)
-    {
-        await this.processing.waitForDisplayed();
-        const actual_processing = await this.processing.getText();
-        assert.strictEqual(actual_processing, expected_text, "Subscription Processing text not asserted!");
+        await this.save.click() ;
     }
 
     async Click_export_done()
@@ -300,11 +243,24 @@ async processAllEffects() {
         await this.export_done.click();
     }
 
+    async Click_Rate_Us()
+    {
+        const isDisplayed = await this.rate_us.isDisplayed() ;
+        if(isDisplayed)
+        {
+            await this.cancel_rate_us.click();
+        }
+        else
+        {
+            console.log('Rate Us popup not Appeared.')
+        }
+    }
+
 
 
     //--------- Main Function -----------
 
-    async Run_Bokeh_temp(expected_text)
+    async Run_Bokeh_temp()
     {
         await Subscription.Check_Subscription('Processing');
         await this.Try_Bokeh();
@@ -313,12 +269,10 @@ async processAllEffects() {
         await this.Click_cancell_editing();
         await browser.pause(500);
         await this.Select_img1();
-
         await this.processAllEffects();
-        // await this.longPressCompareButton(); 
-
+        await this.longPressCompareButton(); 
         await this.Click_done();
-        await this.Check_premium(expected_text);
+        await this.Click_Save();
         await this.Click_export_done();
         
     }

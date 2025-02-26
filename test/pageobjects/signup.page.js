@@ -1,6 +1,7 @@
 import { $ } from '@wdio/globals' ;
 import assert from 'assert' ;
-import Common_function from '../pageobjects/commonfun.page.js';
+import Subscription from '../pageobjects/BuyPremium.page.js' ;
+import Sliders from '../pageobjects/sliders.page.js';
 
 class SignupPage{
 
@@ -118,6 +119,16 @@ class SignupPage{
     get invalid_email_alert()
     {
         return $('//*[@text="Please enter a valid email address"]') ;
+    }
+
+    get short_pass_error() // same xpath for password mismatch
+    {
+        return $('//android.widget.TextView[@content-desc="error-message"]');
+    }
+
+    get view_password()
+    {
+        return $('(//android.widget.TextView[@text=""])[1]');
     }
 
 
@@ -282,12 +293,32 @@ class SignupPage{
         await this.logout.click();
     }
 
+    async Click_View_Password()
+    {
+        (await this.view_password).click();
+    }
+
+    async Verify_Short_Pass_Error(expected_short_pass_error)
+    {
+        (await this.short_pass_error).waitForDisplayed();
+        const actual_short_pass_error = await this.short_pass_error.getText();
+        assert.strictEqual(actual_short_pass_error, expected_short_pass_error, 'Short password error text not verified');
+    }
+
+    async Verify_Password_Mismatch(expected_pass_mismatch)
+    {
+        (await this.short_pass_error).waitForDisplayed();
+        const actual_pass_mismatch = await this.short_pass_error.getText();
+        assert.strictEqual(actual_pass_mismatch, expected_pass_mismatch, 'Password mismatch text not verified.');
+    }
+
     async check_validation(
         name, email, password, confirm_password, expected_text_1,
         expected_text_2, expected_policy_1, expected_policy_2,
         expected_policy_3, expected_policy_4, expected_policy_5,
         expected_policy_6, expected_policy_7, expected_error,
-        expected_error_1, invalid_username, invalid_email, expected_error_2
+        expected_error_1, invalid_username, invalid_email, expected_error_2,
+        short_pass, expected_short_pass_error, expected_pass_mismatch
     )
     {
         await this.SignUp_btn();
@@ -305,6 +336,20 @@ class SignupPage{
         await this.SignUp_btn();
         await this.Invalid_Emial_Error(expected_error_2)
         await this.Click_error_Ok();
+        // Check for short password
+        await this.EnterName(name);
+        await this.Enter_Email(email);
+        await this.Enter_Password(short_pass);
+        await this.Confirm_Password(short_pass);
+        await this.SignUp_btn();
+        await this.Verify_Short_Pass_Error(expected_short_pass_error);
+        await this.Click_error_Ok();
+        // Check for different Password
+        await this.Enter_Password(password);
+        await this.Confirm_Password(short_pass);
+        await this.SignUp_btn();
+        await this.Verify_Password_Mismatch(expected_pass_mismatch);
+        await this.Click_error_Ok();
     }
 
     async Logout_Myzesty(
@@ -312,12 +357,12 @@ class SignupPage{
         expected_text_2, expected_policy_1, expected_policy_2,
         expected_policy_3, expected_policy_4, expected_policy_5,
         expected_policy_6, expected_policy_7, expected_error,
-        expected_error_1, invalid_username, invalid_email, expected_error_2
+        expected_error_1, invalid_username, invalid_email, expected_error_2,
+        short_pass, expected_short_pass_error, expected_pass_mismatch
     )
     {
         await this.click_setting();
         await this.click_logout();
-        await Common_function.Close_Premium();
         await this.Profile_Tab();
         await this.SignUp();
         await this.check_validation(
@@ -325,12 +370,15 @@ class SignupPage{
             expected_text_2, expected_policy_1, expected_policy_2,
             expected_policy_3, expected_policy_4, expected_policy_5,
             expected_policy_6, expected_policy_7, expected_error,
-            expected_error_1, invalid_username, invalid_email, expected_error_2
+            expected_error_1, invalid_username, invalid_email, expected_error_2,
+            short_pass, expected_short_pass_error, expected_pass_mismatch
         );
         await this.EnterName(name);
         await this.Enter_Email(email);
         await this.Enter_Password(password);
+        await this.Click_View_Password();
         await this.Confirm_Password(confirm_password);
+        await Sliders.tapScreen(959, 1696)
         await this.Text_1(expected_text_1);
         await this.Text_2(expected_text_2);
         await this.Term_1(expected_policy_1);
@@ -348,7 +396,8 @@ class SignupPage{
         expected_text_2, expected_policy_1, expected_policy_2,
         expected_policy_3, expected_policy_4, expected_policy_5,
         expected_policy_6, expected_policy_7, expected_error,
-        expected_error_1, invalid_username, invalid_email, expected_error_2
+        expected_error_1, invalid_username, invalid_email, expected_error_2,
+        short_pass, expected_short_pass_error, expected_pass_mismatch
     )
     {
         await this.SignUp();
@@ -357,12 +406,15 @@ class SignupPage{
             expected_text_2, expected_policy_1, expected_policy_2,
             expected_policy_3, expected_policy_4, expected_policy_5,
             expected_policy_6, expected_policy_7, expected_error,
-            expected_error_1, invalid_username, invalid_email, expected_error_2
+            expected_error_1, invalid_username, invalid_email, expected_error_2,
+            short_pass, expected_short_pass_error, expected_pass_mismatch
         );
         await this.EnterName(name);
         await this.Enter_Email(email);
         await this.Enter_Password(password);
+        await this.Click_View_Password();
         await this.Confirm_Password(confirm_password);
+        await Sliders.tapScreen(959, 1696);
         await this.Text_1(expected_text_1);
         await this.Text_2(expected_text_2);
         await this.Term_1(expected_policy_1);
@@ -380,7 +432,8 @@ class SignupPage{
             expected_text_2, expected_policy_1, expected_policy_2,
             expected_policy_3, expected_policy_4, expected_policy_5,
             expected_policy_6, expected_policy_7, expected_error,
-            expected_error_1, invalid_username, invalid_email, expected_error_2
+            expected_error_1, invalid_username, invalid_email, expected_error_2,
+            short_pass, expected_short_pass_error, expected_pass_mismatch
     ) 
     {
         if(await this.create_account.isDisplayed())
@@ -390,7 +443,8 @@ class SignupPage{
                 expected_text_2, expected_policy_1, expected_policy_2,
                 expected_policy_3, expected_policy_4, expected_policy_5,
                 expected_policy_6, expected_policy_7, expected_error,
-                expected_error_1, invalid_username, invalid_email, expected_error_2
+                expected_error_1, invalid_username, invalid_email, expected_error_2,
+                short_pass, expected_short_pass_error, expected_pass_mismatch
             );
                 
         }
@@ -402,7 +456,8 @@ class SignupPage{
                 expected_text_2, expected_policy_1, expected_policy_2,
                 expected_policy_3, expected_policy_4, expected_policy_5,
                 expected_policy_6, expected_policy_7, expected_error,
-                expected_error_1, invalid_username, invalid_email, expected_error_2
+                expected_error_1, invalid_username, invalid_email, expected_error_2,
+                short_pass, expected_short_pass_error, expected_pass_mismatch
             );
                 
         }
@@ -413,17 +468,19 @@ class SignupPage{
             expected_text_2, expected_policy_1, expected_policy_2,
             expected_policy_3, expected_policy_4, expected_policy_5,
             expected_policy_6, expected_policy_7, expected_error,
-            expected_error_1, invalid_username, invalid_email, expected_error_2
+            expected_error_1, invalid_username, invalid_email, expected_error_2,
+            short_pass, expected_short_pass_error, expected_pass_mismatch
     ) 
     {
-        await Common_function.Close_Premium();
+        await Subscription.Check_Subscription('Processing');
         await this.Profile_Tab();
         await this.signupToMyZesty(
             name, email, password, confirm_password, expected_text_1,
             expected_text_2, expected_policy_1, expected_policy_2,
             expected_policy_3, expected_policy_4, expected_policy_5,
             expected_policy_6, expected_policy_7, expected_error,
-            expected_error_1, invalid_username, invalid_email, expected_error_2
+            expected_error_1, invalid_username, invalid_email, expected_error_2,
+            short_pass, expected_short_pass_error, expected_pass_mismatch
         );
 
     }

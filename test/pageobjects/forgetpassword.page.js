@@ -1,6 +1,7 @@
 import assert from 'assert';
 import { $ } from '@wdio/globals' ;
 import CheckLoginPage from '../pageobjects/checklogin.page.js';
+import Subscription from '../pageobjects/BuyPremium.page.js';
 
 class ForgetPassword{
 
@@ -133,6 +134,7 @@ class ForgetPassword{
     {
         try 
         {
+            await Subscription.Check_Subscription('Processing');
             await CheckLoginPage.Run_logout();
             await this.Close_Premium();
             await this.Profile_Tab();

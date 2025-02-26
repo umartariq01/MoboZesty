@@ -311,6 +311,11 @@ class QC_Adv_Edit
     {
         await this.start_record.click();
     }
+
+    async Click_stop_record()
+    {
+        await this.start_record.click();
+    }
     
     async Click_record_audio()
     {
@@ -583,135 +588,146 @@ class QC_Adv_Edit
             console.error("Error while tapping the element:", error);
         }
     }
+
+    async scrollUntilElementIsVisible(element, startX, startY, endX, endY, maxScrolls = 5, duration = 1000) {
+        for (let i = 0; i < maxScrolls; i++) {
+            let isDisplayed = await $(element).isDisplayed();
+            
+            if (isDisplayed) {
+                console.log("Element found!");
+                return; // Exit the function if the element is visible
+            }
     
+            // Scroll the screen
+            await Sliders.scrollScreen(startX, startY, endX, endY, 1, duration);
+        }
     
-    
-    
-    
-    
-    
+        throw new Error("Element not found after maximum scroll attempts");
+    }
 
 
     // ========= Main Function =======
 
-    async Adv_Edit_Run(expected_text)
+    async Adv_Edit_Run()
     {
 
-        await Subscription.Check_Subscription(expected_text)
-        await this.Try_QC();
+        // await Subscription.Check_Subscription('Processing')
+        // await this.Try_QC();
 
-        await this.select_img_tab();
-        await this.select_img1();
-        await this.select_img2();
+        // await this.select_img_tab();
+        // await this.select_img1();
+        // await this.select_img2();
 
-        await this.select_video_tab();
-        await this.click_sort();
-        Sliders.scrollScreen(500, 400, 500, 1700);
-        await  this.Select_vid1();
-        await this.Select_vid2();
-        await this.Click_done();
+        // await this.select_video_tab();
+        // await this.click_sort();
+        // Sliders.scrollScreen(500, 400, 500, 1700);
+        // await  this.Select_vid1();
+        // await this.Select_vid2();
+        // await this.Click_done();
+
+        // await browser.pause(3000);
+        // await Sliders.play_pause(539, 1422);
+
+        // await this.click_edit();
+        // await this.Advance_edit();
+        // await this.Click_wizard_popup();
+        // await browser.pause(5000);
+        // await this.Click_full_editor();
+
+        // await Promise.all([
+        //     this.play_video(),
+        //     await browser.pause(3000),
+        //     Sliders.play_pause(539, 1422),
+        // ])
+
+        // await this.Click_mute_all();
+        // await this.play_video();
+
+        // await this.Adv_add_img();
+        // await this.select_img_tab();
+        // await this.select_img10();
+        // await this.Click_done();
+
+        // await this.Adv_add_img();
+        // await this.select_video_tab();
+        // await this.click_sort();
+        // Sliders.scrollScreen(500, 400, 500, 1700);
+        // await this.Select_vid7();
+        // await this.Click_done();
+        // await  browser.pause(5000);
+
+        // await this.Adv_add_img();
+        // await this.select_img_tab();
+        // await this.select_img11();
+        // await this.select_video_tab();
+        // await this.click_sort();
+        // Sliders.scrollScreen(500, 400, 500, 1700);
+        // await this.Select_vid8();
+        // await this.Click_done();
+
+        // await this.Timeline_slider(0, 1080, 1630);
+        // await browser.pause(2000);
+        // await Sliders.Single_slide(950, 100, 1630);
+
+        // //== This slides the timeline in Advance editor==
+        // await Sliders.scrollScreen(534, 1635, 50, 1635);
+        // await browser.pause(3000);
+        
+        // await this.zoomin   //  Need to make them correct
+        // (
+        //     500, 1630, // Stary X1, Y1
+        //     600, 1630, // Start X2, Y2
+        //     100, 1630, // End X1, Y1
+        //     900, 1630 // End X2, Y2
+        
+        // );
+        // await Sliders.zoomout // Needs correction
+        // (
+        //     50, 1630,  // Start X1, y1
+        //     940, 1630, // Start X2, Y2
+        //     400, 1630, // End X1, Y1
+        //     580, 1630 // End X2, Y2
+        // );
+
+        // await this.Click_Edit_Audio();
+        // await this.Verify_Audio_Bar();
+
+        // //before recording audio scroll the seekbar  to start
+        // await this.scrollUntilElementIsVisible('//android.widget.HorizontalScrollView[@resource-id="com.myzesty:id/videoTrackView"]/android.view.ViewGroup/android.widget.LinearLayout', 113, 1620, 836, 1620)
+        // await this.Click_record_audio();
+
+        // Promise.all([
+        //     this.Click_start_record(),
+        //     browser.pause(50000),
+        //     this.Click_stop_record()
+        // ])
+
+        // await this.Click_done_record();
+        // await this.Confirm_voice_record();
+        // await this.Main_return_button();
+
+        // await this.Click_close_editing();
+        // await this.Open_draft();
+        await this.Click_maximize_minimize();
 
         await Promise.all([
-            // this.play_video(),
-            this.play_pause('//android.widget.ImageView[@resource-id="com.myzesty:id/play"]')
+            this.Play_video(),
+            browser.pause(3000),
+            Sliders.play_pause(539, 1422)
         ])
 
-        await this.click_edit();
-        await this.Advance_edit();
-        await this.Click_wizard_popup();
-        await browser.pause(5000);
-        await this.Click_full_editor();
-
-        await Promise.all([
-            this.play_video(),
-            this.play_pause('//android.widget.ImageView[@resource-id="com.myzesty:id/play"]')
-        ])
-        // // await this.play_video();
-
-        await this.Click_mute_all();
-        await this.play_video();
-
-        await this.Adv_add_img();
-        await this.select_img_tab();
-        await this.select_img10();
-        await this.Click_done();
-
-        await this.Adv_add_img();
-        await this.select_video_tab();
-        await this.click_sort();
-        Sliders.scrollScreen(500, 400, 500, 1700);
-        await this.Select_vid7();
-        await this.Click_done();
-        await  browser.pause(5000);
-
-        await this.Adv_add_img();
-        await this.select_img_tab();
-        await this.select_img11();
-        await this.select_video_tab();
-        await this.click_sort();
-        Sliders.scrollScreen(500, 400, 500, 1700);
-        await this.Select_vid8();
-        await this.Click_done();
-
-        await this.Timeline_slider(0, 1080, 1630);
+        await this.Click_maximize_minimize();
         await browser.pause(2000);
-        await Sliders.Single_slide(950, 100, 1630);
-
-        //== This slides the timeline in Advance editor==
-        await Sliders.scrollScreen(534, 1635, 50, 1635);
-        await browser.pause(3000);
-        
-        await this.zoomin   //  Need to make them correct
-        (
-            500, 1630, // Stary X1, Y1
-            600, 1630, // Start X2, Y2
-            100, 1630, // End X1, Y1
-            900, 1630 // End X2, Y2
-        
-        );
-        await Sliders.zoomout // Needs correction
-        (
-            50, 1630,  // Start X1, y1
-            940, 1630, // Start X2, Y2
-            400, 1630, // End X1, Y1
-            580, 1630 // End X2, Y2
-        );
-
-        await this.Click_Edit_Audio();
-        await this.Verify_Audio_Bar();
-        // Need to add record audio below
-        await this.Click_record_audio();
-        await this.Click_start_record();
-        await this.Click_done_record();
-        await this.Confirm_voice_record();
-
-        await this.Click_record_audio();
-        await this.Click_start_record();
-        await this.Cliick_close_resolution_or_record()
-        Sliders.scrollScreen(33, 1833, 900, 1833);
-        await this.Main_return_button();
-
-        await this.Click_close_editing();
-        await this.Open_draft();
-        await this.Click_maximize_minimize();
+        await Sliders.play_pause(539, 1422);
 
         await Promise.all([
-            this.play_video(),
-            this.play_pause('//android.widget.ImageView[@resource-id="com.myzesty:id/play"]')
+            browser.pause(5000),
+            Sliders.play_pause(539, 1422)
         ])
 
-
-
-        await this.Click_maximize_minimize();
-
-        await Promise.all([
-            this.play_video(),
-            this.play_pause('//android.widget.ImageView[@resource-id="com.myzesty:id/play"]')
-        ])
-
-        await this.Undo_changes();
-        await browser.pause(1000);
-        await this.Redo_changes(); 
+        // await this.Undo_changes();
+        // await browser.pause(1000);
+        // await this.Redo_changes(); 
         
         // await this.click_resolution();
         // await this.close_resolution_or_record();

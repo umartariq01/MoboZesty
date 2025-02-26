@@ -1,0 +1,4 @@
+{
+  "using": "xpath",
+  "value": "//android.view.ViewGroup[@content-desc=\"Pro\"]/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup"
+}

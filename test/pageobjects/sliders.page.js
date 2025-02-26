@@ -309,7 +309,39 @@ class Sliders
             
             // Example usage
             // await Sound_slide(driver, 0.5, 124, 929, 1669, 1779);
-            
+    
+
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Music, Audio Fx & Library Xpaths <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+    get audioFX()
+    {
+        return $('//android.widget.LinearLayout[@content-desc="AudioFX"]');
+    }
+
+    get audioFX_Song_1()
+    {
+        return $('(//android.widget.ImageButton[@resource-id="com.myzesty:id/item_action"])[1]');
+    }
+
+    get Music_Tab()
+    {
+        return $('//android.widget.TextView[@text="Music"]');
+    }
+
+    get My_library()
+    {
+        return $('//android.widget.LinearLayout[@content-desc="My Library"]');
+    }
+
+    get library_song1()
+    {
+        return $('(//android.widget.ImageView[@resource-id="com.google.android.documentsui:id/icon_thumb"])[1]');
+    }
+
+    get sci_fic_category()
+    {
+        return $('//androidx.recyclerview.widget.RecyclerView[@resource-id="com.myzesty:id/music_categories"]/android.view.ViewGroup[3]');
+    }
               
 
     async Music_tab_Click() 
@@ -384,72 +416,76 @@ class Sliders
 
 
     async AudioFX_tab() 
-        {
-            const maxRetries = 3; // Maximum number of retry attempts
-            let attempt = 0;
-            let downloadComplete = false;
-        
-            // Start in the Music tab and navigate to AudioFX tab
+    {
+        const maxRetries = 3; // Maximum number of retry attempts
+        let attempt = 0;
+        let downloadComplete = false;
+    
+        // Start in the Music tab and navigate to AudioFX tab
+        await this.audioFX.click();
+        await this.Single_slide(973, 200, 562);
+        await this.sci_fic_category.click();
+
+
+        let audio_visible = await this.audioFX_Song_1.waitForDisplayed({ timeout: 5000 }).catch(() => false);
+    
+        if (!audio_visible) {
+            console.log("Audio is not visible in the AudioFX tab. Navigating to the Music tab.");
+            await this.Music_Tab.click(); // Switch to the Music tab
+            await browser.pause(500); // Wait for 0.5 seconds
             await this.audioFX.click();
-            let audio_visible = await this.audioFX_Song_1.waitForDisplayed({ timeout: 5000 }).catch(() => false);
-        
+    
+            // Check visibility in the AudioFX tab again
+            audio_visible = await this.audioFX_Song_1.waitForDisplayed({ timeout: 5000 }).catch(() => false);
             if (!audio_visible) {
-                console.log("Audio is not visible in the AudioFX tab. Navigating to the Music tab.");
-                await this.Music_Tab.click(); // Switch to the Music tab
-                await browser.pause(500); // Wait for 0.5 seconds
-                await this.audioFX.click();
-        
-                // Check visibility in the AudioFX tab again
-                audio_visible = await this.audioFX_Song_1.waitForDisplayed({ timeout: 5000 }).catch(() => false);
-                if (!audio_visible) {
-                    throw new Error("Audio is not visible in the AudioFX tab after multiple attempts.");
-                }
-            }
-        
-            console.log("Audio is visible in the AudioFX tab.");
-        
-            // Retry loop for downloading the song
-            while (attempt < maxRetries) {
-                attempt++;
-                console.log(`Attempt ${attempt} to download the song.`);
-        
-                // Check if the song is already downloaded
-                const isSelected = await this.audioFX_Song_1.getAttribute('selected');
-                if (isSelected === 'true') {
-                    console.log("Song is already downloaded. Selecting the song.");
-                    await this.audioFX_Song_1.click(); // Select the song
-                    downloadComplete = true;
-                    break;
-                } else {
-                    console.log("Song is not downloaded. Downloading the song first.");
-                    await this.audioFX_Song_1.click(); // Start downloading the song
-        
-                    // Wait for the song to be downloaded
-                    downloadComplete = await browser.waitUntil(
-                        async () => {
-                            const status = await this.audioFX_Song_1.getAttribute('selected');
-                            return status === 'true';
-                        },
-                        {
-                            timeout: 15000, // Adjust the timeout based on your app's expected download time
-                            timeoutMsg: "Song download did not complete within the expected time."
-                        }
-                    ).catch(() => false);
-        
-                    if (downloadComplete) {
-                        console.log("Download complete. Selecting the song.");
-                        await this.audioFX_Song_1.click();
-                        break; // Exit the loop if download succeeds
-                    } else {
-                        console.log("Download failed. Retrying...");
-                    }
-                }
-            }
-        
-            if (!downloadComplete) {
-                throw new Error("Failed to download the song after multiple attempts.");
+                throw new Error("Audio is not visible in the AudioFX tab after multiple attempts.");
             }
         }
+    
+        console.log("Audio is visible in the AudioFX tab.");
+    
+        // Retry loop for downloading the song
+        while (attempt < maxRetries) {
+            attempt++;
+            console.log(`Attempt ${attempt} to download the song.`);
+    
+            // Check if the song is already downloaded
+            const isSelected = await this.audioFX_Song_1.getAttribute('selected');
+            if (isSelected === 'true') {
+                console.log("Song is already downloaded. Selecting the song.");
+                await this.audioFX_Song_1.click(); // Select the song
+                downloadComplete = true;
+                break;
+            } else {
+                console.log("Song is not downloaded. Downloading the song first.");
+                await this.audioFX_Song_1.click(); // Start downloading the song
+    
+                // Wait for the song to be downloaded
+                downloadComplete = await browser.waitUntil(
+                    async () => {
+                        const status = await this.audioFX_Song_1.getAttribute('selected');
+                        return status === 'true';
+                    },
+                    {
+                        timeout: 15000, // Adjust the timeout based on your app's expected download time
+                        timeoutMsg: "Song download did not complete within the expected time."
+                    }
+                ).catch(() => false);
+    
+                if (downloadComplete) {
+                    console.log("Download complete. Selecting the song.");
+                    await this.audioFX_Song_1.click();
+                    break; // Exit the loop if download succeeds
+                } else {
+                    console.log("Download failed. Retrying...");
+                }
+            }
+        }
+    
+        if (!downloadComplete) {
+            throw new Error("Failed to download the song after multiple attempts.");
+        }
+    }
     
     async CompareButton(xpath, duration = 2000) 
     {

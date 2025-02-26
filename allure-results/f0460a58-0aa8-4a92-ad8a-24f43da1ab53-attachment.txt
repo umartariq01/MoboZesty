@@ -1,0 +1,4 @@
+{
+  "using": "xpath",
+  "value": "//androidx.recyclerview.widget.RecyclerView[@resource-id=\"com.myzesty:id/music_categories\"]/android.view.ViewGroup[2]"
+}

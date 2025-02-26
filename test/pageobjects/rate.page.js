@@ -1,5 +1,6 @@
 import { $ } from '@wdio/globals' ;
 import assert from 'assert';
+import Subscription from '../pageobjects/BuyPremium.page.js' ;
 
 class Ratezesty
 {
@@ -90,7 +91,8 @@ class Ratezesty
 
     async Rate_Application(expected_text_1, expected_text_2)
     {
-        await this.Close_Premium();
+        await Subscription.Check_Subscription('Processing');
+        // await this.Close_Premium();
         await this.Profile_Tab();
         await this.Rate_Myzesty();
         await this.Verify_1(expected_text_1);

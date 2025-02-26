@@ -260,7 +260,7 @@ class Remove_BG
     async Run_Remove_BG(expected_text)
     {
         await Subscription.Check_Subscription("Processing");
-        await Common_function.Close_Premium();
+        // await Common_function.Close_Premium();
         await this.BG_Remove();
         await this.Select_Img();
         await this.Loading_wait(expected_text);

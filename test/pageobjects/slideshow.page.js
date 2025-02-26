@@ -1,6 +1,7 @@
 import { $, browser, driver } from '@wdio/globals' ;
 import Common_function from '../pageobjects/commonfun.page.js';
 import Sliders from '../pageobjects/sliders.page.js';
+import Subscription from '../pageobjects/BuyPremium.page.js';
 
 
 
@@ -338,9 +339,28 @@ class Slideshow
     {
         await this.play_pause.click();
     }
+    // .............................................................................
 
+    get My_library()
+    {
+        return $('//android.widget.LinearLayout[@content-desc="My Library"]');
+    }
 
+    async Click_My_Library()
+    {
+        await this.My_library.click();
+    }
+    // ...............................................................................
 
+    get library_song1()
+    {
+        return $('(//android.widget.ImageView[@resource-id="com.google.android.documentsui:id/icon_thumb"])[1]');
+    }
+
+    async Select_library_song1()
+    {
+        await this.library_song1.click();
+    }
 
 
 
@@ -348,7 +368,7 @@ class Slideshow
 
     async Run_Slideshow()
     {
-        await Common_function.Close_Premium();
+        await Subscription.Check_Subscription('Processing')
         await this.Slide_Show();
         await this.Select_Img_Tab();
         await this.Select_Images();
@@ -357,38 +377,69 @@ class Slideshow
         Sliders.scrollScreen(500, 400, 500, 1700);
         await this.Select_Videos();
         await this.Click_Done();
-        await browser.pause(3000);
+        await browser.pause(5000);
         await Sliders.play_pause(539, 1422);
 
-        // await Sliders.play_pause(539, 1422);
         await Sliders.Drag_Drop(driver, 798, 1743, 307, 1743);
         await this.Click_Dlt_Media();
         await this.Click_Add_Media();
         await this.select_img_tab();
         await this.Add_Images();
         await this.Click_Done();
-        await browser.pause(3000);
+        await browser.pause(5000);
 
         await Sliders.play_pause(539, 1422);
         await this.Click_Dlt_Music();
         await this.Click_Add_Music();
-        await this.Music_tab_Click()
+        await Sliders.Music_tab_Click();
+        await browser.pause(2000);
+        await this.Click_Play_Pause();   
+        await browser.pause(3000),
+        await Sliders.play_pause(539, 1422)
+        await Sliders.Slider(driver, 18, 1062, 1496, 1546, 0.1)
+
+        await this.Click_Dlt_Music();
+        await this.Click_Add_Music();
+        await Sliders.AudioFX_tab();
+        await browser.pause(2000);
+        await Sliders.Slider(driver, 18, 1062, 1496, 1546, 0.1)
+        await this.Click_Play_Pause();
+        await browser.pause(3000),
+        await Sliders.play_pause(539, 1422)
+
+        await Sliders.Slider(driver, 18, 1062, 1496, 1546, 0.1)
+        await this.Click_Dlt_Music();
+        await this.Click_Add_Music();
+        await  this.Click_My_Library()
+        await this.Select_library_song1();
+        await this.Click_Play_Pause();
+        await browser.pause(3000),
+        await Sliders.play_pause(539, 1422)
+        
+        await this.Click_Audio();
+        await this.Click_Mute_Audio();
+        await this.Click_Apply_Trim();
+        await this.Click_Play_Pause();
+        await browser.pause(3000),
+        await Sliders.play_pause(539, 1422)
+        
+        await this.Click_Audio();
+        Sliders.Sound_slide(driver, 124, 929, 1669, 1779, 1)
+        await this.Click_Apply_Trim();
+        await Sliders.Slider(driver, 18, 1062, 1496, 1546, 0.1)
+
+        await this.Click_Play_Pause();
+        await browser.pause(3000),
+        await Sliders.play_pause(539, 1422)
 
         await this.Click_Audio_Trim();
         await this.Click_Cancle_Trim();
         await this.Click_Audio_Trim();
         await this.Click_Apply_Trim();
         await this.Click_Audio_Trim();
-        
-        Sliders.Trim_slide(driver, 8, 154, 195, 1738, 1906);
+        Sliders.Trim_slide(driver, 8, 154, 195, 1738, 1906); // move this at last after adding miusic from all three tabs.
         await this.Click_Apply_Trim();
 
-        await this.Click_Audio();
-        await this.Click_Mute_Audio();
-        await this.Click_Apply_Trim();
-        await this.Click_Audio();
-        Sliders.Sound_slide(driver, 124, 929, 1669, 1779, 0.6)
-        await this.Click_Apply_Trim();
         await this.Click_export();
 
     }

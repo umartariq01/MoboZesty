@@ -7,7 +7,7 @@ describe('Edit Profile', () => {
     it('should login with valid credentials', async () => {
 
         const New_name = faker.person.fullName();
-        const Mbl_No = "03073396783" ;
+        const Mbl_No = faker.phone.number({style : 'international'}) ;
         const Location_area = "MM Alam Road" ;
         const Bio_data = "This is editing app.";
         const expected_updated_text = "Profile information is updated successfully";
@@ -17,6 +17,8 @@ describe('Edit Profile', () => {
         
     })
 });
+
+
 
 describe('Privacy', () => {
 

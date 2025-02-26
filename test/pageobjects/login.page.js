@@ -1,17 +1,10 @@
 import { $ } from '@wdio/globals' ;
-import { remote } from 'webdriverio';
 import assert from 'assert';
-
+import Subscription from '../pageobjects/BuyPremium.page.js'; 
 
 class LoginPage {
 
     // Get Function calling to return element
-
-    // Close Premium Screen
-    get preiumCloseBtn () 
-    {
-        return $('//android.widget.ImageButton[@content-desc="Close"]');
-    }
 
     get profiletab()
     {
@@ -62,11 +55,17 @@ class LoginPage {
     {
         return $('//android.widget.TextView[@text="Create an Account"]');
     }
-    // Calling Function to perform actions
-    async ClosePremiumScreen() 
+
+    get login_failed_text()
     {
-        await this.preiumCloseBtn.click();
+        return $('//android.widget.TextView[@content-desc="error-message"]');
     }
+
+    get error_ok_btn()
+    {
+        return $('//android.widget.Button[@content-desc="error-ok-button"]');
+    }
+    // Calling Function to perform actions
 
     async Profile_Tab()
     {
@@ -127,49 +126,98 @@ class LoginPage {
         await this.logout.click();
     }
 
-    async Login_Myzesty(expected_text_1, expected_text_2, username, password)
+    async Check_Login_btn_Enabled()
+    {
+        const isClickedable = (await this.loginbtn).isClickable();
+        if(!isClickedable)
+        {
+            console.log('Signin Button is not clickabled.')
+        }
+        else
+        {
+            console.log('Signin Buttton is clickable.')
+        }
+    }
+
+    async Check_Login_failed(expected_text_3)
+    {
+        (await this.login_failed_text).waitForDisplayed();
+        const actual_text_3 = await this.login_failed_text.getText();
+        assert.strictEqual(actual_text_3, expected_text_3, "Incorrect Email & Password verification failed.");
+
+    }
+
+    async Click_Error_Ok()
+    {
+        await this.error_ok_btn.click();
+    }
+
+
+
+    async Login_Myzesty(expected_text_1, expected_text_2, username, password, invalid_pass, expected_text_3)
     {
         await this.Login_Tab();
         await this.getSignin_text_1(expected_text_1);
         await this.getSignin_text_2(expected_text_2);
+        await this.Check_Login_btn_Enabled();
+        await this.Enter_Email(username);
+        await this.Check_Login_btn_Enabled();
+        await this.Enter_Password(password);
+        await this.Check_Login_btn_Enabled();
+        await this.Enter_Email(username);
+        await this.Enter_Password(invalid_pass);
+        await this.Login_Button();
+        await this.Check_Login_failed(expected_text_3)
+        await this.Click_Error_Ok();
         await this.Enter_Email(username);
         await this.Enter_Password(password);
         await this.Login_Button();
     }
 
-    async Logout_Myzesty(expected_text_1, expected_text_2, username, password)
+    async Logout_Myzesty(expected_text_1, expected_text_2, username, password, invalid_pass, expected_text_3)
     {
         await this.click_setting();
         await this.click_logout();
-        await this.ClosePremiumScreen();
         await this.Profile_Tab();
         await this.Login_Tab();
         await this.getSignin_text_1(expected_text_1);
         await this.getSignin_text_2(expected_text_2);
+        await this.Check_Login_btn_Enabled();
+        await this.Enter_Email(username);
+        await this.Check_Login_btn_Enabled()
+        await this.Enter_Password(password);
+        await this.Check_Login_btn_Enabled();
+        await this.Enter_Email(username);
+        await this.Enter_Password(invalid_pass);
+        await this.Login_Button();
+        await this.Check_Login_failed(expected_text_3);
+        await this.Click_Error_Ok()
         await this.Enter_Email(username);
         await this.Enter_Password(password);
+
         await this.Login_Button();
     }
 
-    async loginToMyZesty(expected_text_1, expected_text_2, username, password) 
+    async loginToMyZesty(expected_text_1, expected_text_2, username, password, invalid_pass,  expected_text_3) 
     {
         if(await this.create_account.isDisplayed())
         {
-            await this.Login_Myzesty(expected_text_1, expected_text_2, username, password);
+            await this.Login_Myzesty(expected_text_1, expected_text_2, username, password, invalid_pass, expected_text_3);
         }
 
         else if (await this.settiing.isDisplayed())
         {
-            await this.Logout_Myzesty(expected_text_1, expected_text_2, username, password);
+            await this.Logout_Myzesty(expected_text_1, expected_text_2, username, password, invalid_pass, expected_text_3);
         }
     }
    
 
-    async login (expected_text_1, expected_text_2, username, password ) 
+    async login (expected_text_1, expected_text_2, username, password, invalid_pass, expected_text_3) 
     {
-        await this.ClosePremiumScreen();
+        await Subscription.Check_Subscription('Processing');
+        // await this.ClosePremiumScreen();
         await this.Profile_Tab();
-        await this.loginToMyZesty(expected_text_1, expected_text_2, username, password);
+        await this.loginToMyZesty(expected_text_1, expected_text_2, username, password, invalid_pass, expected_text_3);
         // await this.Login_Button();
 
        

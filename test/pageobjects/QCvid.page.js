@@ -1,6 +1,5 @@
 import { $, browser } from '@wdio/globals' ;
-import CheckLoginPage from '../pageobjects/checklogin.page.js';
-import assert from 'assert';
+import Subscription from '../pageobjects/BuyPremium.page.js' ;
 
 class QC_Run_Video
 {
@@ -9,11 +8,6 @@ class QC_Run_Video
     {
         return $('//android.widget.ImageButton[@content-desc="Close"]');
     }
-
-    // get create()
-    // {
-    //     return $('//android.view.View[@content-desc="navi-edit-screen-button"]');
-    // }
 
     get QC()
     {
@@ -89,11 +83,6 @@ class QC_Run_Video
             console.log("Premium Screen not Displayed!")
         }
     }
-
-    // async click_create()
-    // {
-    //     await this.create.click();
-    // }
 
     async Try_QC()
     {
@@ -195,8 +184,7 @@ class QC_Run_Video
 
     async  Run_QC_Vid()
     {
-        await this.Close_Premium();
-        // await this.click_create();
+        await Subscription.Check_Subscription('Processing');
         await this.Try_QC();
         await this.select_video_tab();
         await this.Click_sort();
@@ -213,7 +201,6 @@ class QC_Run_Video
         await this.scrollScreenHorizontally(900, 100, 1900);
         await this.Filter_check2();
         await this.Click_export();
-        // await browser.pause(45000);
 
         
     }

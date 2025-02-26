@@ -1,5 +1,6 @@
 import { $ } from '@wdio/globals' ;
 import { assert } from 'chai' ;
+import Subscription from '../pageobjects/BuyPremium.page.js';
 
 class LandingScreen
 {
@@ -149,7 +150,8 @@ class LandingScreen
 
     async Run_LandingScreen()
     {
-        await this.Close_Premium();
+        await Subscription.Check_Subscription('Processing');
+        // await this.Close_Premium();
         await this.Edit_video();
         await this.Quick_Cut();
         await this.Edit_photo();
