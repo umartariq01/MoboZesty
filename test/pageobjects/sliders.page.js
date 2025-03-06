@@ -90,6 +90,7 @@ class Sliders
                     { type: 'pointerUp', button: 0 } // Release
                 ]
             }]);
+            await browser.pause(1000);
         }
     }
     

@@ -1,4 +1,5 @@
-
+import { Browser } from "puppeteer";
+import { $, browser } from '@wdio/globals' ;
 class Common_function
 {
 
@@ -100,31 +101,45 @@ class Common_function
     
         let progress = 0;
     
-        // Wait until the progress reaches 100% or matches the target text
         while (progress < 100) {
-            // Locate the element dynamically using a partial match
-            const progress_element = await $("//android.widget.TextView[contains(@text, 'Uploading Media')]");
-            const progressText = await progress_element.getText();
-            console.log(`Progress text: ${progressText}`);
+            try {
+                // Wait until the element appears (10 seconds max wait time)
+                await browser.waitUntil(async () => {
+                    return await $('//android.widget.TextView[contains(@text, "Uploading Media")]').isDisplayed();
+                }, {
+                    timeout: 10000,
+                    timeoutMsg: "Progress element did not appear within 10 seconds."
+                });
     
-            // Check if progress text matches the expected completion text
-            if (progressText.trim() >= "Uploading Media  (95%)...") {
-                console.log("Upload is about to complete!");
-                break;
+                // Dynamically locate the element
+                const progress_element = await $('//android.widget.TextView[contains(@text, "Uploading Media")]');
+                const progressText = await progress_element.getText();
+                console.log(`Progress text: ${progressText}`);
+    
+                // Break if progress reaches 95% or more
+                if (progressText.includes("95%") || progressText.includes("100%")) {
+                    console.log("Upload is about to complete!");
+                    await browser.pause(5000);
+                    break;
+                }
+    
+                // Extract progress percentage from the text
+                const match = progressText.match(/(\d+)%/);
+                if (match) {
+                    progress = parseInt(match[1], 10);
+                    console.log(`Current progress: ${progress}%`);
+                }
+    
+            } catch (error) {
+                console.warn("Warning: Progress element not found. Retrying...");
             }
     
-            // Parse the progress percentage from the text (if applicable)
-            const match = progressText.match(/(\d+)%/);
-            if (match) {
-                progress = parseInt(match[1], 10);
-                console.log(`Current progress: ${progress}%`);
-            }
-    
-            await browser.pause(1000);
+            await browser.pause(1000); // Short pause before the next check
         }
     
         console.log("Media uploaded successfully.");
     }
+    
 
     async play_pause(selector) 
     {

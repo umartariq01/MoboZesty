@@ -149,7 +149,16 @@ class CheckLoginPage {
 
     }
 
+    async Simple_Login()
+    {
+        const username = 'umart4767@gmail.com' ;
+        const password = 'Myzesty123';
+
+        await this.Enter_Email(username);
+        await this.Enter_Password(password);
+        await this.Login_Button();
+    }
+
 }
 
-// module.exports = new LoginPage();
 export default new CheckLoginPage ();

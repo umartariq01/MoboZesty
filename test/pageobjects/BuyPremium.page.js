@@ -1,4 +1,4 @@
-
+import { $, browser } from '@wdio/globals' ;
 import assert from "assert";
 class Subscription
 {
@@ -32,10 +32,12 @@ class Subscription
         if(isvisible)
         {
             await this.Buy_Subscription(expected_text);
+            await browser.pause(2000);
         }
         else if(pro_visible)
         {
             await this.Pro.click();
+            await browser.pause(2000);
             await this.Buy_Subscription(expected_text);
         }
         else

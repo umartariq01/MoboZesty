@@ -133,6 +133,22 @@ class Share
         assert.strictEqual(actual_text, expected_text, "Upload colloection text not verified!")
 
     }
+
+    // async upload_confirm(expected_text)
+    // {
+    //     await browser.waitUntil (async () => {
+    //         await this.upload_text.waitForDisplayed({timeout:5000});
+    //         const actual_text = await this.upload_text.getText();
+    //         return actual_text == expected_text ;
+    //     },{
+    //         timeout : 20000,
+    //         interval: 1000,
+    //         timeoutMsg: "Upload collection text not verified within the expected time!"
+    //     });
+
+    //     console.log("Upload collection text verified successfully!");
+    // }
+
     // ================ Main Function ======================
     async sharemedia(text1, text2, expected_text)
     {
@@ -152,6 +168,7 @@ class Share
         await this.click_media_3();
         await this.Done_Btn();
         await this.post_btn_click();
+        await browser.pause(20000);
         // await Common_function.Check_Upload_progress();
         // await this.upload_confirm(expected_text);
 
