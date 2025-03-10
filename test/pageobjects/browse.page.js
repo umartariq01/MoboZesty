@@ -197,6 +197,28 @@ class Browse
         return $('//android.widget.TextView[@text="Yes"]');
     }
 
+    // ================================== Verify user Followed or Not ==========================================
+
+    get follow()
+    {
+        return $('(//android.view.ViewGroup[@content-desc="feed-screen-username, feed-screen-created-date, feed-screen-views"])[1]/android.view.ViewGroup[2]/android.widget.TextView[2]'); // Follow
+    }
+
+    get profile_user_name()
+    {
+        return $('//android.widget.TextView[@content-desc="username-text"]');
+    }
+
+    get following()
+    {
+        return $('//android.widget.TextView[@content-desc="my-profile-following"]');
+    }
+
+    get following_user()
+    {
+        return $('(//android.widget.TextView[@text="Following"])[1]');
+    }
+
 
     //=======================================================================================
 
@@ -212,7 +234,7 @@ class Browse
 
         await this.Refresh_Page();
         await browser.pause(2000);
-        await Sliders.scrollScreen(500, 2000, 500, 300, 2);
+        await Sliders.scrollScreen(500, 2000, 500, 300);
 
     }
 
@@ -528,7 +550,6 @@ class Browse
             console.log("Users do not match. Refreshing...");
             await this.Refresh_Page(); // Ensure refreshPage() is defined
             attempts++;
-    
             // Optional: Add a small delay between retries to avoid rapid refreshing
             await browser.pause(4000);
         }
@@ -631,8 +652,39 @@ class Browse
         await this.tapScreen(540,812);
         await this.Verify_Loggedout_Browse();
         await Sliders.scrollScreen(500, 2000, 500, 300, 4); // Scroll bottom to top
+        
+        // await this.Play_Pause_Video();
         await browser.pause(3000);
         await Sliders.scrollScreen(500, 300, 500, 2000, 2); // Scroll top to bottom
+    }
+
+    get video_play()
+    {
+        return $('(//android.widget.Button[@content-desc="function toLowerCase() { [native code] }-button"])[3]');
+    }
+
+    get play_icon()
+    {
+        return $('//android.widget.ImageView[@content-desc="video-screen-content"]/android.view.ViewGroup/android.view.ViewGroup/android.widget.ImageView');
+    }
+
+    async Play_Pause_Video()
+    {
+        while(!await this.video_play.isDisplayed())
+        {
+            await Sliders.scrollScreen(500, 2000, 500, 300)
+        }
+        await this.video_play.click()
+
+        const iconVisible = await this.play_icon.isDisplayed();
+        if(iconVisible)
+        {
+            await this.play_icon.click();
+        }
+        else
+        {
+            console.log("There is no video to play.")
+        }
     }
 
     async Login_Browse(expected_value, expected_value_1, expected_value_2, expected_collection, expected_media, expected_delete)
@@ -665,11 +717,11 @@ class Browse
 
     }
 
-    // ...... Verify delete Collection .....
+    // ...... Verify delete Collection .....(Main Function)
 
     async Verify_Delete_Collection(expected_delete_text, expected_report_msg)
     {
-        await Share.sharemedia("New Collection", "This is description", "Uploading completed successfully");
+        await Share.Simple_Share_Media();
         await browser.pause(1000);
         await this.Verify_User_to_Delete_Collection();
         await this.option_btn_click();
@@ -687,34 +739,6 @@ class Browse
         await this.Verify_Block_User();
 
     }
-
-    // ...... Verify user Followed or Not ......
-
-    get follow()
-    {
-        return $('(//android.view.ViewGroup[@content-desc="feed-screen-username, feed-screen-created-date, feed-screen-views"])[1]/android.view.ViewGroup[2]/android.widget.TextView[2]'); // Follow
-    }
-
-    get profile_user_name()
-    {
-        return $('//android.widget.TextView[@content-desc="username-text"]');
-    }
-
-    get following()
-    {
-        return $('//android.widget.TextView[@content-desc="my-profile-following"]');
-    }
-
-    // get following_list()
-    // {
-    //     return $('//android.widget.ScrollView/android.view.ViewGroup');
-    // }
-
-    get following_user()
-    {
-        return $('(//android.widget.TextView[@text="Following"])[1]');
-    }
-
 
 
     async Check_Follow()
@@ -838,11 +862,6 @@ class Browse
     }
     
 
-    async get_browse_Username()
-    {
-        await this.browse_user_name.getText();
-    }
-
     // To confirm wether the user is followed or not by me.
     async Confirm_Followed_User()
     {
@@ -852,7 +871,7 @@ class Browse
         await this.Assert_User();
     }
 
-    // To confirm wether user is unfollowed or not.
+    // To confirm wether user is unfollowed or not by me.
     async Confirm_Unfollowed_User()
     {
         await this.Profile_Tab();
@@ -861,6 +880,7 @@ class Browse
         await this.Assert_User_Unfollowed();
     }
 
+    // Function to check wether User is followed or not.(Main Function)
     async Verify_User_Follow()
     {
         await Sliders.scrollScreen(500, 300, 500, 2000, 1);

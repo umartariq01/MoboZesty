@@ -573,6 +573,20 @@ class Sliders
             }]);
         
     }
+
+     async Refresh_Page() {
+            await driver.performActions([{
+                type: 'pointer',
+                id: 'finger1',
+                parameters: { pointerType: 'touch' },
+                actions: [
+                    { type: 'pointerMove', duration: 0, x: 500, y: 222 },  // Start point
+                    { type: 'pointerDown', button: 0 },                    // Touch down
+                    { type: 'pointerMove', duration: 1000, x: 500, y: 1932 }, // Swipe down
+                    { type: 'pointerUp', button: 0 }                       // Release touch
+                ]
+            }]);
+        }
         
 
    
