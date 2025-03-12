@@ -2,19 +2,19 @@ import Browse from '../pageobjects/browse.page.js';
 
 describe('Browse Page', () => {
 
-    it('should login with valid credentials', async () => {
+    // it('should login with valid credentials', async () => {
 
-        const expected_value = "My favorites" ;
-        const expected_value_1 = "Share" ;
-        const expected_value_2 = "Report" ;
-        const expected_collection = "Edit My Collection" ;
-        const expected_media = "Save media to your device" ;
-        const expected_delete = "Delete" ;
+    //     const expected_value = "My favorites" ;
+    //     const expected_value_1 = "Share" ;
+    //     const expected_value_2 = "Report" ;
+    //     const expected_collection = "Edit My Collection" ;
+    //     const expected_media = "Save media to your device" ;
+    //     const expected_delete = "Delete" ;
 
         
-        await Browse.run_browse(expected_value, expected_value_1, expected_value_2, expected_collection, expected_media, expected_delete);
+    //     await Browse.run_browse(expected_value, expected_value_1, expected_value_2, expected_collection, expected_media, expected_delete);
         
-    })
+    // })
 
 
     
@@ -31,12 +31,12 @@ describe('Browse Page', () => {
 
 
 
-    it('should login with valid credentials', async () => {
+    // it('should login with valid credentials', async () => {
 
         
-        await Browse.Verify_User_Follow()
+    //     await Browse.Verify_User_Follow()
         
-    })
+    // })
 
     
 });

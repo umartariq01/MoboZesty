@@ -32,7 +32,8 @@
   "bokeh": "wdio run ./wdio.conf.js --spec test.bokeh.js",  
   "bokehtemp": "wdio run ./wdio.conf.js --spec test.bokehtemp.js",  
   "removebg": "wdio run ./wdio.conf.js --spec test.removebg.js", 
-  "slideshow": "wdio run ./wdio.conf.js --spec test.slideshow.js"
+  "slideshow": "wdio run ./wdio.conf.js --spec test.slideshow.js",
+  "videditor": "wdio run ./wdio.conf.js --spec test.videoeditor.js"
   
   },
   

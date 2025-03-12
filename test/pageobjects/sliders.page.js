@@ -77,7 +77,7 @@ class Sliders
     //         await browser.releaseActions();
     //     }
 
-    async scrollScreen(startX, startY, endX, endY, repetitions=1, duration = 1000) {
+    async scrollScreen(startX, startY, endX, endY, duration = 1000, repetitions=1) {
         for (let i = 0; i < repetitions; i++) { // Loop based on the repetitions parameter
             await browser.performActions([{
                 type: 'pointer',
