@@ -166,6 +166,68 @@ class Common_function
             console.error("Error while tapping the element:", error);
         }
     }
+
+
+    get export_progress()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/progress_perc"]');
+    }
+    async Check_export_progress() {
+        console.log("Checking export progress...");
+    
+        let progress = 0;
+    
+        // Wait until the progress reaches 100%
+        while (progress < 100) {
+            // Get the text of the progress bar
+            const progressText = await this.export_progress.getText();
+    
+            // Parse the progress percentage from the text
+            progress = parseInt(progressText.replace('%', ''), 10);
+            console.log(`Current progress: ${progress}%`);
+    
+            // Break if the progress reaches 100%
+            if (progressText >= 100) {
+                console.log("Export is complete!");
+                break;
+            }
+    
+            await browser.pause(1000);
+        }
+    
+        console.log("Video successfully exported!");
+    }
+
+    get uploading()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/progress_perc"]')
+    }
+
+    async Check_Upload_progress() {
+        console.log("Checking uploading progress...");
+    
+        let upload_progress = 0;
+    
+        // Wait until the progress reaches 100%
+        while (upload_progress < 100) {
+            // Get the text of the progress bar
+            const progressText = await this.uploading.getText();
+    
+            // Parse the progress percentage from the text
+            progress = parseInt(progressText.replace('%', ''), 10);
+            console.log(`Current progress: ${upload_progress}%`);
+    
+            // Break if the progress reaches 100%
+            if (progressText >= 100) {
+                upload_progress.log("Export is complete!");
+                break;
+            }
+    
+            await browser.pause(1000);
+        }
+    
+        console.log("Video successfully exported!");
+    }
     
     
 }
