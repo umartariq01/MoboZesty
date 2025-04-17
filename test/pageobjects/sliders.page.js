@@ -90,7 +90,9 @@ class Sliders
                     { type: 'pointerUp', button: 0 } // Release
                 ]
             }]);
-            await browser.pause(1000);
+            await browser.pause(500); // Give time for the action to complete
+            await browser.releaseActions();
+            await browser.pause(500);
         }
     }
     
@@ -207,6 +209,7 @@ class Sliders
 
 
             // Function to stretch the text, sticket or effects 
+            //  Need to add average of bounds
     async dragSliderWithBounds(sliderXpath, dragDistance, sliderBounds) {
                 // Locate the slider element using XPath
                 const sliderElement = await $(sliderXpath);
@@ -343,6 +346,11 @@ class Sliders
     {
         return $('//androidx.recyclerview.widget.RecyclerView[@resource-id="com.myzesty:id/music_categories"]/android.view.ViewGroup[3]');
     }
+
+    get apply_music()
+    {
+        return $('(//android.widget.ImageView[@resource-id="com.myzesty:id/done"])[2]');
+    }
               
 
     async Music_tab_Click() 
@@ -367,7 +375,7 @@ class Sliders
         
                 if (audio_visible) {
                     console.log("Audio is visible in the Music tab.");
-                    await this.audioFX_Song_1.click()
+                    await this.audioFX_Song_1.click();
                 }
             }
         
@@ -398,6 +406,7 @@ class Sliders
                             timeout: 15000, // Adjust the timeout based on your app's expected download time
                             timeoutMsg: "Song download did not complete within the expected time."
                         }
+
                     ).catch(() => false);
         
                     if (downloadComplete) {

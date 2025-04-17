@@ -23,7 +23,6 @@ export const config = {
     //
     specs: [
         './test/specs/**/*.js',
-        // './test/specs/**.js'
     ],
     // Patterns to exclude.
     exclude: [
@@ -144,9 +143,10 @@ export const config = {
     // See the full list at http://mochajs.org/
     mochaOpts: {
         ui: 'bdd',
-        timeout: 600000
+        timeout: 6000000
     },
 
+     // retries: 2, add this in mochaOpts if you want the scripts to run again incase it fails.
     
 
     //

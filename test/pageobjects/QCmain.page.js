@@ -1,6 +1,7 @@
 import { $, browser } from '@wdio/globals' ;
 import Subscription from '../pageobjects/BuyPremium.page.js' ;
 import Sliders from '../pageobjects/sliders.page.js';
+import Common_function from '../pageobjects/commonfun.page.js';
 
 class QC_Main
 {
@@ -32,12 +33,12 @@ class QC_Main
 
     get vid1()
     {
-        return $('(//android.view.View[@resource-id="com.myzesty:id/hover"])[1]');
+        return $('(//android.view.View[@resource-id="com.myzesty:id/hover"])[4]');
     }
 
     get vid2()
     {
-        return $('(//android.view.View[@resource-id="com.myzesty:id/hover"])[2]');
+        return $('(//android.view.View[@resource-id="com.myzesty:id/hover"])[5]');
     }
 
     get done()
@@ -203,6 +204,7 @@ class QC_Main
         await  this.Select_vid1();
         // await this.Select_vid2();
         await this.Click_done();
+        await Common_function.waitForElementToDisappear('//android.widget.TextView[@resource-id="com.myzesty:id/trans_label"]');
         await this.Filter_check2();
         await Sliders.play_pause(539, 1422);
         await this.Filter_check3();

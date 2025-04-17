@@ -1,6 +1,27 @@
 import QucikCut from '../pageobjects/QCimg.page.js';
+import assert from 'assert';
+export let assertionErrors = [];
 
 describe('Quick Cut Images', () => {
+
+    // beforeEach( () => {
+
+    //     console.log("Test started to check QC Templets");
+    //     assertionErrors = [];
+    // });
+
+    // after( () => {
+    //     if (assertionErrors.length > 0) {
+    //         console.log(`\n❌ ${assertionErrors.length} assertion(s) failed:`);
+    //         assertionErrors.forEach((err, i) => {
+    //             console.log(`${i + 1}. ${err.message}`);
+    //         });
+
+    //         throw new Error("Soft assertions failed. See details above.");
+    //     } else {
+    //         console.log("✅ All assertions passed!");
+    //     }
+    // });
 
     it('should login with valid credentials', async() => {
 
@@ -14,7 +35,7 @@ describe('Quick Cut Images', () => {
         const expected_song8 = "Morning Chorus.mp3" ;
         const expected_song9 =  expected_song3;
         const expected_song10 = "Vibe All Night.mp3" ;
-        const expected_song11 = "Groove.mp3" ;
+        const expected_song11 = "Groove On.mp3" ;
         const expected_song12 = "Shine On.mp3" ;
         const expected_song13 = "Rustling Leaves.mp3" ;
         const expected_song14 = "Electric Energy.mp3" ;

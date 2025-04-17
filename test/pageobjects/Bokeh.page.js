@@ -81,6 +81,8 @@ class Verify_Bokeh_templet
     }
 
 //=============================================================================================================================
+
+// This function process all the bokeh effects. It finds the filters and oush then into array then click on it. After 6th scroll it will check if the filter appears, it clicks on it.
 async processAllEffects() {
     try {
         let moreEffects = true;

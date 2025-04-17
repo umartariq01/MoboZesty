@@ -66,11 +66,11 @@ class Slideshow
 
     get vid1()
     {
-        return $('(//android.view.View[@resource-id="com.myzesty:id/hover"])[1]');
+        return $('(//android.view.View[@resource-id="com.myzesty:id/hover"])[4]');
     }
     get vid2()
     {
-        return $('(//android.view.View[@resource-id="com.myzesty:id/hover"])[2]');
+        return $('(//android.view.View[@resource-id="com.myzesty:id/hover"])[5]');
     }
 
     async Select_Videos()
@@ -105,7 +105,7 @@ class Slideshow
 
     get dlt_media()
     {
-        return $('//android.widget.ImageView[@resource-id="com.myzesty:id/delete_video"]');
+        return $('//android.widget.ImageView[@resource-id="com.myzesty:id/add_video"]');
     }
 
     async Click_Dlt_Media()
@@ -362,6 +362,16 @@ class Slideshow
         await this.library_song1.click();
     }
 
+    get media1_1()
+    {
+        return $('(//android.widget.ImageView[@resource-id="com.myzesty:id/imageView"])[1]');
+    }
+
+    async Select_Media_1()
+    {
+        (await this.media1_1).click();
+    }
+
 
 
     // ----------------------- Main Function ----------------------
@@ -377,10 +387,15 @@ class Slideshow
         Sliders.scrollScreen(500, 400, 500, 1700);
         await this.Select_Videos();
         await this.Click_Done();
+        await Common_function.waitForElementToDisappear('//android.widget.TextView[@resource-id="com.myzesty:id/trans_label"]');
         await browser.pause(5000);
-        await Sliders.play_pause(539, 1422);
-
+        await Promise.all([
+            await Sliders.play_pause(539, 1422)
+        ])
+        // await Sliders.play_pause(539, 1422);
+        
         await Sliders.Drag_Drop(driver, 798, 1743, 307, 1743);
+        await this.Select_Media_1();
         await this.Click_Dlt_Media();
         await this.Click_Add_Media();
         await this.select_img_tab();

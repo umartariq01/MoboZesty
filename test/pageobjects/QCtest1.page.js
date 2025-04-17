@@ -4,6 +4,7 @@ import Sliders from '../pageobjects/sliders.page.js';
 import  Subscription from '../pageobjects/BuyPremium.page.js';
 
 
+
 class Adv_test1
 {
     get preiumCloseBtn () 
@@ -53,12 +54,12 @@ class Adv_test1
 
     get vid1()
     {
-        return $('(//android.view.View[@resource-id="com.myzesty:id/hover"])[1]');
+        return $('(//android.view.View[@resource-id="com.myzesty:id/hover"])[4]');
     }
 
     get vid2()
     {
-        return $('(//android.view.View[@resource-id="com.myzesty:id/hover"])[2]');
+        return $('(//android.view.View[@resource-id="com.myzesty:id/hover"])[5]');
     }
 
     get vid7()

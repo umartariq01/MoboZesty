@@ -228,6 +228,17 @@ class Common_function
     
         console.log("Video successfully exported!");
     }
+
+    async waitForElementToDisappear(xpath, timeout = 15000) {
+        const element = await $(xpath);
+    
+        await browser.waitUntil(async () => {
+            return !(await element.isDisplayed()); // Wait until the element is NOT displayed
+        }, {
+            timeout: timeout, // Maximum wait time (default 15 seconds)
+            timeoutMsg: `Element with XPath "${xpath}" is still visible after ${timeout / 1000} seconds`
+        });
+    }
     
     
 }

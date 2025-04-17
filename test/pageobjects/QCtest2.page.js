@@ -19,12 +19,12 @@ class Adv_test2
 
     get vid1()
     {
-        return $('(//android.view.View[@resource-id="com.myzesty:id/hover"])[1]');
+        return $('(//android.view.View[@resource-id="com.myzesty:id/hover"])[4]');
     }
 
     get vid2()
     {
-        return $('(//android.view.View[@resource-id="com.myzesty:id/hover"])[2]');
+        return $('(//android.view.View[@resource-id="com.myzesty:id/hover"])[4]');
     }
 
     get vid7()
@@ -352,7 +352,7 @@ class Adv_test2
 
         await this.select_video_tab();
         await this.click_sort();
-        await Sliders.scrollScreen(500, 400, 500, 2200);
+        await Sliders.scrollScreen(500, 400, 500, 2200, 500);
         await  this.Select_vid1();
         await this.Select_vid2();
         await this.Select_vid7();

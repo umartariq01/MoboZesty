@@ -1,5 +1,6 @@
 import { $, browser, driver } from '@wdio/globals' ;
-
+import assert from "assert";
+import Sliders from '../pageobjects/sliders.page.js';
 
 class QC_Edit
 {
@@ -40,12 +41,12 @@ class QC_Edit
 
     get vid1()
     {
-        return $('(//android.view.View[@resource-id="com.myzesty:id/hover"])[1]');
+        return $('(//android.view.View[@resource-id="com.myzesty:id/hover"])[4]');
     }
 
     get vid2()
     {
-        return $('(//android.view.View[@resource-id="com.myzesty:id/hover"])[2]');
+        return $('(//android.view.View[@resource-id="com.myzesty:id/hover"])[5]');
     }
 
     get done()
@@ -60,17 +61,17 @@ class QC_Edit
 
     get filter2()
     {
-        return $('(//android.widget.ImageView[@resource-id="com.myzesty:id/imageView"])[2]');
+        return $('(//android.widget.ImageView[@resource-id="com.myzesty:id/image_view"])[2]');
     }
 
     get filter3()
     {
-        return $('(//android.widget.ImageView[@resource-id="com.myzesty:id/imageView"])[3]') ;
+        return $('(//android.widget.ImageView[@resource-id="com.myzesty:id/image_view"])[3]') ;
     }
 
     get filter4()
     {
-        return $('(//android.widget.ImageView[@resource-id="com.myzesty:id/imageView"])[4]') ;
+        return $('(//android.widget.ImageView[@resource-id="com.myzesty:id/image_view"])[4]') ;
     }
 
     get sort()
@@ -102,7 +103,7 @@ class QC_Edit
 
     get edit()
     {
-        return $('//android.widget.TextView[@resource-id="com.myzesty:id/tvEdit"]');
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/tv_edit"]');
     }
 
     get sort_img1()
@@ -147,7 +148,7 @@ class QC_Edit
 
     get sound_replace()
     {
-        return $('//android.widget.ImageView[@resource-id="com.myzesty:id/btnReplaceAudio"]');
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/tvLabel"]');
     }
 
     get audioFX()
@@ -175,6 +176,22 @@ class QC_Edit
         return $('(//android.widget.ImageView[@resource-id="com.google.android.documentsui:id/icon_thumb"])[1]');
     }
 
+    get wizard_popup()
+    {
+        return $('//android.widget.FrameLayout[@resource-id="com.myzesty:id/done"]');
+    }
+
+    get help_text_btn()
+    {
+        return $('//android.widget.ImageView[@resource-id="com.myzesty:id/adding_rearrange_dialog_help_icon"]');
+    }
+
+    get help_text()
+    {
+        return $('//android.widget.TextView[@text="Press, hold, and drag your media to change its placement."]');
+    }
+
+
     //=========================================================================
 
 
@@ -195,6 +212,34 @@ class QC_Edit
     async Try_QC()
     {
         await this.QC.click();
+    }
+
+    async Verify_Help_Me_Text()
+    {
+        await this.help_text_btn.click();
+        const Help_Text_Visible = await this.help_text.isDisplayed();
+        if(Help_Text_Visible)
+        {
+            const actual_text = await this.help_text.getText();
+            assert.strictEqual(actual_text, 'Press, hold, and drag your media to change its placement.', "Help text not verified.");
+        }
+        else{
+            console.log("Help text not visible.");
+        }
+
+    }
+
+    async Click_Wizard_Popup()
+    {
+        const wizard_Visible = await (await this.wizard_popup).isDisplayed();
+        if(wizard_Visible)
+        {
+            (await this.wizard_popup).click();
+        }
+        else{
+            console.log("Wizard Popup not Visible.");
+        }
+        
     }
 
     async select_img_tab()
@@ -592,12 +637,14 @@ class QC_Edit
 
     // ========= Main Function =======
 
+    // This function selects media, replace media, adjust video sound, change music & check filters and then export video.
+
     async Edit_Run()
     {
 
         await this.Close_Premium();
         await this.Try_QC();
-
+        await this.Click_Wizard_Popup();
         await this.select_img_tab();
         await this.select_img1();
         await this.select_img2();
@@ -610,15 +657,22 @@ class QC_Edit
 
         await this.Click_done();
         await browser.pause(5000);
-        // await this.Slider(driver, 18, 1062, 1494, 1546, 0.3)
+        await this.Slider(driver, 18, 1062, 1494, 1546, 0.3);
+        await browser.pause(700);
+        await this.Filter_check3();
+
         await this.click_edit();
         await this.click_sort_img1()
         await this.Replace_img();
         await this.select_img_tab();
         await this.select_img5();
         await this.Click_done();
+        await this.Verify_Help_Me_Text();
+        await Sliders.tapScreen(500, 1510);
+        
 
-        // Repplace sound
+
+        // Replace sound
         await this.Edit_back();
         await browser.pause(500);
         await this.Click_sound_replace();
@@ -651,10 +705,14 @@ class QC_Edit
 
 
         await this.Filter_check2();
-        await browser.pause(5000)
+        await browser.pause(3000)
+        await Sliders.play_pause(534, 1422)
         await this.Filter_check3();
-        await browser.pause(5000);
+        await browser.pause(3000);
+        await Sliders.play_pause(534, 1422)
         await this.Filter_check4();
+        await browser.pause(3000);
+        await Sliders.play_pause(534, 1422)
 
         await this.click_resolution();
         await this.Cancel_resolution();
