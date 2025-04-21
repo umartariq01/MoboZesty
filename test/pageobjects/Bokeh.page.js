@@ -262,22 +262,52 @@ async processAllEffects() {
 
     //--------- Main Function -----------
 
-    async Run_Bokeh_temp()
-    {
-        await Subscription.Check_Subscription('Processing');
-        await this.Try_Bokeh();
-        await this.Select_img1();
-        await this.Click_cancell_editing();
-        await this.Click_cancell_editing();
-        await browser.pause(500);
-        await this.Select_img1();
-        await this.processAllEffects();
-        await this.longPressCompareButton(); 
-        await this.Click_done();
-        await this.Click_Save();
-        await this.Click_export_done();
+    // async Run_Bokeh_temp()
+    // {
+    //     await Subscription.Check_Subscription('Processing');
+    //     await this.Try_Bokeh();
+    //     await this.Select_img1();
+    //     await this.Click_cancell_editing();
+    //     await this.Click_cancell_editing();
+    //     await browser.pause(500);
+    //     await this.Select_img1();
+    //     await this.processAllEffects();
+    //     await this.longPressCompareButton(); 
+    //     await this.Click_done();
+    //     await this.Click_Save();
+    //     await this.Click_export_done();
         
+    // }
+
+    async Run_Bokeh_temp() {
+        const steps = [
+            { name: 'Check Subscription', fn: async () => await Subscription.Check_Subscription('Processing') },
+            { name: 'Try Bokeh', fn: async () => await this.Try_Bokeh() },
+            { name: 'Select Image 1', fn: async () => await this.Select_img1() },
+            { name: 'Click Cancel Editing', fn: async () => await this.Click_cancell_editing() },
+            { name: 'Click Cancel Editing 2nd time', fn: async () => await this.Click_cancell_editing() },
+            // await new Promise(resolve => setTimeout(resolve, 2000)),
+            { name: 'Wait for 2 seconds', fn: async () => await new Promise(resolve => setTimeout(resolve, 2000)) },
+            { name: 'Select Image 1 again', fn: async () => await this.Select_img1() },
+            { name: 'Process All Effects', fn: async () => await this.processAllEffects() },
+            { name: 'Long Press Compare Button', fn: async () => await this.longPressCompareButton() },
+            { name: 'Click Done', fn: async () => await this.Click_done() },
+            { name: 'Click Save', fn: async () => await this.Click_Save() },
+            { name: 'Click Export Done', fn: async () => await this.Click_export_done() }
+        ];
+    
+        for (const step of steps) {
+            try {
+                console.log(`  → Starting: ${step.name}`);
+                await step.fn();
+                console.log(`  ✅ Passed: ${step.name}`);
+            } catch (err) {
+                console.error(`  ❌ Failed: ${step.name}`);
+                throw err;
+            }
+        }
     }
+    
 
 
 

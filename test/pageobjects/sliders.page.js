@@ -583,7 +583,7 @@ class Sliders
         
     }
 
-     async Refresh_Page() {
+    async Refresh_Page() {
             await driver.performActions([{
                 type: 'pointer',
                 id: 'finger1',
@@ -595,6 +595,22 @@ class Sliders
                     { type: 'pointerUp', button: 0 }                       // Release touch
                 ]
             }]);
+        }
+
+    async scrollScreenHorizontally(startX, endX, y, duration = 1000) {
+            // Horizontal swipe: startX -> endX at a fixed vertical position (y)
+            await browser.performActions([{
+                type: 'pointer',
+                id: 'finger1',
+                parameters: { pointerType: 'touch' },
+                actions: [
+                    { type: 'pointerMove', duration: 0, x: startX, y: y }, // Move to the starting horizontal position
+                    { type: 'pointerDown', button: 0 }, // Press down
+                    { type: 'pointerMove', duration: duration, x: endX, y: y }, // Slide horizontally to the end position
+                    { type: 'pointerUp', button: 0 } // Release
+                ]
+            }]);
+            await browser.releaseActions();
         }
         
 

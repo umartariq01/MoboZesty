@@ -14,7 +14,7 @@ class Video_Editor
     {
         return $('//android.view.ViewGroup[@content-desc="Edit, Video"]/android.view.ViewGroup/android.view.View');
     }
-
+    
     async Click_Video_Editor()
     {
         await this.edit_video.click();
@@ -34,7 +34,7 @@ class Video_Editor
     {
         return $('//android.widget.FrameLayout[@resource-id="com.myzesty:id/done"]')
     }
-
+    
     async Click_Done()
     {
         await this.done.click();
@@ -128,15 +128,6 @@ class Video_Editor
         (await this.close_editing).click();
     }
 
-    get close_draft()
-    {
-        return  $('//android.widget.ImageView[@resource-id="com.myzesty:id/close_base_view"]');
-    }
-
-    async Click_Close_Draft()
-    {
-        (await this.close_draft).click();
-    }
 
     // ================================================================================================================
 
@@ -410,7 +401,7 @@ class Video_Editor
 
     get apply_to_all()
     {
-        return $('//android.widget.TextView[@resource-id="com.myzesty:id/btnApplyToAll"]');
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/btn_apply_to_all"]');
     }
 
     async Click_Apply_All()
@@ -753,137 +744,211 @@ class Video_Editor
     }
 
     // Verify all Effects category.
-    async Verify_Effects()
-    {
-        const zoom_Visible = await (await this.zoom).isDisplayed();
-        if(zoom_Visible){
-            (await this.zoom).click();
-            await this.Apply_all_Effects();
-        }
-        else{
-            console.log("Zoom category not visible.");
-        }
+    // async Verify_Effects()
+    // {
+    //     const zoom_Visible = await (await this.zoom).isDisplayed();
+    //     if(zoom_Visible){
+    //         (await this.zoom).click();
+    //         await this.Apply_all_Effects();
+    //     }
+    //     else{
+    //         console.log("Zoom category not visible.");
+    //     }
 
-        const cinematic_Visible = await (await this.cinematic).isDisplayed();
-        if(cinematic_Visible){
-            (await this.cinematic).click();
-            await this.Apply_all_Effects();
-        }
-        else{
-            console.log("Cinematic category not visible.");
-        }
+    //     const cinematic_Visible = await (await this.cinematic).isDisplayed();
+    //     if(cinematic_Visible){
+    //         (await this.cinematic).click();
+    //         await this.Apply_all_Effects();
+    //     }
+    //     else{
+    //         console.log("Cinematic category not visible.");
+    //     }
 
-        const magnify_Visible = await (await this.magnify).isDisplayed();
-        if(magnify_Visible){
-            (await this.magnify).click();
-            await this.Apply_all_Effects();
-        }
-        else{
-            console.log("Magnify category not visible.")
-        }
+    //     const magnify_Visible = await (await this.magnify).isDisplayed();
+    //     if(magnify_Visible){
+    //         (await this.magnify).click();
+    //         await this.Apply_all_Effects();
+    //     }
+    //     else{
+    //         console.log("Magnify category not visible.")
+    //     }
 
-        const distort_Visible = await (await this.distort).isDisplayed();
-        if(distort_Visible){
-            (await this.distort).click();
-            await this.Apply_all_Effects();
-        }
-        else{
-            console.log("Distort category not visible.");
-        }
+    //     const distort_Visible = await (await this.distort).isDisplayed();
+    //     if(distort_Visible){
+    //         (await this.distort).click();
+    //         await this.Apply_all_Effects();
+    //     }
+    //     else{
+    //         console.log("Distort category not visible.");
+    //     }
 
-        const glitz_Visible = await (await this.glitz).isDisplayed();
-        if(glitz_Visible){
-            (await this.glitz).click();
-            await this.Apply_all_Effects();
-        }
-        else{
-            console.log("Glitz category not visible.");
-        }
+    //     const glitz_Visible = await (await this.glitz).isDisplayed();
+    //     if(glitz_Visible){
+    //         (await this.glitz).click();
+    //         await this.Apply_all_Effects();
+    //     }
+    //     else{
+    //         console.log("Glitz category not visible.");
+    //     }
 
-        const intro_Visible = await (await this.intro).isDisplayed();
-        if(intro_Visible){
-            (await this.intro).click();
-            await this.Apply_all_Effects();
-        }
-        else{
-            console.log("Intro category not visible.");
-        }
+    //     const intro_Visible = await (await this.intro).isDisplayed();
+    //     if(intro_Visible){
+    //         (await this.intro).click();
+    //         await this.Apply_all_Effects();
+    //     }
+    //     else{
+    //         console.log("Intro category not visible.");
+    //     }
 
-        const mirror_Visible = await (await this.mirror).isDisplayed();
-        if(mirror_Visible){
-            (await this.mirror).click();
-            await this.Apply_all_Effects();
-        }
-        else{
-            console.log("Mirror category not visible.");
-        }
+    //     const mirror_Visible = await (await this.mirror).isDisplayed();
+    //     if(mirror_Visible){
+    //         (await this.mirror).click();
+    //         await this.Apply_all_Effects();
+    //     }
+    //     else{
+    //         console.log("Mirror category not visible.");
+    //     }
 
-        const neon_Visible = await (await this.neon).isDisplayed();
-        if(neon_Visible){
-            (await this.neon).click();
-            await this.Apply_all_Effects();
-        }
-        else{
-            console.log("Neon category not visible.");
-        }
+    //     const neon_Visible = await (await this.neon).isDisplayed();
+    //     if(neon_Visible){
+    //         (await this.neon).click();
+    //         await this.Apply_all_Effects();
+    //     }
+    //     else{
+    //         console.log("Neon category not visible.");
+    //     }
 
-        const light_Visible = await (await this.light).isDisplayed();
-        if(light_Visible){
-            (await this.light).click();
-            await this.Apply_all_Effects();
-        }
-        else{
-            console.log("Light category not visible.")
-        }
+    //     const light_Visible = await (await this.light).isDisplayed();
+    //     if(light_Visible){
+    //         (await this.light).click();
+    //         await this.Apply_all_Effects();
+    //     }
+    //     else{
+    //         console.log("Light category not visible.")
+    //     }
 
-        const outro_Visible = await (await this.outro).isDisplayed();
-        if(outro_Visible){
-            (await this.outro).click();
-            await this.Apply_all_Effects();
-        }
-        else{
-            console.log("Outro category not visible.")
-        }
+    //     const outro_Visible = await (await this.outro).isDisplayed();
+    //     if(outro_Visible){
+    //         (await this.outro).click();
+    //         await this.Apply_all_Effects();
+    //     }
+    //     else{
+    //         console.log("Outro category not visible.")
+    //     }
 
-        const sound_Visible = await (await this.soundsync).isDisplayed();
-        if(sound_Visible){
-            (await this.soundsync).click();
-            await this.Apply_all_Effects();
-        }
-        else{
-            console.log("SoundSync category not visible.");
-        }
+    //     const sound_Visible = await (await this.soundsync).isDisplayed();
+    //     if(sound_Visible){
+    //         (await this.soundsync).click();
+    //         await this.Apply_all_Effects();
+    //     }
+    //     else{
+    //         console.log("SoundSync category not visible.");
+    //     }
 
-        const dynamic_Visible = await (await this.dynamic).isDisplayed();
-        if(dynamic_Visible){
-            (await this.dynamic).click();
-            await this.Apply_all_Effects();
-        }
-        else{
-            console.log("Dynamic category not visible.");
-        }
+    //     const dynamic_Visible = await (await this.dynamic).isDisplayed();
+    //     if(dynamic_Visible){
+    //         (await this.dynamic).click();
+    //         await this.Apply_all_Effects();
+    //     }
+    //     else{
+    //         console.log("Dynamic category not visible.");
+    //     }
 
-        const retro_Visible = await (await this.retro).isDisplayed();
-        if(retro_Visible){
-            (await this.retro).click();
-            await this.Apply_all_Effects();
-        }
-        else{
-            console.log("Retro category not visible.");
-        }
+    //     const retro_Visible = await (await this.retro).isDisplayed();
+    //     if(retro_Visible){
+    //         (await this.retro).click();
+    //         await this.Apply_all_Effects();
+    //     }
+    //     else{
+    //         console.log("Retro category not visible.");
+    //     }
 
-        const vibrant_Visible = await (await this.vibrant).isDisplayed();
-        if(vibrant_Visible){
-            (await this.vibrant).click();
-            await this.Apply_all_Effects();
-        }
-        else{
-            console.log("Vibrant category not visible.")
-        }
+    //     const vibrant_Visible = await (await this.vibrant).isDisplayed();
+    //     if(vibrant_Visible){
+    //         (await this.vibrant).click();
+    //         await this.Apply_all_Effects();
+    //     }
+    //     else{
+    //         console.log("Vibrant category not visible.")
+    //     }
         
-    }
+    // }
 
     // Apply the first 4 filters of all effects.
+    
+    async Verify_Effects() {
+        const categories = [
+            { name: "Light", element: this.zoom },
+            { name: "Magnify", element: this.cinematic },
+            { name: "Distort", element: this.magnify },
+            { name: "Dynamic", element: this.distort },
+            { name: "Intro", element: this.glitz },
+            { name: "Neon", element: this.intro },
+            { name: "Outro", element: this.mirror },
+            { name: "Vibrant", element: this.neon },
+            { name: "Zoom", element: this.light },
+            { name: "Cinematic", element: this.outro },
+            { name: "SoundSync", element: this.soundsync },
+            { name: "Retro", element: this.dynamic },
+            { name: "Glitz", element: this.retro },
+            { name: "Mirror", element: this.vibrant }
+        ];
+    
+        // const { width, height } = await driver.getWindowRect();
+        // const y = Math.floor(height * 0.5);
+        // const startX = Math.floor(width * 0.8);
+        // const endX = Math.floor(width * 0.2);
+    
+        for (const category of categories) {
+            let found = false;
+    
+            // First try without swiping
+            try {
+                const visible = await (await category.element).isDisplayed();
+                if (visible) {
+                    await (await category.element).click();
+                    await this.Apply_all_Effects();
+                    found = true;
+                    continue;
+                }
+            } catch (e) {}
+    
+            // Try swiping left-to-right (rightward)
+            for (let i = 0; i < 3 && !found; i++) {
+                await Sliders.scrollScreenHorizontally(232, 920, 1666); // swipe right
+                try {
+                    const visible = await (await category.element).isDisplayed();
+                    if (visible) {
+                        await (await category.element).click();
+                        await this.Apply_all_Effects();
+                        found = true;
+                        break;
+                    }
+                } catch (e) {}
+            }
+    
+            // If still not found, try swiping right-to-left (leftward)
+            for (let i = 0; i < 5 && !found; i++) {
+                await Sliders.scrollScreenHorizontally(940, 317, 1666); // swipe left
+                try {
+                    const visible = await (await category.element).isDisplayed();
+                    if (visible) {
+                        await (await category.element).click();
+                        await this.Apply_all_Effects();
+                        found = true;
+                        break;
+                    }
+                } catch (e) {}
+            }
+    
+            if (!found) {
+                console.log(`${category.name} category not visible.`);
+            }
+        }
+    }
+    
+    
+    
     async Apply_all_Effects() 
     {
         let index = 1;
@@ -1464,16 +1529,48 @@ class Video_Editor
         }
       }
       
-      
-
-
-    
 
     // =============== Main Function ===============
-
     async Run_Video_Editor_Img_Case()
     {
         await Subscription.Check_Subscription('Processing') ;
+        // Add video with sound & check toggle button
+
+        await this.Click_Video_Editor();
+        await this.Click_Video_Tab();
+        await browser.pause(500);
+        await this.Sort_Videos();
+        await browser.pause(500);
+        await Sliders.scrollScreen(540, 586, 546, 1600);
+        await this.Select_Video_with_Audio();
+        await this.Click_Done();
+        await Sliders.play_pause(534, 1403) ;
+        // // await this.clickWithRetry('//android.widget.ImageView[@resource-id="com.myzesty:id/play"]'); // It will click on given element multiple time
+        await Promise.all([
+            await browser.pause(3000),
+            await Sliders.tapScreen(534, 1403),
+        ]);
+        await this.Click_Audio();
+        await this.Verify_Toggle();
+        await this.Click_Apply_Changes();
+        await Sliders.play_pause(534, 1403) ;
+        await Promise.all([
+            await browser.pause(3000),
+            await Sliders.tapScreen(534, 1403),
+        ]);
+        // Save to Draft         
+        await this.Close_Project();
+        await browser.pause(1500);
+        
+        await this.Open_Proj_Draft_1();
+        await this.Click_export();
+        await browser.pause(3000);
+        await this.Check_Rate_Us();
+        await this.Click_Export_Done();
+        await browser.pause(700);
+
+        // Verify full wezird functionality
+
         await this.Click_Video_Editor();
         await this.Click_Img_Tab();
         await  this.selectImages(25, '(//android.widget.FrameLayout[@resource-id="com.myzesty:id/frame"])');
@@ -1616,51 +1713,33 @@ class Video_Editor
         await browser.pause(1000);
 
         // QA-75
+        await Sliders.Slider(driver, 18, 1062, 1477, 1522, 0.3);
         await this.Enter_Empty_Text();
         await browser.pause(2000);
         await this.Enter_Text();
         await this.Verify_Text_Properties();;
         await this.Verify_Text_Help(); 
         await browser.pause(700);
-        await Sliders.tapScreen(470, 1260);
+        await Sliders.tapScreen(500, 1260);
         await this.Apply_Font_Style();
 
         // Save to Draft         
         await this.Close_Project();
         await browser.pause(1500);
-        // await this.Click_Close_Draft();
-
         await this.Open_Proj_Draft_1();
-        await this.Click_export();
-        await this.Click_Export_Done();
-        await browser.pause(700);
 
-        // // Add video with sound & check toggle button
-        // await this.Click_Video_Editor();
-        // await this.Click_Video_Tab();
-        // await browser.pause(500);
-        // await this.Sort_Videos();
-        // await browser.pause(500);
-        // await Sliders.scrollScreen(540, 586, 546, 1600);
-        // await this.Select_Video_with_Audio();
-        // await this.Click_Done();
-        // await Sliders.play_pause(534, 1403) ;
-        // await browser.pause(5000);
-        // await this.clickWithRetry('//android.widget.ImageView[@resource-id="com.myzesty:id/play"]');
-        
-        // // await Promise.all([
-        // //     await browser.pause(5000),
-        // //     await Sliders.tapScreen(534, 1403),
-        // //     // await this.tapOnCoordinates(534, 1403)
-        // // // await Sliders.play_pause(534, 1403)
-        // // ]);
+
+        // await this.Click_export();
+        // await Common_function.Check_export_progress('//android.widget.TextView[@resource-id="com.myzesty:id/percLabel"]');
+        // await this.Check_Rate_Us();
+        // await this.Click_Export_Done();
+        // await browser.pause(700);
+
         
 
-
-
-
-
+//main test function along its test case closure here
     }
+
 
     async Run_Video_Editor_Vid_Case()
     {
