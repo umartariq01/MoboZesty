@@ -70,7 +70,6 @@ class Video_Editor
         await this.apply_changes.click();
     }
 
-    async 
 
     get wizard()
     {

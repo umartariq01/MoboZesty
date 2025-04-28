@@ -1,3 +1,0 @@
-{
-  "text": "Name must be between 5 and 80 characters"
-}

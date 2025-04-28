@@ -1,4 +1,0 @@
-{
-  "using": "css selector",
-  "value": "new UiSelector().className(\"android.view.ViewGroup\").instance(20)"
-}

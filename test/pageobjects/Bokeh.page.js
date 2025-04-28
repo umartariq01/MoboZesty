@@ -286,7 +286,6 @@ async processAllEffects() {
             { name: 'Select Image 1', fn: async () => await this.Select_img1() },
             { name: 'Click Cancel Editing', fn: async () => await this.Click_cancell_editing() },
             { name: 'Click Cancel Editing 2nd time', fn: async () => await this.Click_cancell_editing() },
-            // await new Promise(resolve => setTimeout(resolve, 2000)),
             { name: 'Wait for 2 seconds', fn: async () => await new Promise(resolve => setTimeout(resolve, 2000)) },
             { name: 'Select Image 1 again', fn: async () => await this.Select_img1() },
             { name: 'Process All Effects', fn: async () => await this.processAllEffects() },

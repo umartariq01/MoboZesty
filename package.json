@@ -8,36 +8,101 @@
   
     
   "wido": "wdio run ./wdio.conf.js",
-  "login": "wdio run ./wdio.conf.js --spec test.signin.js",    
+
+  "report:generate": "allure generate allure-results --clean -o allure-report",
+  "report:open": "allure open allure-report",
+  
+    
+  "login": "wdio run ./wdio.conf.js --spec test.signin.js",
+  
+    
   "signup": "wdio run ./wdio.conf.js --spec test.signup.js",
+  
+    
   "forgetpassword": "wdio run ./wdio.conf.js --spec test.forgetpassword.js",
+  
+    
   "rate": "wdio run ./wdio.conf.js --spec test.rate.js",
+  
+    
   "share": "wdio run ./wdio.conf.js --spec test.sharemedia.js",
+  
+    
   "profile": "wdio run ./wdio.conf.js --spec test.profile.js",
+  
+    
   "setting": "wdio run ./wdio.conf.js --spec test.setting.js",
+  
+    
   "browse": "wdio run ./wdio.conf.js --spec test.browse.js",
+  
+    
   "checklogin": "wdio run ./wdio.conf.js --spec test.checklogin.js",
+  
+    
   "scroll": "wdio run ./wdio.conf.js --spec test.scroll.js",
+  
+    
   "landingscreen": "wdio run ./wdio.conf.js --spec test.landingpage.js",
+  
+    
   "aboutus": "wdio run ./wdio.conf.js --spec test.about.js",
+  
+    
   "qcimg": "wdio run ./wdio.conf.js --spec test.qcimgrun.js",
+  
+    
   "qcvideo": "wdio run ./wdio.conf.js --spec test.qcvidrun.js",
+  
+    
   "qcmain": "wdio run ./wdio.conf.js --spec test.qcmain.js",
+  
+    
   "qcedit": "wdio run ./wdio.conf.js --spec test.qcedit.js",
+  
+    
   "qcadv": "wdio run ./wdio.conf.js --spec test.qcadv.js",
+  
+    
   "test1": "wdio run ./wdio.conf.js --spec test.QCtest1.js",
+  
+    
   "test2": "wdio run ./wdio.conf.js --spec test.QCtest2.js",
+  
+    
   "test3": "wdio run ./wdio.conf.js --spec test.QCtest3.js",
+  
+    
   "test4": "wdio run ./wdio.conf.js --spec test.QCtest4.js",
+  
+    
   "test5": "wdio run ./wdio.conf.js --spec test.QCtest5.js",
+  
+    
   "test6": "wdio run ./wdio.conf.js --spec test.QCtest6.js",
+  
+    
   "dehazer": "wdio run ./wdio.conf.js --spec test.dehazer.js",
+  
+    
   "bokeh": "wdio run ./wdio.conf.js --spec test.bokeh.js",
+  
+    
   "bokehtemp": "wdio run ./wdio.conf.js --spec test.bokehtemp.js",
+  
+    
   "removebg": "wdio run ./wdio.conf.js --spec test.removebg.js",
+  
+    
   "slideshow": "wdio run ./wdio.conf.js --spec test.slideshow.js",
+  
+    
   "videditor": "wdio run ./wdio.conf.js --spec test.videoeditor.js",
+  
+    
   "sample": "wdio run ./wdio.conf.js --spec test.runQC.js",
+  
+    
   "fulleditor": "wdio run ./wdio.conf.js --spec test.fulleditor.js"
   
   },
@@ -48,7 +113,7 @@
   "@faker-js/faker": "^9.5.0",
   
     
-  "@wdio/allure-reporter": "^9.2.2",
+  "@wdio/allure-reporter": "^9.12.6",
   
     
   "@wdio/appium-service": "^9.4.1",

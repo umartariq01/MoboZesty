@@ -1,4 +1,0 @@
-{
-  "using": "xpath",
-  "value": "//android.widget.ImageView[@content-desc=\"my-profile-image\"]/android.view.ViewGroup/com.horcrux.svg.SvgView/com.horcrux.svg.GroupView"
-}

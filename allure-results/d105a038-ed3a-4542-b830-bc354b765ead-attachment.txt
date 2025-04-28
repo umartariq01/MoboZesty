@@ -1,4 +1,0 @@
-{
-  "using": "xpath",
-  "value": "//android.widget.LinearLayout[@resource-id=\"com.myzesty:id/sticker\"]/android.widget.ImageView"
-}

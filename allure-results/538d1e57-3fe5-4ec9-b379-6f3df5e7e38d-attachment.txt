@@ -1,4 +1,0 @@
-{
-  "using": "xpath",
-  "value": "//androidx.recyclerview.widget.RecyclerView[@resource-id=\"com.myzesty:id/option_recycle\"]/android.widget.FrameLayout[3]/android.view.ViewGroup"
-}

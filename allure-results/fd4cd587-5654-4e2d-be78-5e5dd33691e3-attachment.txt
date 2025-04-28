@@ -1,4 +1,0 @@
-{
-  "using": "xpath",
-  "value": "//android.widget.TextView[@text=\"Your account will be deactivated for 30 days, and during this time it will not be accessible to the public. To reactivate your account, simply log in at any time within the 30-day period. If you don’t reactivate your account, it will be permanently deleted along with all of your posts and information.\"]"
-}

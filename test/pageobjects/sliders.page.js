@@ -210,67 +210,105 @@ class Sliders
 
             // Function to stretch the text, sticket or effects 
             //  Need to add average of bounds
-    async dragSliderWithBounds(sliderXpath, dragDistance, sliderBounds) {
-                // Locate the slider element using XPath
-                const sliderElement = await $(sliderXpath);
-                await sliderElement.waitForDisplayed({ timeout: 5000 });
-              
-                let currentBounds = sliderBounds; // Initialize bounds
-                let currentX = (await sliderElement.getLocation()).x; // Start X position of the slider
-                const startY = (await sliderElement.getLocation()).y; // Y-coordinate remains constant
-              
-                // Perform the drag action two times
-                for (let i = 0; i < 2; i++) {
-                  // Get the current boundaries dynamically
-                  const [minX, maxX] = currentBounds;
-              
-                  // Calculate the endX for the current drag and ensure it stays within bounds
-                  let endX = currentX + dragDistance;
-                  if (endX > maxX) {
-                    endX = maxX; // Cap the drag to the maximum X bound
-                  } else if (endX < minX) {
-                    endX = minX; // Cap the drag to the minimum X bound
-                  }
-                  const endY = startY; // Y-coordinate remains the same for horizontal dragging
-              
-                  console.log(`Dragging ${i + 1}: from (${currentX}, ${startY}) to (${endX}, ${endY}) within bounds [${minX}, ${maxX}]`);
-              
-                  // Perform the drag action using the W3C Actions API
-                  await driver.performActions([
-                    {
-                      type: 'pointer',
-                      id: 'finger1',
-                      parameters: { pointerType: 'touch' },
-                      actions: [
-                        { type: 'pointerMove', duration: 0, x: currentX, y: startY }, // Move to the start position
-                        { type: 'pointerDown', button: 0 }, // Press down
-                        { type: 'pause', duration: 200 }, // Wait for 200 ms
-                        { type: 'pointerMove', duration: 500, x: endX, y: endY }, // Drag to the end position
-                        { type: 'pointerUp', button: 0 }, // Release
-                      ],
-                    },
-                  ]);
-              
-                  console.log(`Drag ${i + 1} action completed successfully!`);
-              
-                  // Update currentX to the new position for the next drag
-                  currentX = endX;
-              
-                  // Fetch new bounds dynamically after the first drag
-                  if (i === 0) {
-                    const newBounds = await sliderElement.getAttribute('bounds'); // Adjust according to how you fetch bounds in your app
-                    const boundsArray = newBounds.match(/\d+/g).map(Number); // Parse bounds into [minX, maxX]
-                    currentBounds = [boundsArray[0], boundsArray[2]]; // Extract minX and maxX
-                    console.log(`Updated slider bounds: [${currentBounds[0]}, ${currentBounds[1]}]`);
-                  }
-              
-                  // Break the loop if the slider reaches the maximum boundary
-                  if (currentX >= currentBounds[1]) {
-                    console.log('Slider reached the maximum boundary.');
-                    break;
-                  }
-                }
-              }
+    async dragSliderWithBounds(sliderXpath, dragDistance, sliderBounds) 
+    {
+        // Locate the slider element using XPath
+        const sliderElement = await $(sliderXpath);
+        await sliderElement.waitForDisplayed({ timeout: 5000 });
+        
+        let currentBounds = sliderBounds; // Initialize bounds
+        let currentX = (await sliderElement.getLocation()).x; // Start X position of the slider
+        const startY = (await sliderElement.getLocation()).y; // Y-coordinate remains constant
+        
+        // Perform the drag action two times
+        for (let i = 0; i < 2; i++) {
+          // Get the current boundaries dynamically
+          const [minX, maxX] = currentBounds;
+        
+          // Calculate the endX for the current drag and ensure it stays within bounds
+          let endX = currentX + dragDistance;
+          if (endX > maxX) {
+            endX = maxX; // Cap the drag to the maximum X bound
+          } else if (endX < minX) {
+            endX = minX; // Cap the drag to the minimum X bound
+          }
+          const endY = startY; // Y-coordinate remains the same for horizontal dragging
+        
+          console.log(`Dragging ${i + 1}: from (${currentX}, ${startY}) to (${endX}, ${endY}) within bounds [${minX}, ${maxX}]`);
+        
+          // Perform the drag action using the W3C Actions API
+          await driver.performActions([
+            {
+              type: 'pointer',
+              id: 'finger1',
+              parameters: { pointerType: 'touch' },
+              actions: [
+                { type: 'pointerMove', duration: 0, x: currentX, y: startY }, // Move to the start position
+                { type: 'pointerDown', button: 0, }, // Press down
+                { type: 'pause', duration: 200 }, // Wait for 200 ms
+                { type: 'pointerMove', duration: 500, x: endX, y: endY }, // Drag to the end position
+                { type: 'pointerUp', button: 0 }, // Release
+              ],
+            },
+          ]);
+        
+          console.log(`Drag ${i + 1} action completed successfully!`);
+        
+          // Update currentX to the new position for the next drag
+          currentX = endX;
+        
+          // Fetch new bounds dynamically after the first drag
+          if (i === 0) {
+            const newBounds = await sliderElement.getAttribute('bounds'); // Adjust according to how you fetch bounds in your app
+            const boundsArray = newBounds.match(/\d+/g).map(Number); // Parse bounds into [minX, maxX]
+            currentBounds = [boundsArray[0], boundsArray[2]]; // Extract minX and maxX
+            console.log(`Updated slider bounds: [${currentBounds[0]}, ${currentBounds[1]}]`);
+          }
+        
+          // Break the loop if the slider reaches the maximum boundary
+          if (currentX >= currentBounds[1]) {
+            console.log('Slider reached the maximum boundary.');
+            break;
+          }
+        }
+    }
+
+    async dragSlider(sliderXpath, dragDistance, [minX, maxX]) {
+        const slider = await $(sliderXpath);
+        await slider.waitForDisplayed({ timeout: 5000 });
+    
+        const location = await slider.getLocation();
+        const size = await slider.getSize();
+        
+        // Start from the center of the slider thumb
+        let startX = location.x + Math.floor(size.width / 2);
+        const y = location.y + Math.floor(size.height / 2);
+    
+        // Calculate end X with boundary check
+        let endX = startX + dragDistance;
+        if (endX > maxX) endX = maxX;
+        if (endX < minX) endX = minX;
+    
+        console.log(`Dragging slider from (${startX}, ${y}) to (${endX}, ${y})`);
+    
+        await driver.performActions([
+            {
+                type: 'pointer',
+                id: 'finger1',
+                parameters: { pointerType: 'touch' },
+                actions: [
+                    { type: 'pointerMove', duration: 0, x: startX, y },
+                    { type: 'pointerDown', button: 0 },
+                    { type: 'pause', duration: 200 },
+                    { type: 'pointerMove', duration: 300, x: endX, y },
+                    { type: 'pointerUp', button: 0 },
+                ],
+            },
+        ]);
+    
+        console.log('Slider drag completed.');
+    }
+    
 
 
     async Trim_slide(driver, desiredPercentage, startX, endX, startY, endY) 
@@ -611,6 +649,22 @@ class Sliders
                 ]
             }]);
             await browser.releaseActions();
+        }
+
+        async scrollUntilElementIsVisible(element, startX, startY, endX, endY, maxScrolls = 5, duration = 1000) {
+            for (let i = 0; i < maxScrolls; i++) {
+                let isDisplayed = await $(element).isDisplayed();
+                
+                if (isDisplayed) {
+                    console.log("Element found!");
+                    return; // Exit the function if the element is visible
+                }
+        
+                // Scroll the screen
+                await this.scrollScreen(startX, startY, endX, endY, 1, duration);
+            }
+        
+            throw new Error("Element not found after maximum scroll attempts");
         }
         
 

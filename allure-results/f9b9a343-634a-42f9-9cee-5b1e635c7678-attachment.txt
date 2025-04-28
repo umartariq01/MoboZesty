@@ -1,4 +1,0 @@
-{
-  "using": "xpath",
-  "value": "//androidx.appcompat.widget.LinearLayoutCompat[@resource-id=\"com.myzesty:id/nativegallery\"]"
-}

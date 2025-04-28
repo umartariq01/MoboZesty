@@ -1,4 +1,0 @@
-{
-  "using": "xpath",
-  "value": "//android.widget.CheckedTextView[@resource-id=\"android:id/text1\" and @text=\"Male\"]"
-}
