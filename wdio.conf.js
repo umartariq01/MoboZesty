@@ -1,4 +1,4 @@
-exports.config = {
+export const config = {
     //
     // ====================
     // Runner Configuration
@@ -22,8 +22,7 @@ exports.config = {
     // of the config file unless it's absolute.
     //
     specs: [
-        // './test/specs/**/*.js',
-        './test/specs/test.forgetpassword.js'
+        './test/specs/**/*.js',
     ],
     // Patterns to exclude.
     exclude: [
@@ -52,13 +51,21 @@ exports.config = {
     // https://saucelabs.com/platform/platform-configurator
     //
     capabilities: [{
-        // capabilities for local Appium web tests on an Android Emulator
-        platformName: 'Android',
-        browserName: 'Chrome',
-        'appium:deviceName': 'Android GoogleAPI Emulator',
-        'appium:platformVersion': '12.0',
-        'appium:automationName': 'UiAutomator2'
+ 
+            platformName: 'Android',
+            'appium:platformVersion': '14',
+            'appium:deviceName': 'Redmi Note 13 Pro',
+            'appium:appPackage': 'com.myzesty',
+            'appium:appActivity': 'com.myzesty.MainActivity',
+            'appium:automationName': 'UiAutomator2',
+            'appium:noReset': true,
+            'appium:fullReset': false,
+            'appium:autoLaunch': false ,
+            'appium:autoGrantPermissions': true,
+            'appium:ignoreHiddenApiPolicyError': true,
+            'appium:dontStopAppOnReset': true
     }],
+
 
     //
     // ===================
@@ -101,7 +108,7 @@ exports.config = {
     connectionRetryTimeout: 120000,
     //
     // Default request retries count
-    connectionRetryCount: 3,
+    connectionRetryCount: 1,
     //
     // Test runner services
     // Services take over a specific job you don't want to take care of. They enhance
@@ -130,14 +137,20 @@ exports.config = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
-    reporters: ['spec',['allure', {outputDir: 'allure-results'}]],
+    reporters: ['spec',['allure', {outputDir: 'allure-results',
+        // disableWebdriverStepsReporting: false,
+        // disableWebdriverScreenshotsReporting: false,
+    }]],
 
     // Options to be passed to Mocha.
     // See the full list at http://mochajs.org/
     mochaOpts: {
         ui: 'bdd',
-        timeout: 60000
+        timeout: 6000000
     },
+
+     // retries: 2, add this in mochaOpts if you want the scripts to run again incase it fails.
+    
 
     //
     // =====
