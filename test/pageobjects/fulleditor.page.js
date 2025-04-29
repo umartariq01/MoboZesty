@@ -85,14 +85,14 @@ class Full_Editor
         await this.video_tab.click()
     }
 
-    get sort()
+    get sort_video()
     {
         return $('//android.widget.TextView[@resource-id="com.myzesty:id/sorttype"]');
     }
 
     async Sort_Videos()
     {
-        (await this.sort).click();
+        await (await this.sort_video).click();
     }
 
     get video()
@@ -291,13 +291,13 @@ class Full_Editor
         (await this.sticker1).click();
     }
 
-    get sort()
+    get sort_media()
     {
-        return $('(//android.widget.ImageView[@resource-id="com.myzesty:id/icon"])[1]');
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/text" and @text="Sort"]');
     }
     async Click_Sort()
     {
-        (await this.sort).click();
+        (await this.sort_media).click();
     }
 
     get edit()
@@ -313,95 +313,201 @@ class Full_Editor
         return $('//android.widget.TextView[@resource-id="com.myzesty:id/text" and @text="Trim"]');
     }
 
-    // this function check if current selected media is image or video.
-    async Check_Media_Type() 
-    {
-        try
-        {
-            const trim_Visible = await this.trim.isDisplayed();
-            if(trim_Visible)
-            {
-                return 'video';
-            }
-            else
-            {
-                return 'image';
-            }
-        }
-        catch (error)
-        {
-            // If the Play button is NOT found, assume it's an image
-            return 'image';
-        }
-    }
-
-    // This will handle if selected media is image or video then it call the respective functions to perform operations on media.
-    // It will scroll right to find video and if not founf then scroll left to right.
-    async handleMediaType() {
-        let mediaType = await Check_Media_Type();
-    
-        if (mediaType === 'image') {
-            console.log('Image detected');
-            await this.Perform_Image_Functions();
-    
-            console.log('Scrolling right-to-left to find video...');
-            let videoFound = false;
-    
-            // Try scrolling right to left
-            for (let i = 0; i < 5; i++) {  // You can change max attempts
-                await Sliders.scrollScreen(startX, startY, endX, endY) // 👉 your scroll right-to-left function
-                mediaType = await Check_Media_Type();
-    
-                if (mediaType === 'video') {
-                    console.log('Video detected after right-to-left scroll');
-                    await Perform_Video_Functions();
-                    videoFound = true;
-                    break;
-                }
-            }
-    
-            // If not found, try scrolling left to right
-            if (!videoFound) {
-                console.log('Video not found. Now scrolling left-to-right...');
-                for (let i = 0; i < 5; i++) {  // You can change max attempts
-                    await Sliders.scrollScreen(startX, startY, endX, endY); // 👉 your scroll left-to-right function
-                    mediaType = await this.Check_Media_Type();
-    
-                    if (mediaType === 'video') {
-                        console.log('Video detected after left-to-right scroll');
-                        await this.Perform_Video_Functions();
-                        videoFound = true;
-                        break;
-                    }
-                }
-            }
-    
-            if (!videoFound) {
-                console.log('Video not found even after scrolling both directions!');
-            }
-    
-        } else if (mediaType === 'video') {
-            console.log('Video detected');
-            await this.Perform_Video_Functions();
-        } else {
-            console.log('Unknown media type!');
-        }
-    }
-    
     get duration()
     {
-        return $('')
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/text" and @text="Duration"]');
     }
+    async Click_Duration()
+    {
+        (await this.duration).click();
+    }
+    get BG()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/text" and @text="BG"]');
+    }
+    get BG_1()
+    {
+        return $('(//android.widget.ImageView[@resource-id="com.myzesty:id/color_bg"])[1]');
+    }
+    async Click_BG()
+    {
+        (await this.BG).click();
+        await browser.pause(600);
+        await (await this.BG_1).click();
+        await this.Click_Apply_Changes();
+    }
+    
+    
 
     async Perform_Image_Functions()
     {
+        await this.Click_Duration();
+        await browser.pause(1000);
+        await Sliders.Sound_slide(driver, 41, 929, 1662, 1772, 0.4);
+        await this.Click_Apply_Changes();
+        await browser.pause(500);
+        await this.Click_BG();
+    }
+
+    get trim()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/text" and @text="Trim"]');
+    }
+    get split()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/text" and @text="Split"]');
+    }
+    get speed()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/text" and @text="Speed"]');
+    }
+    get reverse()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/text" and @text="Reverse"]');
+    }
+    get extract()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/text" and @text="Extract"]');
+    }
+
+    async Click_Trim()
+    {
+        (await this.trim).click();
+        await Sliders.dragSliderWithBounds('//android.view.View[@resource-id="com.myzesty:id/timeLine_view"]', 50, [[74,1691][1006,1878]]);
+        await this.Click_Apply_Changes();
+    }
+    async Click_Split()
+    {
+        await Sliders.scrollScreen(538, 1791, 270, 1791);
+        await browser.pause(700);
+        (await this.split).click();
+    }
+    async Click_Speed()
+    {
+        await (await this.speed).click();
+        await Sliders.Slider(driver, 217, 627, 1905, 1905, 0.5);
+        await browser.pause(1000);
+        await this.Click_Apply_Changes();
+    }
+    async Click_Reverse()
+    {
+        await (await this.reverse).click();
+        await browser.pause(2000);
+    }
+    async Click_Extract_Audio_Main()
+    {
+        await (await this.extract).click();
+        await browser.pause(1000);
+        await this.Click_Main_Back();
+        await this.Click_Edit();
 
     }
 
     async Perform_Video_Functions()
     {
+        await this.Click_Speed();
+        await Sliders.scrollUntilElementIsVisible('//android.widget.TextView[@resource-id="com.myzesty:id/text" and @text="Extract"]', 892, 2329, 370, 2329);
+        await this.Click_Reverse();
+        await this.Click_Extract_Audio_Main();
+        await Sliders.scrollUntilElementIsVisible('//android.widget.TextView[@resource-id="com.myzesty:id/text" and @text="Trim"]', 910, 2329, 509, 2329, 1500);
+        await this.Click_Trim(); 
+        // await this.Click_Apply_Changes();
+        await browser.pause(500);
+        await this.Click_Split();
+        await browser.pause(500);
+    }
+
+    get presets()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/text" and @text="Presets"]');
+    }
+    get preset_1()
+    {
+        return $('(//android.widget.ImageView[@resource-id="com.myzesty:id/image"])[2]');
+    }
+    async Click_Presets()
+    {
+        await (await this.presets).click();
+        await browser.pause(1000);
+        (await this.preset_1).click();
+        await this.Click_Apply_Changes();
+    }
+
+    get dehazer()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/text" and @text="Dehazer"]');
+    }
+    get dehazer_2()
+    {
+        return $('(//android.widget.ImageView[@resource-id="com.myzesty:id/image"])[3]');
+    }
+    async Click_Dehazer()
+    {
+        (await this.dehazer).click();
+        await browser.pause(700);
+        (await this.dehazer_2).click();
+        await this.Click_Apply_Changes();
+    }
+
+    get tune()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/text" and @text="Tune"]');
+    }
+    get brightness()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/name" and @text="Brightness"]');
+    }
+    get contrast()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/name" and @text="Contrast"]');
+    }
+    get saturation()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/name" and @text="Saturation"]');
+    }
+    get tint()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/name" and @text="Tint"]');
+    }
+    get temprature()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/name" and @text="Temperature"]');
+    }
+    get hue()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/name" and @text="Hue"]');
+    }
+    get highlight()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/name" and @text="Highlight"]');
+    }
+    get shadow()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/name" and @text="Shadow"]');
+    }
+    get vibrance()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/name" and @text="Vibrance"]');
+    }
+    get sharpen()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/name" and @text="Sharpen"]');
+    }
+    async Click_Tune()
+    {
+        await (await this.tune).click();
+
+        await (await this.brightness).click();
+        await  Sliders.Sound_slide(driver, 222, 914, 2036, 2086, 0.4);
+        await browser.pause(500);
+
+        await (await this.contrast).click();
+        await  Sliders.Sound_slide(driver, 222, 914, 2036, 2086, 0.3);
+        await browser.pause(500);
 
     }
+
+    
     
     
 
@@ -417,9 +523,10 @@ class Full_Editor
             await Subscription.Check_Subscription('Processing') ;
             await this.Click_Video_Editor();
             await this.Click_Video_Tab();
+            await browser.pause(1000);
             await this.Sort_Videos();
             await browser.pause(500);
-            await Sliders.scrollScreen(540, 586, 546, 1600);
+            await Sliders.scrollScreen(527, 870, 527, 2000);
             await this.Select_Video_with_Audio();
             await this.Click_Img_Tab();
             await this.selectImages();
@@ -486,7 +593,8 @@ class Full_Editor
             await this.Click_Add_Music(); // Both have same xpath. It adds text.
             await this.Enter_Half_Duration_Text();
             await browser.pause(1000);
-            await Sliders.dragSliderWithBounds('//android.view.ViewGroup[@resource-id="com.myzesty:id/range_slider"]/android.view.View[2]', 150, [[748,1724][789,1801]]);
+            await Sliders.Extender(driver, '//android.view.ViewGroup[@resource-id="com.myzesty:id/range_slider"]/android.view.View[3]', 150);
+            // await Sliders.dragSliderWithBounds('//android.view.ViewGroup[@resource-id="com.myzesty:id/range_slider"]/android.view.View[3]', 150, [[748,1724][789,1801]]);
             await  this.Click_Main_Back();
         }
         catch (error)
@@ -503,8 +611,8 @@ class Full_Editor
             await this.Click_Add_Effects();
             await this.Click_Apply_Changes();
             await browser.pause(1000);
-            await Sliders.dragSliderWithBounds('//android.view.ViewGroup[@resource-id="com.myzesty:id/range_slider"]/android.view.View[2]', 150, [[748,1724][789,1801]]);
-            await Sliders.dragSliderWithBounds('//android.view.ViewGroup[@resource-id="com.myzesty:id/range_slider"]/android.view.View[2]', 150, [[748,1724][789,1801]]);
+            await Sliders.dragSliderWithBounds('//android.view.ViewGroup[@resource-id="com.myzesty:id/range_slider"]/android.view.View[3]', 150, [[748,1724][789,1801]]);
+            await Sliders.dragSliderWithBounds('//android.view.ViewGroup[@resource-id="com.myzesty:id/range_slider"]/android.view.View[3]', 150, [[778,1724][819,1801]]);
             await  this.Click_Main_Back();
         }
         catch (error)
@@ -523,8 +631,8 @@ class Full_Editor
             await browser.pause(1500);
             await this.Click_Apply_Changes();
             await browser.pause(1000);
-            await  Sliders.dragSliderWithBounds('//android.view.ViewGroup[@resource-id="com.myzesty:id/range_slider"]/android.view.View[2]', 150, [[746,1724][787,1801]]);
-            await  Sliders.dragSliderWithBounds('//android.view.ViewGroup[@resource-id="com.myzesty:id/range_slider"]/android.view.View[2]', 150, [[746,1724][787,1801]]);
+            await  Sliders.dragSliderWithBounds('//android.view.ViewGroup[@resource-id="com.myzesty:id/range_slider"]/android.view.View[3]', 150, [[746,1724][787,1801]]);
+            await  Sliders.dragSliderWithBounds('//android.view.ViewGroup[@resource-id="com.myzesty:id/range_slider"]/android.view.View[3]', 150, [[746,1724][787,1801]]);
             await  this.Click_Main_Back();
             await browser.pause(1000);
         }
@@ -559,11 +667,67 @@ class Full_Editor
     {
         try
         {
-            
+            await this.Click_Edit();
+            await this.Perform_Image_Functions();
+            // Slide to perform action on video
+            await Sliders.scrollUntilElementIsVisible('//android.widget.TextView[@resource-id="com.myzesty:id/text" and @text="Trim"]', 1028, 1765, 80, 1765);
+            await this.Perform_Video_Functions();
+            await this.Click_Main_Back();
+        
         }
         catch (error)
         {
             console.log('❌ Verify Edit Functionality FAILED', error.message);
+            throw error;
+        }
+    }
+
+    async Verify_Presets()
+    {
+        try
+        {
+            await Sliders.Single_slide(37, 950, 1800, 1000);
+            await this.Click_Presets();
+            // Preset bar needs to be implimented because its not visible in new release
+            await this.Click_Main_Back();
+        
+        }
+        catch (error)
+        {
+            console.log('❌ Verify Presets Functionality FAILED', error.message);
+            throw error;
+        }
+    }
+
+    async Verify_Dehazer()
+    {
+        try
+        {
+            await Sliders.Single_slide(37, 950, 1800, 1000);
+            await browser.pause(1000);
+            await this.Click_Dehazer();
+            
+        
+        }
+        catch (error)
+        {
+            console.log('❌ Verify Dehazer Functionality FAILED', error.message);
+            throw error;
+        }
+    }
+
+    async Verify_Tune()
+    {
+        try
+        {
+            await Sliders.scrollUntilElementIsVisible('//android.widget.TextView[@resource-id="com.myzesty:id/text" and @text="Tune"]', 900, 2300, 350, 2300);
+            await this.Click_Tune();
+            
+        
+        }
+        catch (error)
+        {
+            console.log('❌ Verify Tune Functionality FAILED', error.message);
             throw error;
         }
     }

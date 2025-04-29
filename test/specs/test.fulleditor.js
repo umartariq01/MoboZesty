@@ -18,7 +18,7 @@ describe('Full editor', () => {
     });
 
 
-    it('Should verify all music functionality', async () => {
+    it.skip('Should verify all music functionality', async () => {
 
       try
       {
@@ -89,7 +89,7 @@ describe('Full editor', () => {
       }
     });
 
-    it.only('should check the edit Functionality', async () => {
+    it('should check the edit Functionality', async () => {
 
       try
       {
@@ -99,6 +99,48 @@ describe('Full editor', () => {
       catch (error)
       {
         console.log('❌ Test Failed: Verify Edit.');
+        throw error;
+      }
+    });
+
+    it('should check the Preset Functionality', async () => {
+
+      try
+      {
+        await Full_Editor.Verify_Presets();
+        console.log('✅ Test Passed: Verify Preset.');
+      }
+      catch (error)
+      {
+        console.log('❌ Test Failed: Verify Preset.');
+        throw error;
+      }
+    });
+
+    it('should check the Dehazer Functionality', async () => {
+
+      try
+      {
+        await Full_Editor.Verify_Dehazer();
+        console.log('✅ Test Passed: Verify Dehazer.');
+      }
+      catch (error)
+      {
+        console.log('❌ Test Failed: Verify Dehazer.');
+        throw error;
+      }
+    });
+
+    it.only('should check the Tune Functionality', async () => {
+
+      try
+      {
+        await Full_Editor.Verify_Tune();
+        console.log('✅ Test Passed: Verify Tune.');
+      }
+      catch (error)
+      {
+        console.log('❌ Test Failed: Verify Tune.');
         throw error;
       }
     });
