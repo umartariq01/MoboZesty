@@ -18,7 +18,7 @@ describe('Full editor', () => {
     });
 
 
-    it.skip('Should verify all music functionality', async () => {
+    it('Should verify all music functionality', async () => {
 
       try
       {
@@ -131,7 +131,7 @@ describe('Full editor', () => {
       }
     });
 
-    it.only('should check the Tune Functionality', async () => {
+    it('should check the Tune Functionality', async () => {
 
       try
       {
@@ -141,6 +141,48 @@ describe('Full editor', () => {
       catch (error)
       {
         console.log('❌ Test Failed: Verify Tune.');
+        throw error;
+      }
+    });
+
+    it.only('should check the Freeze Functionality', async () => {
+
+      try
+      {
+        await Full_Editor.Verify_Freeze();
+        console.log('✅ Test Passed: Verify Freeze.');
+      }
+      catch (error)
+      {
+        console.log('❌ Test Failed: Verify Freeze.');
+        throw error;
+      }
+    });
+
+    it('should check the Overlay Functionality', async () => {
+
+      try
+      {
+        await Full_Editor.Verify_Overlay();
+        console.log('✅ Test Passed: Verify Overlay.');
+      }
+      catch (error)
+      {
+        console.log('❌ Test Failed: Verify Overlay.');
+        throw error;
+      }
+    });
+
+    it('should check the Chroma Functionality', async () => {
+
+      try
+      {
+        await Full_Editor.Verify_Chroma();
+        console.log('✅ Test Passed: Verify Chroma.');
+      }
+      catch (error)
+      {
+        console.log('❌ Test Failed: Verify Chroma.');
         throw error;
       }
     });

@@ -1337,6 +1337,7 @@ class Video_Editor
             await this.Click_Apply_Changes();
             await browser.pause(1000);
             await this.Click_Apply_Changes();
+            await browser.pause(1000);
 
             (await this.text).click();
             await browser.pause(1000);
@@ -1530,130 +1531,171 @@ class Video_Editor
       
 
     // =============== Main Function ===============
-    async Run_Video_Editor_Img_Case()
+    async Verify_Wizard_Mute_Toggle()
     {
-        await Subscription.Check_Subscription('Processing') ;
-        // Add video with sound & check toggle button
+        try
+        {
+          await Subscription.Check_Subscription('Processing') ;
+          // Add video with sound & check toggle button
+          await this.Click_Video_Editor();
+          await this.Click_Video_Tab();
+          await browser.pause(500);
+          await this.Sort_Videos();
+          await browser.pause(500);
+          await Sliders.scrollScreen(540, 586, 546, 1600);
+          await this.Select_Video_with_Audio();
+          await this.Click_Done();
+          await Sliders.play_pause(534, 1403) ;
+          // // await this.clickWithRetry('//android.widget.ImageView[@resource-id="com.myzesty:id/play"]'); // It will click on given element multiple time
+          await Promise.all([
+              await browser.pause(3000),
+              await Sliders.tapScreen(534, 1403),
+          ]);
+          await this.Click_Audio();
+          await this.Verify_Toggle();
+          await this.Click_Apply_Changes();
+          await Sliders.play_pause(534, 1403) ;
+          await Promise.all([
+              await browser.pause(3000),
+              await Sliders.tapScreen(534, 1403),
+          ]);
+          // Save to Draft         
+          await this.Close_Project();
+          await browser.pause(1500);
+          
+          await this.Open_Proj_Draft_1();
+          await this.Click_export();
+          await browser.pause(3000);
+          await this.Check_Rate_Us();
+          await this.Click_Export_Done();
+          await browser.pause(700);
+        }
+        catch (error)
+        {
+            console.log('❌ Verify Mute Toggle button Wizard Functionality FAILED', error.message);
+            throw error;
+        }
+    }
 
-        await this.Click_Video_Editor();
-        await this.Click_Video_Tab();
-        await browser.pause(500);
-        await this.Sort_Videos();
-        await browser.pause(500);
-        await Sliders.scrollScreen(540, 586, 546, 1600);
-        await this.Select_Video_with_Audio();
-        await this.Click_Done();
-        await Sliders.play_pause(534, 1403) ;
-        // // await this.clickWithRetry('//android.widget.ImageView[@resource-id="com.myzesty:id/play"]'); // It will click on given element multiple time
-        await Promise.all([
-            await browser.pause(3000),
-            await Sliders.tapScreen(534, 1403),
-        ]);
-        await this.Click_Audio();
-        await this.Verify_Toggle();
-        await this.Click_Apply_Changes();
-        await Sliders.play_pause(534, 1403) ;
-        await Promise.all([
-            await browser.pause(3000),
-            await Sliders.tapScreen(534, 1403),
-        ]);
-        // Save to Draft         
-        await this.Close_Project();
-        await browser.pause(1500);
-        
-        await this.Open_Proj_Draft_1();
-        await this.Click_export();
-        await browser.pause(3000);
-        await this.Check_Rate_Us();
-        await this.Click_Export_Done();
-        await browser.pause(700);
+    async Verify_Media_Selection()
+    {
+        try
+        {
 
-        // Verify full wezird functionality
+            await this.Click_Video_Editor();
+            await this.Click_Img_Tab();
+            await  this.selectImages(25, '(//android.widget.FrameLayout[@resource-id="com.myzesty:id/frame"])');
+            await this.Click_Done();
+            // await this.Project_Screen_Next();
+            await this.Click_Cancel();
+            await this.Check_for_Media_Selected();
+            await this.Project_Screen_Next();
+            await this.Verify_Transcoding();
+            await browser.pause(1500);
+            await this.Click_Audio();
+            await this.Click_Add_Music();
+            await Sliders.Music_tab_Click();
+            await Sliders.Slider(driver, 396, 437, 1738, 1906, 0.6);
+            await this.Click_Apply_Music();
+            await this.Click_Apply_Changes();
+            await this.Verify_Wizard();
+            await browser.pause(1000);
 
-        await this.Click_Video_Editor();
-        await this.Click_Img_Tab();
-        await  this.selectImages(25, '(//android.widget.FrameLayout[@resource-id="com.myzesty:id/frame"])');
-        await this.Click_Done();
-        // await this.Project_Screen_Next();
-        await this.Click_Cancel();
-        await this.Check_for_Media_Selected();
-        await this.Project_Screen_Next();
-        await this.Verify_Transcoding();
-        await browser.pause(1500);
-        await this.Click_Audio();
-        await this.Click_Add_Music();
-        await Sliders.Music_tab_Click();
-        await Sliders.Slider(driver, 396, 437, 1738, 1906, 0.6);
-        await this.Click_Apply_Music();
-        await this.Click_Apply_Changes();
-        await this.Verify_Wizard();
-        await browser.pause(1000);
+            await this.Add_More_Media();
+            await this.Click_Img_Tab();
+            await this.selectImages(2, '(//android.widget.FrameLayout[@resource-id="com.myzesty:id/frame"])');
+            await this.Click_Video_Tab();
+            await this.selectImages(1, '(//android.widget.FrameLayout[@resource-id="com.myzesty:id/frame"])');
+            await this.Click_Done();
+            await this.Verify_Transcoding();
+            await browser.pause(5000);
+            await this.Delete_Images();
+            await this.Assert_Help_Text('Adding and Rearranging Media');
+            await Sliders.play_pause(534, 1403) ;
+            await browser.pause(5000);
+            await Sliders.play_pause(534, 1403) ;
+            await Sliders.dragSliderWithBounds('//android.widget.SeekBar[@resource-id="com.myzesty:id/seekBar"]', 300, [[18,1477][1062,1527]])
+            await this.Select_Img();
+            await this.Verify_Dlt_Duration();
+            await this.Verify_Transition();
+            await this.Close_Project();
+            await browser.pause(1000);
+            await this.Verify_Transition();
+            await this.Click_Apply_Changes();
+            await this.Verify_Transition();
+            await this.Transition_1();
+            await this.Click_Apply_All();
+            await this.Click_Apply_Changes();
+            await browser.pause(1000);
+        }
+        catch (error)
+        {
+            console.log('❌ Verify Media Selection Functionality FAILED', error.message);
+            throw error;
+        }
+    }
 
-        await this.Add_More_Media();
-        await this.Click_Img_Tab();
-        await this.selectImages(2, '(//android.widget.FrameLayout[@resource-id="com.myzesty:id/frame"])');
-        await this.Click_Video_Tab();
-        await this.selectImages(1, '(//android.widget.FrameLayout[@resource-id="com.myzesty:id/frame"])');
-        await this.Click_Done();
-        await this.Verify_Transcoding();
-        await browser.pause(5000);
-        await this.Delete_Images();
-        await this.Assert_Help_Text('Adding and Rearranging Media');
-        await Sliders.play_pause(534, 1403) ;
-        await browser.pause(5000);
-        await Sliders.play_pause(534, 1403) ;
-        await Sliders.dragSliderWithBounds('//android.widget.SeekBar[@resource-id="com.myzesty:id/seekBar"]', 300, [[18,1477][1062,1527]])
-        await this.Select_Img();
-        await this.Verify_Dlt_Duration();
-        await this.Verify_Transition();
-        await this.Close_Project();
-        await browser.pause(1000);
-        await this.Verify_Transition();
-        await this.Click_Apply_Changes();
-        await this.Verify_Transition();
-        await this.Transition_1();
-        await this.Click_Apply_All();
-        await this.Click_Apply_Changes();
-        await browser.pause(1000);
+    async Verify_Wizard_Stickers()
+    {
+        try
+        {
+            await this.Click_Stickers();
+            await this.Verify_Sticker_Category();
+            await this.Verify_close_apply_Btn();
+            await this.Verify_sticker_Help();
+            await Sliders.tapScreen(510, 1313);
+            await this.Apply_Sticker();
+            await this.Click_Apply_Changes();
+            await Sliders.play_pause(534, 1403) ;
+            await browser.pause(500);
+            await this.Check_Mini_Maximize();
+            await browser.pause(1000);
+            await Sliders.play_pause(75, 2340) ;
+            await browser.pause(3000);
+            await Sliders.play_pause(75, 2340) ;
+            await this.Check_Mini_Maximize();
+            await this.Undo_changes();
+            await browser.pause(1000);
+            await this.Redo_changes();
+            await browser.pause(1000);
+    
+        }
+        catch (error)
+        {
+            console.log('❌ Verify Wizard Sticker Functionality FAILED', error.message);
+            throw error;
+        }
+    }
 
-        // QA-68
-        await this.Click_Stickers();
-        await this.Verify_Sticker_Category();
-        await this.Verify_close_apply_Btn();
-        await this.Verify_sticker_Help();
-        await Sliders.tapScreen(510, 1313);
-        await this.Apply_Sticker();
-        await this.Click_Apply_Changes();
-        await Sliders.play_pause(534, 1403) ;
-        await browser.pause(500);
-        await this.Check_Mini_Maximize();
-        await browser.pause(1000);
-        await Sliders.play_pause(75, 2340) ;
-        await browser.pause(3000);
-        await Sliders.play_pause(75, 2340) ;
-        await this.Check_Mini_Maximize();
-        await this.Undo_changes();
-        await browser.pause(1000);
-        await this.Redo_changes();
-        await browser.pause(1000);
+    async Verify_Wizard_Effect()
+    {
+        try
+        {
+            await this.Apply_Effects();
+            await browser.pause(1500);
+            await this.Click_Apply_Changes();
+            await this.Apply_Effects();
+            await this.Verify_Effects();
+            await this.Click_Apply_All();
+            await browser.pause(1000);
+            await this.Click_Apply_Changes();
+            await Sliders.play_pause(534, 1403) ;
+            await browser.pause(3000);
+            await Sliders.play_pause(534, 1403) ;
+            await browser.pause(1000);
+        }
+        catch (error)
+        {
+            console.log('❌ Verify Wizard Effect Functionality FAILED', error.message);
+            throw error;
+        }
+    }
 
-        // QA-71
-        await this.Apply_Effects();
-        await browser.pause(1500);
-        await this.Click_Apply_Changes();
-        await this.Apply_Effects();
-        await this.Verify_Effects();
-        await this.Click_Apply_All();
-        await browser.pause(1000);
-        await this.Click_Apply_Changes();
-        await Sliders.play_pause(534, 1403) ;
-        await browser.pause(3000);
-        await Sliders.play_pause(534, 1403) ;
-        await browser.pause(1000);
-
-
-        // QA-72
-        await this.Click_Audio();
+    async Verify_Wizard_Audio()
+    {
+        try
+        {
+            await this.Click_Audio();
         await this.Click_Add_Music()
         await Sliders.Music_tab_Click();
         await Sliders.dragSliderWithBounds('//android.view.ViewGroup[@resource-id="com.myzesty:id/range_slider"]', 200, [133,1822]);
@@ -1678,88 +1720,109 @@ class Video_Editor
         await Sliders.play_pause(75, 2340);
         await browser.pause(3000);
         await Sliders.play_pause(75, 2340);
-        await this.Click_Audio();
-        await this.Click_Add_Music();
-        await this.Click_My_Library();
-        try{
-            await this.Click_Apply_Changes();
-        }
-        catch{
-            console.log("Apply button 3 not visible.");
-        }
+        // await this.Click_Audio();
+        // await this.Click_Add_Music();
+        // await this.Click_My_Library();
+        // try{
+        //     await this.Click_Apply_Changes();
+        // }
+        // catch{
+        //     console.log("Apply button 3 not visible.");
+        // }
         
         await browser.pause(1000);
-
-        // QA-73
-        await this.Click_Presets();
-        await this.Verify_Presets();
-        await this.Click_Apply_All();
-        await browser.pause(1000);
-        await this.Click_Apply_Changes();
-        await Sliders.play_pause(534, 1403) ;
-        await browser.pause(3000);
-        await Sliders.play_pause(534, 1403) ;
-        await browser.pause(1000);
-
-        // QA-74
-        await this.Apply_Magic();
-        await this.Check_Mini_Maximize();
-        await browser.pause(1000);
-        await Sliders.play_pause(75, 2340) ;
-        await browser.pause(5000);
-        await Sliders.play_pause(75, 2340) ;
-        await this.Check_Mini_Maximize();
-        await browser.pause(1000);
-
-        // QA-75
-        await Sliders.Slider(driver, 18, 1062, 1477, 1522, 0.3);
-        await this.Enter_Empty_Text();
-        await browser.pause(2000);
-        await this.Enter_Text();
-        await this.Verify_Text_Properties();;
-        await this.Verify_Text_Help(); 
-        await browser.pause(700);
-        await Sliders.tapScreen(500, 1260);
-        await this.Apply_Font_Style();
-
-        // Save to Draft         
-        await this.Close_Project();
-        await browser.pause(1500);
-        await this.Open_Proj_Draft_1();
-
-
-        // await this.Click_export();
-        // await Common_function.Check_export_progress('//android.widget.TextView[@resource-id="com.myzesty:id/percLabel"]');
-        // await this.Check_Rate_Us();
-        // await this.Click_Export_Done();
-        // await browser.pause(700);
-
-        
-
-//main test function along its test case closure here
+        }
+        catch (error)
+        {
+            console.log('❌ Verify Wizard Audio Functionality FAILED', error.message);
+            throw error;
+        }
     }
 
-
-    async Run_Video_Editor_Vid_Case()
+    async Verify_Wizard_Preset()
     {
-        await Subscription.Check_Subscription('Processing') ;
-        await this.Click_Video_Editor();
-        await this.Click_Video_Tab();
-        await this.selectImages(10, '(//android.widget.FrameLayout[@resource-id="com.myzesty:id/frame"])');
-        await this.Click_Done();
-        await this.Click_Cancel();
-        await this.Check_for_Media_Selected();
-        // await this.deselectImages();
-        await this.Click_Done();
-        await this.Cancel_Transcoding();
-        await this.Click_Done();
-        await this.Click_Audio();
-        await Sliders.Music_tab_Click();
-        await this.Click_Apply_Changes();
-        await this.Verify_Transcoding();
-        await this.Verify_Wizard();
-        
+        try
+        {
+            await this.Click_Presets();
+            await this.Verify_Presets();
+            await this.Click_Apply_All();
+            await browser.pause(1000);
+            await this.Click_Apply_Changes();
+            await Sliders.play_pause(534, 1403) ;
+            await browser.pause(3000);
+            await Sliders.play_pause(534, 1403) ;
+            await browser.pause(1000);
+        }
+        catch (error)
+        {
+            console.log('❌ Verify Wizard Preset Functionality FAILED', error.message);
+            throw error;
+        }
     }
+
+    async Verify_Wizard_Magic()
+    {
+        try
+        {
+            await this.Apply_Magic();
+            await this.Check_Mini_Maximize();
+            await browser.pause(1000);
+            await Sliders.play_pause(75, 2340) ;
+            await browser.pause(5000);
+            await Sliders.play_pause(75, 2340) ;
+            await this.Check_Mini_Maximize();
+            await browser.pause(1000);
+        }
+        catch (error)
+        {
+            console.log('❌ Verify Wizard Magic Functionality FAILED', error.message);
+            throw error;
+        }
+    }
+
+    async Verify_Wizard_Text()
+    {
+        try
+        {
+            await Sliders.Slider(driver, 18, 1062, 1477, 1522, 0.3);
+            await this.Enter_Empty_Text();
+            await browser.pause(2000);
+            await this.Enter_Text();
+            await this.Verify_Text_Properties();;
+            await this.Verify_Text_Help(); 
+            await browser.pause(700);
+            await Sliders.tapScreen(500, 1260);
+            await this.Apply_Font_Style();
+        }
+        catch (error)
+        {
+            console.log('❌ Verify Wizard Text Functionality FAILED', error.message);
+            throw error;
+        }
+    }
+
+    async Verify_Draft_Export()
+    {
+        try
+        {
+            await this.Close_Project();
+            await browser.pause(1500);
+            await this.Open_Proj_Draft_1();
+            await browser.pause(1000);
+            await this.Click_export();
+            // await Common_function.Check_export_progress('//android.widget.TextView[@resource-id="com.myzesty:id/percLabel"]');
+            await this.Check_Rate_Us();
+            await this.Click_Export_Done();
+            await browser.pause(700);
+        }
+        catch (error)
+        {
+            console.log('❌ Verify Chroma Functionality FAILED', error.message);
+            throw error;
+        }
+    }
+
+   
 }
 
 

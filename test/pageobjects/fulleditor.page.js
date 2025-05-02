@@ -349,10 +349,10 @@ class Full_Editor
         await this.Click_BG();
     }
 
-    get trim()
-    {
-        return $('//android.widget.TextView[@resource-id="com.myzesty:id/text" and @text="Trim"]');
-    }
+    // get trim()
+    // {
+    //     return $('//android.widget.TextView[@resource-id="com.myzesty:id/text" and @text="Trim"]');
+    // }
     get split()
     {
         return $('//android.widget.TextView[@resource-id="com.myzesty:id/text" and @text="Split"]');
@@ -505,10 +505,124 @@ class Full_Editor
         await  Sliders.Sound_slide(driver, 222, 914, 2036, 2086, 0.3);
         await browser.pause(500);
 
+        await (await this.saturation).click();
+        await  Sliders.Sound_slide(driver, 222, 914, 2036, 2086, 0.4);
+        await browser.pause(500);
+
+        await (await this.tint).click();
+        await  Sliders.Sound_slide(driver, 222, 914, 2036, 2086, 0.3);
+        await browser.pause(500);
+
+        await Sliders.scrollScreen(950, 1840, 240, 1840, 1500);
+
+        await (await this.temprature).click();
+        await  Sliders.Sound_slide(driver, 222, 914, 2036, 2086, 0.4);
+        await browser.pause(500);
+
+        await (await this.hue).click();
+        await  Sliders.Sound_slide(driver, 222, 914, 2036, 2086, 0.8);
+        await browser.pause(500);
+
+        await (await this.highlight).click();
+        await  Sliders.Sound_slide(driver, 222, 914, 2036, 2086, 0.6);
+        await browser.pause(500);
+
+        await (await this.shadow).click();
+        await  Sliders.Sound_slide(driver, 222, 914, 2036, 2086, 0.8);
+        await browser.pause(500);
+
+        await Sliders.scrollScreen(950, 1840, 240, 1840, 1300);
+
+        await (await this.vibrance).click();
+        await  Sliders.Sound_slide(driver, 222, 914, 2036, 2086, 0.2);
+        await browser.pause(500);
+
+        await (await this.sharpen).click();
+        await  Sliders.Sound_slide(driver, 222, 914, 2036, 2086, 0.4);
+        await browser.pause(500);
+
+        await this.Click_Apply_Changes();
+
     }
 
-    
-    
+    get freeze()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/text" and @text="Freeze"]');
+    }
+    get apply_freeze()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/text" and @text="Freeze"]')
+    }
+    async Click_Freeze()
+    {
+        await (await this.freeze).click();
+        await browser.pause(500);
+        await Common_function.longPressElement('//android.widget.TextView[@resource-id="com.myzesty:id/text" and @text="Freeze"]', 4);
+    }
+
+    get overlay()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/text" and @text="Overlay"]');
+    }
+    get overlay_video()
+    {
+        return $('(//android.widget.FrameLayout[@resource-id="com.myzesty:id/frame"])[15]');
+    }
+    get blend()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/text" and @text="Blend"]');
+    }
+    get opacity()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/text" and @text="Opacity"]');
+    }
+    async Click_Overlay()
+    {
+        await (await this.overlay).click();
+        await browser.pause(1000);
+    }
+    async Click_Overlay_Video()
+    {
+        (await this.overlay_video).click();
+    }
+    async Adjust_Blend()
+    {
+        await (await this.blend).click();
+        await browser.pause(500);
+        await Sliders.Sound_slide(driver, 192, 944, 1927, 2037, 0.8);
+        await this.Click_Apply_Changes();
+    }
+    async Adjust_Opacity()
+    {
+        await (await this.opacity).click();
+        await browser.pause(500);
+        await Sliders.Sound_slide(driver, 41, 929, 1662, 1772, 0.75);
+        await this.Click_Apply_Changes();
+    }
+
+    get chroma()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/text" and @text="Chroma"]');
+    }
+    get chroma_BG()
+    {
+        return $('(//android.widget.ImageView[@resource-id="com.myzesty:id/iv_background"])[2]');
+    }
+    get chroma_color()
+    {
+        return $('(//android.widget.ImageView[@resource-id="com.myzesty:id/color_bg"])[3]');
+    }
+    async Apply_Chroma()
+    {
+        (await this.chroma).click();
+        await browser.pause(4000);
+        await (await this.chroma_BG).click();
+        await browser.pause(1000);
+        await (await this.chroma_color).click();
+        await Sliders.Sound_slide(driver, 220, 931, 2074, 2184, 0.8);
+        await this.Click_Apply_Changes();
+
+    }
     
 
 
@@ -564,8 +678,8 @@ class Full_Editor
             await this.Click_Apply_Changes();
             await browser.pause(300);
             // Add Music from Library
-            await this.Click_Add_Music();
-            await this.Cliick_My_Library();
+            // await this.Click_Add_Music();
+            // await this.Cliick_My_Library();
             
             await this.Click_Extract_Audio();
             await browser.pause(1000);
@@ -688,8 +802,9 @@ class Full_Editor
         {
             await Sliders.Single_slide(37, 950, 1800, 1000);
             await this.Click_Presets();
-            // Preset bar needs to be implimented because its not visible in new release
+            await Sliders.dragSliderWithBounds('//android.view.ViewGroup[@resource-id="com.myzesty:id/range_slider"]/android.view.View[2]', 120, [[610,1724][651,1801]]);
             await this.Click_Main_Back();
+            await browser.pause(1000);
         
         }
         catch (error)
@@ -728,6 +843,62 @@ class Full_Editor
         catch (error)
         {
             console.log('❌ Verify Tune Functionality FAILED', error.message);
+            throw error;
+        }
+    }
+
+    async Verify_Freeze()
+    {
+        try
+        {
+            await Sliders.scrollUntilElementIsVisible('//android.widget.TextView[@resource-id="com.myzesty:id/text" and @text="Canvas"]', 900, 2300, 350, 2300);
+            await this.Click_Freeze();
+            await this.Click_Main_Back();
+        
+        }
+        catch (error)
+        {
+            console.log('❌ Verify Freeze Functionality FAILED', error.message);
+            throw error;
+        }
+    }
+
+    async Verify_Overlay()
+    {
+        try
+        {
+            await Sliders.scrollUntilElementIsVisible('//android.widget.TextView[@resource-id="com.myzesty:id/text" and @text="Canvas"]', 900, 2300, 350, 2300);
+            await this.Click_Overlay(); 
+            await this.Click_Video_Tab();
+            await browser.pause(1000);
+            await this.Sort_Videos();
+            await browser.pause(500);
+            await Sliders.scrollScreen(527, 870, 527, 2000); 
+            await this.Click_Overlay_Video();
+            await browser.pause(1000);
+            await this.Adjust_Blend();
+            await this.Adjust_Opacity();
+            await browser.pause(1000);
+            await this.Click_Main_Back();
+        }
+        catch (error)
+        {
+            console.log('❌ Verify Overlay Functionality FAILED', error.message);
+            throw error;
+        }
+    }
+
+    async Verify_Chroma()
+    {
+        try
+        {
+            await Sliders.scrollUntilElementIsVisible('//android.widget.TextView[@resource-id="com.myzesty:id/text" and @text="Canvas"]', 900, 2300, 350, 2300);
+            await this.Apply_Chroma();
+        
+        }
+        catch (error)
+        {
+            console.log('❌ Verify Chroma Functionality FAILED', error.message);
             throw error;
         }
     }
