@@ -280,6 +280,69 @@ class Full_Editor
     {
         return $('(//android.widget.ImageView[@resource-id="com.myzesty:id/animated_image"])[1]');
     }
+    get animation()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/text" and @text="Animation"]');
+    }
+    get intro_animation()
+    {
+        return $('//android.widget.TextView[@text="Intro"]');
+    }
+    get outro_animation()
+    {
+        return $('//android.widget.LinearLayout[@content-desc="Outro"]');
+    }
+    get loop_animation()
+    {
+        return $('//android.widget.TextView[@text="Loop"]');
+    }
+    async Click_Animations()
+    {
+        await (await this.animation).click();
+        await browser.pause(1000);
+    }
+
+    // Add this method inside your existing class
+
+async Apply_Sticker_Animations() 
+{
+    const getFilterByIndex = async (index) => {
+        return await $(`(//android.widget.ImageView[@resource-id="com.myzesty:id/image"])[${index}]`);
+    };
+
+    const playButton = await $('//android.widget.ImageView[@resource-id="com.myzesty:id/play"]');
+
+    const playAndStopVideo = async () => {
+
+        await Sliders.scrollScreen(542, 1924, 988, 1924);
+        await playButton.click();
+        await driver.pause(3000);
+        await Sliders.play_pause(531, 1408);
+    };
+
+    const applyAnimationFilters = async (filterIndex) => {
+        await this.Click_Animations();
+
+        await (await this.intro_animation).click();
+        await (await getFilterByIndex(filterIndex)).click();
+
+        await (await this.outro_animation).click();
+        await (await getFilterByIndex(filterIndex)).click();
+
+        await (await this.loop_animation).click();
+        await (await getFilterByIndex(filterIndex)).click();
+
+        await this.Click_Apply_Changes();
+        await browser.pause(1000);
+        
+    };
+
+    for (let i = 2; i <= 4; i++) {
+        await applyAnimationFilters(i);
+        await playAndStopVideo();
+    }
+}
+
     async Click_Add_Sticker()
     {
         (await this.add_sticker).click();
@@ -289,7 +352,9 @@ class Full_Editor
     async Apply_Sticker()
     {
         (await this.sticker1).click();
+        await browser.pause(1000);
     }
+
 
     get sort_media()
     {
@@ -741,9 +806,10 @@ class Full_Editor
         try
         {
             await this.Click_Add_Sticker();
-            await this.Apply_Sticker();
+            await this.Apply_Sticker(); // Add explicit wait here untill sticker is visible
             await browser.pause(1500);
             await this.Click_Apply_Changes();
+            // await this.Apply_Sticker_Animations(); // Need more time to adjust animations
             await browser.pause(1000);
             await  Sliders.dragSliderWithBounds('//android.view.ViewGroup[@resource-id="com.myzesty:id/range_slider"]/android.view.View[3]', 150, [[746,1724][787,1801]]);
             await  Sliders.dragSliderWithBounds('//android.view.ViewGroup[@resource-id="com.myzesty:id/range_slider"]/android.view.View[3]', 150, [[746,1724][787,1801]]);

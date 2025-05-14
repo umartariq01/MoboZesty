@@ -119,7 +119,7 @@ describe ("video editor", () => {
         });
 
 
-        it.only('should check the Wizard Text Functionality', async () => {
+        it('should check the Wizard Text Functionality', async () => {
     
         try
         {

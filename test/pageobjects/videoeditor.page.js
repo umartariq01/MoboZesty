@@ -1543,6 +1543,7 @@ class Video_Editor
           await this.Sort_Videos();
           await browser.pause(500);
           await Sliders.scrollScreen(540, 586, 546, 1600);
+          await browser.pause(1000);
           await this.Select_Video_with_Audio();
           await this.Click_Done();
           await Sliders.play_pause(534, 1403) ;

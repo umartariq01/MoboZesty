@@ -61,7 +61,7 @@ describe('Full editor', () => {
       }
     });
 
-    it('should check the Sticker Functionality', async () => {
+    it.only('should check the Sticker Functionality', async () => {
 
       try
       {

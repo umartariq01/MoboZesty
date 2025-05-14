@@ -103,7 +103,8 @@
   "sample": "wdio run ./wdio.conf.js --spec test.runQC.js",
   
     
-  "fulleditor": "wdio run ./wdio.conf.js --spec test.fulleditor.js"
+  "fulleditor": "wdio run ./wdio.conf.js --spec test.fulleditor.js",
+  "imgeditor": "wdio run ./wdio.conf.js --spec test.imgeditor.js"
   
   },
   
