@@ -2,9 +2,8 @@ import { $, browser } from '@wdio/globals' ;
 import Subscription from '../pageobjects/BuyPremium.page.js';
 import Sliders from '../pageobjects/sliders.page.js';
 import assert from 'assert';
-import { valueFromRemoteObject } from 'puppeteer';
-import { BrowserWebSocketTransport } from 'puppeteer';
-import { th } from '@faker-js/faker';
+import { RETRY_DELAY } from 'puppeteer';
+import { ADDRGETNETWORKPARAMS } from 'dns';
 
 class Photo_Editor
 {
@@ -42,7 +41,7 @@ class Photo_Editor
     {
         return $('//android.widget.ImageView[@resource-id="com.myzesty:id/trends"]');
     }
-    get color()
+    get preset_color()
     {
         return $('//android.widget.ImageView[@resource-id="com.myzesty:id/color"]');
     }
@@ -58,89 +57,6 @@ class Photo_Editor
     {
         return $('//android.widget.ImageView[@resource-id="com.myzesty:id/unique"]');
     }
-
-    // async Apply_all_Effects() {
-    //     let index = 1;
-    //     let processCount = 0;
-    //     let scrollCount = 0;
-    
-    //     while (true) {
-    //         try {
-    //             const effect = await $(`(//android.widget.ImageView[@resource-id="com.myzesty:id/image"])[${index}]`);
-    
-    //             if (!(await effect.isExisting())) {
-    //                 console.log(`No more effects found at index ${index}.`);
-    //                 break;
-    //             }
-    
-    //             console.log(`Clicking on effect ${index + scrollCount * 5}`);
-    //             await effect.click();
-    //             await browser.pause(1500);
-    //             index++;
-    //             processCount++;
-    
-    //             if (index > 5) {
-    //                 scrollCount++;
-    //                 await Sliders.scrollScreen(940, 1773, 107, 1773, 1500);
-    //                 await browser.pause(1000);
-    //                 index = 2; // Restart index at 2 because after scroll, index 1 is repeated
-    //             }
-    
-    //         } catch (error) {
-    //             console.log(`Error clicking effect ${index}:`, error.message);
-    //             break;
-    //         }
-    //     }
-    // }
-
-    // async Apply_all_Effects() {
-    //     let index = 1;
-    //     let processCount = 0;
-    //     let scrollCount = 0;
-    //     let lastVisibleEffectCount = 0;
-    
-    //     while (true) {
-    //         try {
-    //             const effects = await $$('//android.widget.ImageView[@resource-id="com.myzesty:id/image"]');
-    //             const currentVisibleCount = effects.length;
-    
-    //             // Exit condition: No new filters loaded after scroll
-    //             if (currentVisibleCount === lastVisibleEffectCount && index > currentVisibleCount) {
-    //                 console.log('All filters loaded and applied.');
-    //                 break;
-    //             }
-    
-    //             // Guard index from exceeding current filter count
-    //             if (index > currentVisibleCount) {
-    //                 console.log(`Reached end of visible filters at index ${index}. Scrolling...`);
-    //                 scrollCount++;
-    //                 await Sliders.scrollScreen(940, 1773, 107, 1773, 1500);
-    //                 await browser.pause(1000);
-    //                 index = 2; // Skipping index 1 to avoid reapplying it
-    //                 lastVisibleEffectCount = currentVisibleCount;
-    //                 continue;
-    //             }
-    
-    //             const effect = effects[index - 1]; // -1 for 0-based index in array
-    
-    //             if (!await effect.isExisting()) {
-    //                 console.log(`Effect at index ${index} does not exist.`);
-    //                 break;
-    //             }
-    
-    //             console.log(`Clicking on effect ${index + scrollCount * 5}`);
-    //             await effect.click();
-    //             await browser.pause(1500);
-    //             index++;
-    //             processCount++;
-    
-    //         } catch (error) {
-    //             console.log(`Error clicking effect ${index}:`, error.message);
-    //             break;
-    //         }
-    //     }
-    // }
-
     async Apply_All_Effects(xpathBase, maxScrolls = 2, startIndex = 1) {
         let index = startIndex;
         let processCount = 0;
@@ -184,7 +100,7 @@ class Photo_Editor
     async Verify_Presets() {
         const categories = [
             { name: 'Trends', element: this.trend },
-            { name: 'Color', element: this.color },
+            { name: 'Color', element: this.preset_color },
             { name: 'Artistic', element: this.artistic },
             { name: 'Gradient', element: this.Gradient },
             { name: 'Unique', element: this.unique }
@@ -296,23 +212,17 @@ class Photo_Editor
     {
         await (await this.tune).click();
     }
-    async Apply_Tune_Filters()
-    {
-        const tunesteps = [
-           { element : this.brightness, value : 0.3 },
-           { element : this.contrast, value : 0.8 },
-           { element : this.saturation, value : 0.6 },
-           { element : this.hue, value : 0.4 },
-           { element : this.shadow, value : 0.6 },
-           { element : this.vibrance, value : 0.8}
-        ];
 
-        for (const step of tunesteps)
-        {
-            await (await step.element).click();
-            await Sliders.Sound_slide(driver, 7, 962, 1981, 2091, step.value);
-            await browser.pause(500);
-        }
+    async Apply_Tune_Filters(tuneSteps, coordinates) 
+    {
+        for (const step of tuneSteps) 
+            {
+                const { startX, startY, endX, endY } = coordinates;
+
+                await (await step.element).click();
+                await Sliders.Sound_slide(driver, startX, endX, startY, endY, step.value);
+                await browser.pause(500);
+            }
     }
 
     get color()
@@ -411,11 +321,6 @@ class Photo_Editor
     }
 }
 
-
-
-
-
-
     get crop()
     {
         return $('//android.widget.TextView[@resource-id="com.myzesty:id/title" and @text="Crop / Rotate"]');
@@ -513,17 +418,21 @@ class Photo_Editor
     {
         await (await this.fade).click();
     }
-   async Filter_with_Single_Slider(tuneSteps, coordinates)
-    {
-        const { startX, startY, endX, endY } = coordinates;
+   async Filter_with_Single_Slider(tuneSteps, coordinates) {
+    const { startX, startY, endX, endY } = coordinates;
 
-        for (const step of tuneSteps)
-        {
-            await (await step.element).click();
+    for (const step of tuneSteps) {
+        await (await step.element).click();
+        // Only apply slider if a value is provided
+        if (typeof step.value === 'number') {
             await Sliders.Slider(driver, startX, endX, startY, endY, step.value);
             await browser.pause(500);
+        } else {
+            console.log(`Skipping slider for step: ${step.name || 'Unnamed step'}`);
         }
     }
+}
+
 
     get stickers()
     {
@@ -588,6 +497,432 @@ class Photo_Editor
         await (await this.first_sticker).click();
         await Sliders.Drag_Drop(driver, 527, 1124, 203, 1419); // drag sticker 4
     }
+
+    get text()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/title" and @text="Text"]');
+    }
+    get text_area()
+    {
+        return $('//android.widget.EditText[@resource-id="com.myzesty:id/add_text_edit_text"]');
+    }
+    get bold()
+    {
+        return $('//android.widget.ImageView[@resource-id="com.myzesty:id/bold"]');
+    }
+    get italic()
+    {
+        return $('//android.widget.ImageView[@resource-id="com.myzesty:id/italic"]');
+    }
+    get apply_text()
+    {
+        return $('//android.widget.ImageView[@resource-id="com.myzesty:id/done"]');
+    }
+    async Add_Text()
+    {
+        await (await this.text).click();
+        await (await this.text_area).click();
+        await browser.pause(1000);
+        (await this.text_area).setValue('Script Running');
+        await browser.pause(1000);
+        await (await this.bold).click();
+        await (await this.italic).click();
+        await browser.pause(1000);
+        await Sliders.Slider(driver, 28, 1052, 1431, 1541, 0.2);
+        await (await this.apply_text).click();
+    }
+    get font_color()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/color_text"]');
+    }
+    get font_opacity()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/opacity_text"]');
+    }
+    get font_shadow()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/shadow_text"]');
+    }
+    get font_stroke()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/stroke_text"]');
+    }
+    async Apply_Font_Styles()
+    {
+        let index = 1;
+
+        while (index < 4 ) {
+            const filterXPath = `(//android.widget.ImageView[@resource-id="com.myzesty:id/image"])[${index}]`;
+            const filterElement = await $(filterXPath);
+
+            if (!await filterElement.isExisting())
+                break;
+
+            await filterElement.click();
+            await browser.pause(1000); 
+            index++;
+        }
+    }
+    async Click_Font_Color()
+    {
+        await (await this.font_color).click();
+        await Sliders.Slider(driver, 28, 936, 2010, 2059, 0.3);
+    }
+    async Click_Font_Opacity()
+    {
+        await (await this.font_opacity).click();
+        await  Sliders.Slider(driver, 14, 914, 1987, 2097, 0.8);
+    }
+    async Click_Font_Shadow()
+    {
+        await (await this.font_shadow).click();
+        await Sliders.Slider(driver, 14, 914, 1987, 2097, 0.2);
+    }
+    async Click_Font_Stroke()
+    {
+        await (await this.font_stroke).click();
+        await Sliders.Slider(driver, 14, 914, 1848, 1958, 0.2);
+        await browser.pause(500);
+        await  Sliders.Slider(driver, 28, 936, 2010, 2059, 0.4);
+    }
+
+    get brush()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/shape_text"]');
+    }
+    get draw()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/title" and @text="Draw"]');
+    }
+    get square_draw()
+    {
+        return  $('//android.widget.ImageView[@resource-id="com.myzesty:id/square"]');
+    }
+    get draw_color() // same xpath as font_color
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/color_text"]');
+    }
+    get draw_feather()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/feather_text"]');
+    }
+    get draw_opacity() // same xpath as font_opacity
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/opacity_text"]');
+    }
+    get undo_draw()
+    {
+        return $('//android.widget.ImageView[@resource-id="com.myzesty:id/undo"]');
+    }
+    get redo_draw()
+    {
+        return $('//android.widget.ImageView[@resource-id="com.myzesty:id/redo"]');
+    }
+    async Click_Circle_Draw()
+    {
+        await (await this.draw).click();
+        await Sliders.Drag_Drop(driver, 170, 391, 170, 1253);
+        await (await this.undo_draw).click();
+        await browser.pause(500);
+        await (await this.redo_draw).click();
+    }
+    async Click_Color_Feature()
+    {
+        await (await this.font_color).click();
+    }
+    async Click_Draw_Color
+    ({  startX, endX, startY, endY, desiredPercentage, 
+        dragX, dragY, dropX, dropY
+    })
+    {
+        await Sliders.Slider(driver, startX, endX, startY, endY, desiredPercentage)
+        await Sliders.Drag_Drop(driver, dragX, dragY, dropX, dropY);
+        await (await this.undo_draw).click();
+        await browser.pause(500);
+        await (await this.redo_draw).click();
+    }
+    async Click_Feather_Feature()
+    {
+        await (await this.draw_feather).click();
+    }
+    async Click_Draw_Feather
+    ({  startX, endX, startY, endY, desiredPercentage,
+        dragX, dragY, dropX, dropY
+    })
+    {
+        await Sliders.Slider(driver, startX, endX, startY, endY, desiredPercentage);
+        await Sliders.Drag_Drop(driver, dragX, dragY, dropX, dropY);
+        await (await this.undo_draw).click();
+        await browser.pause(500);
+        await (await this.redo_draw).click();
+    }
+    async Click_Opacity_Feature()
+    {
+        await (await this.font_opacity).click();
+    }
+    async Click_Draw_Opacity
+    ({
+        startX, endX, startY, endY, desiredPercentage,
+        dragX, dragY, dropX, dropY
+    })
+    {
+        await Sliders.Slider(driver, startX, endX, startY, endY, desiredPercentage);
+        await Sliders.Drag_Drop(driver, dragX, dragY, dropX, dropY);
+    }
+    async Click_Brush()
+    {
+        await (await this.brush).click();
+        await (await this.square_draw).click();
+        await Sliders.Drag_Drop(driver, 107, 780, 940, 780);
+    }
+
+    get flip()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/title" and @text="Flip"]');
+    }
+    get horizental_flip()
+    {
+        return $('//android.widget.ImageView[@resource-id="com.myzesty:id/flipH"]');
+    }
+    get vertical_flip()
+    {
+        return $('//android.widget.ImageView[@resource-id="com.myzesty:id/flipV"]');
+    }
+    async Click_Flip()
+    {
+        await (await this.flip).click();
+    }
+    async Flip_Horizentally()
+    {
+        await(await this.horizental_flip).click();
+    }
+    async Flip_Vertically()
+    {
+        await (await this.vertical_flip).click();
+    }
+
+    get blur()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/title" and @text="Blur"]');
+    }
+    get linear_blur()
+    {
+        return $('//android.widget.ImageView[@resource-id="com.myzesty:id/linear"]');
+    }
+    get radial_blur()
+    {
+        return $('//android.widget.ImageView[@resource-id="com.myzesty:id/radial"]');
+    }
+    get inner_radial_blur()
+    {
+        return $('//android.widget.ImageView[@resource-id="com.myzesty:id/iradial"]');
+    }
+    get shape_blur()
+    {
+        return $('//android.widget.ImageView[@resource-id="com.myzesty:id/shaped"]');
+    }
+    async Click_Blur()
+    {
+        await (await this.blur).click();
+    }
+
+    async  Apply_Blur_Effects()
+    {
+        await (await this.linear_blur).click();
+        await browser.pause(600);
+        await (await this.radial_blur).click();
+        await browser.pause(600);
+        await (await this.inner_radial_blur).click();
+    }
+    async Apply_Shape_Blur()
+    {
+        await (await this.shape_blur).click();
+
+        let index = 1 ;
+
+        while (index <=7)
+        {
+            const xpath = `(//android.widget.ImageView[@resource-id="com.myzesty:id/shape"])[${index}]` ;
+            const Elemet = await $(xpath);
+
+            if(!await Elemet.isExisting())
+                break;
+            await Elemet.click();
+            await browser.pause(500);
+            index ++ ;
+        }
+    }
+
+    get overlay()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/title" and @text="Overlay"]');
+    }
+    async Click_Overlay()
+    {
+        await (await this.overlay).click();
+    }
+    get canvas()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/canvas_text"]');
+    }
+    get grunge()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/grunge_text"]');
+    }
+    get lights()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/lights_text"]');
+    }
+    get patterns()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/patterns_text"]');
+    }
+    async Apply_Filters(categories, baseXPath, startIndex, maxIndex) 
+    {
+        let categoryList;
+
+        if (categories.length > 0) 
+            {
+                categoryList = categories;
+            } 
+        else 
+            {
+                categoryList = [null];
+            }
+
+        for (const category of categoryList) {
+            if (category) 
+                {
+                    await category.click();
+                    await browser.pause(1000); // wait for filters to load
+                }
+
+            for (let index = startIndex; index <= maxIndex; index++) {
+                const filterXPath = `${baseXPath}[${index}]`;
+                const filterElement = await $(filterXPath);
+
+                if (!await filterElement.isExisting()) break;
+
+                await filterElement.click();
+                await browser.pause(1000);
+            }
+        }
+    }
+
+    get blend()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/title" and @text="Blend"]');
+    }
+    get blend_img()
+    {
+        return $('(//androidx.cardview.widget.CardView[@resource-id="com.myzesty:id/select_cover"])[9]');
+    }
+    async Click_Blend()
+    {
+        await (await this.blend).click();
+        await (await this.blend_img).click();
+    }
+
+    get white_balance()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/title" and @text="White-Balance"]');
+    }
+    get temperature()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/temperature_text"]');
+    }
+    get tint()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/tint_text"]');
+    }
+    get auto()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/auto_text"]');
+    }
+    async Click_White_Balance()
+    {
+        await (await this.white_balance).click();
+    }
+
+    get curves()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/title" and @text="Curves"]');
+    }
+    async Click_Curve()
+    {
+        await (await this.curves).click();
+    }
+
+    get vintage()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/title" and @text="Vignette"]');
+    }
+    async Click_Vintage()
+    {
+        await (await this.vintage).click();
+    }
+    get circle()
+    {
+        return $('//android.widget.ImageView[@resource-id="com.myzesty:id/round_icon"]');
+    }
+    get square()
+    {
+        return $('//android.widget.ImageView[@resource-id="com.myzesty:id/square_icon"]');
+    }
+    get rectangle()
+    {
+        return $('//android.widget.ImageView[@resource-id="com.myzesty:id/rectangle_icon"]');
+    }
+    get ellipse()
+    {
+        return $('//android.widget.ImageView[@resource-id="com.myzesty:id/oval_icon"]');
+    }
+    async Apply_Vintage_Sliders(tuneSteps, coordinates) 
+    {
+        for (const step of tuneSteps) 
+            {
+                const { dragX, dragY, dropX, dropY } = coordinates;
+
+                await (await step.element).click();
+                await Sliders.Drag_Drop(driver, dragX, dragY, dropX, dropY)
+                await browser.pause(500);
+            }
+    }
+
+    get fisheye()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/title" and @text="Fisheye"]');
+    }
+    get radius()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/radius_text"]');
+    }
+    get rotation()
+    {
+        return $('//android.widget.TextView[@resource-id="com.myzesty:id/rotation_text"]');
+    }
+    async Click_Fisheye()
+    {
+        await (await this.fisheye).click();
+    }
+    async Change_Radius()
+    {
+        await (await this.radius).click();
+        await Sliders.Slider(driver, 7, 962, 1981, 2091, 0.4);
+    }
+    async Change_Rotation()
+    {
+        await (await this.rotation).click();
+        await Sliders.Slider(driver, 7, 962, 1981, 2091, 0.7);
+    }
+
+
+    
+    
+
+
+
+
 
 
     
@@ -659,7 +994,22 @@ class Photo_Editor
         try
         {
             await this.Click_Tune();
-            await this.Apply_Tune_Filters();
+            const tuneSteps = [
+                {element : this.brightness, value : 0.3},
+                {element : this.contrast, value : 0.8},
+                {element : this.saturation, value : 0.6},
+                {element : this.hue, value : 0.4},
+                {element : this.shadow, value : 0.6},
+                {element : this.vibrance, value : 0.8}
+            ];
+            const coordiinates = {
+                startX: 7,
+                endX: 962,
+                startY: 1981,
+                endY: 2091
+            };
+
+            await this.Apply_Tune_Filters(tuneSteps,coordiinates);
             await this.Click_Cancel_Changes();
             await browser.pause(1000);
         }
@@ -791,7 +1141,105 @@ class Photo_Editor
     {
         try
         {
-            
+            await this.click_Expand_Tools();
+            await this.Add_Text();
+            await this.Apply_Font_Styles();
+            await this.Click_Font_Color();
+            await this.Click_Font_Opacity();
+            await this.Click_Font_Shadow();
+            await this.Click_Font_Stroke();
+            await this.Click_Cancel_Changes();
+            await browser.pause(1000);
+        }
+        catch (error)
+        {
+            console.log('❌ Verify Photo Text FAILED', error.message);
+            throw error;
+        }
+    }
+
+    async Verify_Photo_Draw()
+    {
+        try
+        {
+            await this.click_Expand_Tools();
+            await this.Click_Circle_Draw();
+            // await this.Click_Draw_Color(28, 936, 1999, 2048, 0.4, 270, 391, 270, 1253);
+            await this.Click_Color_Feature();
+            await this.Click_Draw_Color({
+                startX : 28, 
+                endX : 936,
+                startY : 1999, 
+                endY : 2048,
+                desiredPercentage : 0.4,
+                dragX : 270, 
+                dragY : 391, 
+                dropX : 270, 
+                dropY : 1253
+            });
+            await this.Click_Feather_Feature();
+            await this.Click_Draw_Feather({
+                startX : 22, 
+                endX : 942,
+                startY : 1976, 
+                endY : 2086,
+                desiredPercentage : 0.6,
+                dragX : 370, 
+                dragY : 391, 
+                dropX : 370, 
+                dropY : 1253
+            });
+            await this.Click_Opacity_Feature();
+
+            await this.Click_Draw_Opacity({
+                startX : 22, 
+                endX : 942,
+                startY : 1976, 
+                endY : 2086,
+                desiredPercentage : 0.6,
+                dragX : 470, 
+                dragY : 391, 
+                dropX : 470, 
+                dropY : 1253
+            });
+            await this.Click_Brush();
+            await this.Click_Cancel_Changes();
+            await browser.pause(1000);
+        }
+        catch (error)
+        {
+            console.log('❌ Verify Photo Draw FAILED', error.message);
+            throw error;
+        }
+    }
+
+    async Verify_Photo_Flip()
+    {
+        try
+        {
+            await this.click_Expand_Tools();
+            await this.Click_Flip();
+            await this.Flip_Horizentally();
+            await this.Flip_Vertically();
+            await this.Click_Cancel_Changes();
+            await browser.pause(1000);
+        }
+        catch (error)
+        {
+            console.log('❌ Verify Photo Flip FAILED', error.message);
+            throw error;
+        }
+    }
+
+    async Verify_Photo_Blur()
+    {
+        try
+        {
+            await this.click_Expand_Tools();
+            await this.Click_Blur();
+            await this.Apply_Blur_Effects();
+            await this.Apply_Shape_Blur();
+            await  this.Click_Cancel_Changes();
         }
         catch (error)
         {
@@ -800,11 +1248,131 @@ class Photo_Editor
         }
     }
 
-    async Verify_Photo_Crop()
+    async Verify_Photo_Overlay()
     {
         try
         {
-            
+            await this.click_Expand_Tools();
+            await this.Click_Overlay();
+            const categories = [this.canvas, this.grunge, this.lights, this.patterns];
+            const baseXPath = '(//android.widget.ImageView[@resource-id="com.myzesty:id/overlay"])' ;
+            const startIndex = 2 ;
+            const maxIndex = 7 ;
+            await this.Apply_Filters(categories, baseXPath, startIndex, maxIndex);
+            await this.Click_Cancel_Changes();
+            await browser.pause(1000);
+        }
+        catch (error)
+        {
+            console.log('❌ Verify Photo Sticker FAILED', error.message);
+            throw error;
+        }
+    }
+
+    async Verify_Photo_Blend()
+    {
+        try
+        {
+            await this.click_Expand_Tools();
+            await this.Click_Blend();
+            await Sliders.Drag_Drop(driver, 550, 1000, 420, 440);
+            await this.Apply_All_Effects('(//android.widget.ImageView[@resource-id="com.myzesty:id/image"])',2, 2);
+            await  this.Click_Cancel_Changes();
+            await browser.pause(1000);
+        }
+        catch (error)
+        {
+            console.log('❌ Verify Photo Blend FAILED', error.message);
+            throw error;
+        }
+    }
+
+    async Verify_Photo_White_Balance()
+    {
+        try
+        {
+            await this.click_Expand_Tools();
+            await this.Click_White_Balance();
+            const tuneSteps = [
+                { element : this.temperature, value : 0.7},
+                { element : this.tint, value : 0.3},
+                { element : this.auto }
+            ];
+            const coordinates = {
+                startX: 7,
+                startY: 1981,
+                endX: 962,
+                endY: 2091
+            }
+            await this.Filter_with_Single_Slider(tuneSteps, coordinates);
+            await this.Click_Cancel_Changes();
+        }
+        catch (error)
+        {
+            console.log('❌ Verify Photo White Balance FAILED', error.message);
+            throw error;
+        }
+    }
+
+    async Verify_Photo_Curves()
+    {
+        try
+        {
+            await this.click_Expand_Tools();
+            await this.Click_Curve();
+            await Sliders.Drag_Drop(driver, 542, 1533, 339, 1338);
+            await browser.pause(1000);
+            await this.Click_Cancel_Changes();
+        }
+        catch (error)
+        {
+            console.log('❌ Verify Photo Sticker FAILED', error.message);
+            throw error;
+        }
+    }
+
+    async Verify_Photo_Vintage()
+    {
+        try
+        {
+            await this.click_Expand_Tools();
+            await this.Click_Vintage();
+            await Sliders.Slider(driver, 28, 914, 1673, 1783, 0.4); // Outer Intensity
+            await Sliders.Slider(driver, 28, 914, 1827, 1937, 0.8); // Inner Intensity
+            const tuneSteps = [
+                { element : this.circle },
+                { element : this.square },
+                { element : this.rectangle },
+                { element : this.ellipse },
+            ];
+            const coordinates = {
+                dragX : 538,
+                dragY : 955,
+                dropX : 538,
+                dropY : 774,
+            };
+            await this.Apply_Vintage_Sliders(tuneSteps, coordinates);
+            await this.Click_Cancel_Changes();
+
+        }
+        catch (error)
+        {
+            console.log('❌ Verify Photo Vintage FAILED', error.message);
+            throw error;
+        }
+    }
+
+    async Verify_Photo_Fisheye()
+    {
+        try
+        {
+            await this.click_Expand_Tools();
+            await this.Click_Fisheye();
+            await Sliders.Slider(driver, 7, 962, 1981, 2091, 0.9);
+            await Sliders.Drag_Drop(driver, 531, 1437, 534, 1050);
+            await this.Change_Radius();
+            await this.Change_Rotation();
+            await this.Click_Cancel_Changes();
         }
         catch (error)
         {

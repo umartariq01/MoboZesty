@@ -61,7 +61,7 @@ describe('Full editor', () => {
       }
     });
 
-    it.only('should check the Sticker Functionality', async () => {
+    it('should check the Sticker Functionality', async () => {
 
       try
       {
@@ -145,7 +145,7 @@ describe('Full editor', () => {
       }
     });
 
-    it.only('should check the Freeze Functionality', async () => {
+    it('should check the Freeze Functionality', async () => {
 
       try
       {

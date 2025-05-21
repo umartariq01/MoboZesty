@@ -289,7 +289,28 @@ class Common_function
         await driver.releaseActions();
       }
       
-      
+    async waitForElementToDisappear(xpath, timeout = 15000) {
+        const element = await $(xpath);
+    
+        await browser.waitUntil(async () => {
+            return !(await element.isDisplayed()); // Wait until the element is NOT displayed
+        }, {
+            timeout: timeout, // Maximum wait time (default 15 seconds)
+            timeoutMsg: `Element with XPath "${xpath}" is still visible after ${timeout / 1000} seconds`
+        });
+    }
+
+    async waitForElementToBeVisible(xpath) 
+    {
+        const element = await $(xpath);
+    
+        await browser.waitUntil(async () => {
+            return await element.isDisplayed(); // Wait until the element is displayed
+        }, {
+            timeout: 15000, // Maximum wait time (15 seconds)
+            timeoutMsg: `Element with XPath "${xpath}" did not become visible within 15 seconds`
+        });
+    }
       
     
     

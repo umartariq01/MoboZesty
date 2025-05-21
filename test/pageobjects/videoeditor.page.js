@@ -12,7 +12,7 @@ class Video_Editor
 
     get edit_video()
     {
-        return $('//android.view.ViewGroup[@content-desc="Edit, Video"]/android.view.ViewGroup/android.view.View');
+        return $('//android.view.ViewGroup[@content-desc="Edit, Video"]/android.view.ViewGroup');
     }
     
     async Click_Video_Editor()
@@ -1333,7 +1333,7 @@ class Video_Editor
             await browser.pause(500);
             await browser.keys('Final Script..');
             (await this.apply_full_duration).click();
-            await browser.pause(500);
+            await browser.pause(1500);
             await this.Click_Apply_Changes();
             await browser.pause(1000);
             await this.Click_Apply_Changes();
@@ -1536,6 +1536,7 @@ class Video_Editor
         try
         {
           await Subscription.Check_Subscription('Processing') ;
+          await browser.pause(2000);
           // Add video with sound & check toggle button
           await this.Click_Video_Editor();
           await this.Click_Video_Tab();

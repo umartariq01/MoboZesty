@@ -11,7 +11,7 @@ class Full_Editor
 
     get edit_video()
     {
-        return $('//android.view.ViewGroup[@content-desc="Edit, Video"]/android.view.ViewGroup/android.view.View');
+        return $('//android.view.ViewGroup[@content-desc="Edit, Video"]/android.view.ViewGroup');
     }
     
     async Click_Video_Editor()
@@ -278,7 +278,7 @@ class Full_Editor
     }
     get sticker1()
     {
-        return $('(//android.widget.ImageView[@resource-id="com.myzesty:id/animated_image"])[1]');
+        return $('(//android.widget.ImageView[@resource-id="com.myzesty:id/image"])[3]');
     }
     get animation()
     {
@@ -677,16 +677,17 @@ async Apply_Sticker_Animations()
     {
         return $('(//android.widget.ImageView[@resource-id="com.myzesty:id/color_bg"])[3]');
     }
-    async Apply_Chroma()
+    async Click_Chroma()
     {
         (await this.chroma).click();
-        await browser.pause(4000);
+    }
+    async Apply_Chroma()
+    {
         await (await this.chroma_BG).click();
         await browser.pause(1000);
         await (await this.chroma_color).click();
         await Sliders.Sound_slide(driver, 220, 931, 2074, 2184, 0.8);
         await this.Click_Apply_Changes();
-
     }
     
 
@@ -959,6 +960,8 @@ async Apply_Sticker_Animations()
         try
         {
             await Sliders.scrollUntilElementIsVisible('//android.widget.TextView[@resource-id="com.myzesty:id/text" and @text="Canvas"]', 900, 2300, 350, 2300);
+            await this.Click_Chroma();
+            await browser.pause(4000);
             await this.Apply_Chroma();
         
         }

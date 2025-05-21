@@ -3,16 +3,6 @@ import Video_Editor from '../pageobjects/videoeditor.page.js';
 
 describe ("video editor", () => {
 
-    it.skip("should login with valid credentials.", async () => {
-        
-        await Video_Editor.Run_Video_Editor_Img_Case();
-    })
-
-    // it("Video editor video case", async () => {
-
-    //     await Video_Editor.Run_Video_Editor_Vid_Case()
-    // })
-
     it('should check the Media Mute Toggle Button Functionality', async () => {
     
         try
@@ -138,7 +128,7 @@ describe ("video editor", () => {
     
         try
         {
-          await Video_Editor.Verify_Wizard_Text();
+          await Video_Editor.Verify_Draft_Export();
           console.log('✅ Test Passed: Verify Wizard Draft & Export.');
         }
         catch (error)

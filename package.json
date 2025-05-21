@@ -104,7 +104,8 @@
   
     
   "fulleditor": "wdio run ./wdio.conf.js --spec test.fulleditor.js",
-  "imgeditor": "wdio run ./wdio.conf.js --spec test.imgeditor.js"
+  "imgeditor": "wdio run ./wdio.conf.js --spec test.imgeditor.js",
+  "demo" : "wdio run ./wdio.conf.js --spec test.demo.js"
   
   },
   
