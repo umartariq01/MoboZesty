@@ -1,6 +1,16 @@
     
 import { $, browser } from '@wdio/globals' ;
 import Sliders from '../pageobjects/sliders.page.js';
+import fs from 'fs';
+import ErrorHandler from '../pageobjects/errorHandle.page.js';
+
+const dirs = ['./error-logs', './error-screenshots'];
+dirs.forEach(dir => {
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir);
+    }
+});
+
     
     class Demo
     {
@@ -32,7 +42,8 @@ import Sliders from '../pageobjects/sliders.page.js';
             await (await this.text).click();
             await (await this.text_area).click();
             await browser.pause(1000);
-            await browser.keys('Script Running..');
+            (await this.text_area).setValue('Script Running');
+            await browser.pause(1000);
             await (await this.bold).click();
             await (await this.italic).click();
             await browser.pause(1000);
@@ -73,6 +84,19 @@ import Sliders from '../pageobjects/sliders.page.js';
         {
             return $('//android.widget.TextView[@resource-id="com.myzesty:id/stroke_text"]');
         }
+        get expand_tool()
+        {
+            return $('//android.widget.ImageView[@resource-id="com.myzesty:id/expand"]');
+        }
+        get neon_tool()
+        {
+            return $('//android.widget.TextView[@resource-id="com.myzesty:id/title" and @text="Neon"]');
+        }
+        async click_Expand_Tools()
+        {
+            (await this.expand_tool).click();
+            (await this.neon_tool).waitForDisplayed({timeout:3000});
+        }
 
         async Click_Font_Color()
         {
@@ -110,28 +134,29 @@ import Sliders from '../pageobjects/sliders.page.js';
             await browser.pause(1000);
             } catch (error) 
             {
-                console.log('❌ Verify Photo Sticker FAILED', error.message);
+                // console.log('❌ Verify Photo Sticker FAILED', error.message);
 
-                // ⬇️ Capture screenshot on crash
-                const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-                const screenshotPath = `./error-screenshots/crash-${timestamp}.png`;
-                await browser.saveScreenshot(screenshotPath);
-                console.log(`📸 Screenshot saved at: ${screenshotPath}`);
+                // // ⬇️ Capture screenshot on crash
+                // const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+                // const screenshotPath = `./error-screenshots/crash-${timestamp}.png`;
+                // await browser.saveScreenshot(screenshotPath);
+                // console.log(`📸 Screenshot saved at: ${screenshotPath}`);
 
-                // ⬇️ Capture logcat logs
-                try {
-                    const logs = await driver.getLogs('logcat');
-                    const logText = logs.map(entry => `[${entry.timestamp}] ${entry.level} - ${entry.message}`).join('\n');
+                // // ⬇️ Capture logcat logs
+                // try {
+                //     const logs = await driver.getLogs('logcat');
+                //     const logText = logs.map(entry => `[${entry.timestamp}] ${entry.level} - ${entry.message}`).join('\n');
 
-                    const fs = await import('fs');
-                    const logPath = `./error-logs/crash-log-${timestamp}.txt`;
-                    fs.writeFileSync(logPath, logText);
-                    console.log(`🪵 Log saved at: ${logPath}`);
-                } catch (logErr) {
-                    console.log('❌ Failed to capture logs:', logErr.message);
-                }
+                //     const fs = await import('fs');
+                //     const logPath = `./error-logs/crash-log-${timestamp}.txt`;
+                //     fs.writeFileSync(logPath, logText);
+                //     console.log(`🪵 Log saved at: ${logPath}`);
+                // } catch (logErr) {
+                //     console.log('❌ Failed to capture logs:', logErr.message);
+                // }
 
-                throw error;
+                // throw error;
+                await ErrorHandler.handleCrash(error, browser, driver);
             }
         }
 

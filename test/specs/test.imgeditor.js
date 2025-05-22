@@ -1,6 +1,13 @@
 import Image_Editor from '../pageobjects/Imgeditor.page.js';
+import ErrorHandler from '../pageobjects/errorHandle.page.js';
 
 describe('Image Editor', () => {
+
+  before(() =>{
+    
+   ErrorHandler.ensureDirectories();
+
+  });
 
 
     it('It should validate Presets', async () => {
@@ -12,8 +19,11 @@ describe('Image Editor', () => {
       }
       catch (error)
       {
-        console.log('❌ Test Failed: Verify Photo Editor Presets');
+
+        await ErrorHandler.handleCrash(error, browser, driver) ;
         throw error;
+        // console.log('❌ Test Failed: Verify Photo Editor Presets');
+        // throw error;
       }
       });
 
@@ -28,8 +38,10 @@ describe('Image Editor', () => {
       }
       catch (error)
       {
-        console.log('❌ Test Failed: Verify Photo Editor Custom Tool.');
+        await ErrorHandler.handleCrash(error, browser, driver) ;
         throw error;
+        // console.log('❌ Test Failed: Verify Photo Editor Custom Tool.');
+        // throw error;
       }
       }); 
 
@@ -44,8 +56,10 @@ describe('Image Editor', () => {
       }
       catch (error)
       {
-        console.log('❌ Test Failed: Verify Photo Editor Magic Tool.');
+        await ErrorHandler.handleCrash(error, browser, driver) ;
         throw error;
+        // console.log('❌ Test Failed: Verify Photo Editor Magic Tool.');
+        // throw error;
       }
       }); 
 
@@ -59,8 +73,10 @@ describe('Image Editor', () => {
       }
       catch (error)
       {
-        console.log('❌ Test Failed: Verify Photo Editor Tune Tool.');
+        await ErrorHandler.handleCrash(error, browser, driver) ;
         throw error;
+        // console.log('❌ Test Failed: Verify Photo Editor Tune Tool.');
+        // throw error;
       }
       }); 
 
@@ -74,8 +90,10 @@ describe('Image Editor', () => {
       }
       catch (error)
       {
-        console.log('❌ Test Failed: Verify Photo Editor Color Tool.');
+        await ErrorHandler.handleCrash(error, browser, driver) ;
         throw error;
+        // console.log('❌ Test Failed: Verify Photo Editor Color Tool.');
+        // throw error;
       }
       });
     
@@ -89,8 +107,10 @@ describe('Image Editor', () => {
       }
       catch (error)
       {
-        console.log('❌ Test Failed: Verify Photo Editor Crop Tool.');
+        await ErrorHandler.handleCrash(error, browser, driver) ;
         throw error;
+        // console.log('❌ Test Failed: Verify Photo Editor Crop Tool.');
+        // throw error;
       }
       });
 
@@ -104,8 +124,10 @@ describe('Image Editor', () => {
       }
       catch (error)
       {
-        console.log('❌ Test Failed: Verify Photo Editor Neon Tool.');
+        await ErrorHandler.handleCrash(error, browser, driver) ;
         throw error;
+        // console.log('❌ Test Failed: Verify Photo Editor Neon Tool.');
+        // throw error;
       }
       });
 
@@ -119,8 +141,10 @@ describe('Image Editor', () => {
       }
       catch (error)
       {
-        console.log('❌ Test Failed: Verify Photo Editor Fade Tool.');
+        await ErrorHandler.handleCrash(error, browser, driver) ;
         throw error;
+        // console.log('❌ Test Failed: Verify Photo Editor Fade Tool.');
+        // throw error;
       }
       });
 
@@ -134,8 +158,10 @@ describe('Image Editor', () => {
       }
       catch (error)
       {
-        console.log('❌ Test Failed: Verify Photo Editor Sticker Tool.');
+        await ErrorHandler.handleCrash(error, browser, driver) ;
         throw error;
+        // console.log('❌ Test Failed: Verify Photo Editor Sticker Tool.');
+        // throw error;
       }
       });
 
@@ -149,8 +175,10 @@ describe('Image Editor', () => {
       }
       catch (error)
       {
-        console.log('❌ Test Failed: Verify Photo Editor Text Tool.');
+        await ErrorHandler.handleCrash(error, browser, driver) ;
         throw error;
+        // console.log('❌ Test Failed: Verify Photo Editor Text Tool.');
+        // throw error;
       }
       });
 
@@ -164,8 +192,10 @@ describe('Image Editor', () => {
       }
       catch (error)
       {
-        console.log('❌ Test Failed: Verify Photo Editor Draw Tool.');
+        await ErrorHandler.handleCrash(error, browser, driver) ;
         throw error;
+        // console.log('❌ Test Failed: Verify Photo Editor Draw Tool.');
+        // throw error;
       }
       });
 
@@ -179,8 +209,10 @@ describe('Image Editor', () => {
       }
       catch (error)
       {
-        console.log('❌ Test Failed: Verify Photo Editor Flip Tool.');
+        await ErrorHandler.handleCrash(error, browser, driver) ;
         throw error;
+        // console.log('❌ Test Failed: Verify Photo Editor Flip Tool.');
+        // throw error;
       }
       });
 
@@ -194,8 +226,10 @@ describe('Image Editor', () => {
       }
       catch (error)
       {
-        console.log('❌ Test Failed: Verify Photo Editor Blur Tool.');
+        await ErrorHandler.handleCrash(error, browser, driver) ;
         throw error;
+        // console.log('❌ Test Failed: Verify Photo Editor Blur Tool.');
+        // throw error;
       }
       });
 
@@ -209,8 +243,10 @@ describe('Image Editor', () => {
       }
       catch (error)
       {
-        console.log('❌ Test Failed: Verify Photo Editor Overlay Tool.');
+        await ErrorHandler.handleCrash(error, browser, driver) ;
         throw error;
+        // console.log('❌ Test Failed: Verify Photo Editor Overlay Tool.');
+        // throw error;
       }
       });
 
@@ -224,8 +260,10 @@ describe('Image Editor', () => {
       }
       catch (error)
       {
-        console.log('❌ Test Failed: Verify Photo Editor Blend Tool.');
+        await ErrorHandler.handleCrash(error, browser, driver) ;
         throw error;
+        // console.log('❌ Test Failed: Verify Photo Editor Blend Tool.');
+        // throw error;
       }
       });
 
@@ -239,8 +277,10 @@ describe('Image Editor', () => {
       }
       catch (error)
       {
-        console.log('❌ Test Failed: Verify Photo Editor White Balance Tool.');
+        await ErrorHandler.handleCrash(error, browser, driver) ;
         throw error;
+        // console.log('❌ Test Failed: Verify Photo Editor White Balance Tool.');
+        // throw error;
       }
       });
 
@@ -254,8 +294,10 @@ describe('Image Editor', () => {
       }
       catch (error)
       {
-        console.log('❌ Test Failed: Verify Photo Editor Curves Tool.');
+        await ErrorHandler.handleCrash(error, browser, driver) ;
         throw error;
+        // console.log('❌ Test Failed: Verify Photo Editor Curves Tool.');
+        // throw error;
       }
       });
 
@@ -269,8 +311,10 @@ describe('Image Editor', () => {
       }
       catch (error)
       {
-        console.log('❌ Test Failed: Verify Photo Editor Vintage Tool.');
+        await ErrorHandler.handleCrash(error, browser, driver) ;
         throw error;
+        // console.log('❌ Test Failed: Verify Photo Editor Vintage Tool.');
+        // throw error;
       }
       });
 
@@ -284,8 +328,10 @@ describe('Image Editor', () => {
       }
       catch (error)
       {
-        console.log('❌ Test Failed: Verify Photo Editor Fisheye Tool.');
+        await ErrorHandler.handleCrash(error, browser, driver) ;
         throw error;
+        // console.log('❌ Test Failed: Verify Photo Editor Fisheye Tool.');
+        // throw error;
       }
       });
 

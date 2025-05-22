@@ -451,7 +451,7 @@ class Photo_Editor
         await Sliders.Slider(driver, 14, 914, 1787, 1870, 0.9); // Opacity of sticker
         await Sliders.Slider(driver, 14, 914, 1953, 2036, 0.5); // Size of sticker
 
-        await Sliders.Drag_Drop(driver, 527, 1124, 818, 593); // Drag sticker 1
+        await Sliders.Drag_Drop(driver, 527, 970, 833, 398); // Drag sticker 1
     }
 
     get add_sticker()
@@ -469,7 +469,7 @@ class Photo_Editor
         await (await this.reaction_category).click();
         await (await this.first_sticker).click();
         await browser.pause(500);
-        await Sliders.Drag_Drop(driver, 527, 1124, 225, 545); // Drag sticker 2
+        await Sliders.Drag_Drop(driver, 527, 970, 190, 430); // Drag sticker 2
     }
 
     get smiley_category()
@@ -482,7 +482,7 @@ class Photo_Editor
         await browser.pause(500);
         await (await this.smiley_category).click();
         await (await this.first_sticker).click();
-        await Sliders.Drag_Drop(driver, 527, 1124, 862, 1445); // Drag sticker 3
+        await Sliders.Drag_Drop(driver, 527, 970, 210, 1390); // Drag sticker 3
     }
 
     get animal_category()
@@ -495,7 +495,7 @@ class Photo_Editor
         await browser.pause(500);
         await (await this.animal_category).click();
         await (await this.first_sticker).click();
-        await Sliders.Drag_Drop(driver, 527, 1124, 203, 1419); // drag sticker 4
+        await Sliders.Drag_Drop(driver, 527, 970, 818, 1415); // drag sticker 4
     }
 
     get text()
