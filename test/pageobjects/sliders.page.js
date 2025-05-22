@@ -90,7 +90,7 @@ class Sliders
                     { type: 'pointerUp', button: 0 } // Release
                 ]
             }]);
-            await browser.pause(500); // Give time for the action to complete
+            // await browser.pause(500); // Give time for the action to complete
             await browser.releaseActions();
             await browser.pause(500);
         }
@@ -176,7 +176,7 @@ class Sliders
                                 actions: [
                                     { type: 'pointerMove', duration: 0, x: startX1, y: startY1 }, // Initial position of finger 1
                                     { type: 'pointerDown' }, // Press finger 1
-                                    // { type: 'pause', duration: 0 }, // Pause for a short time
+                                    { type: 'pause', duration: 100 }, // Pause for a short time
                                     { type: 'pointerMove', duration: 500, x: endX1, y: endY1 }, // Move finger 1 outward
                                     { type: 'pointerUp' } // Release finger 1
                                 ]
@@ -188,7 +188,7 @@ class Sliders
                                 actions: [
                                     { type: 'pointerMove', duration: 0, x: startX2, y: startY2 }, // Initial position of finger 2
                                     { type: 'pointerDown' }, // Press finger 2
-                                    // { type: 'pause', duration: 0 }, // Pause for a short time
+                                    { type: 'pause', duration: 100 }, // Pause for a short time
                                     { type: 'pointerMove', duration: 500, x: endX2, y: endY2 }, // Move finger 2 outward
                                     { type: 'pointerUp' } // Release finger 2
                                 ]
@@ -221,7 +221,7 @@ class Sliders
         const startY = (await sliderElement.getLocation()).y; // Y-coordinate remains constant
         
         // Perform the drag action two times
-        for (let i = 0; i < 2; i++) {
+        for (let i = 0; i < 1; i++) {
           // Get the current boundaries dynamically
           const [minX, maxX] = currentBounds;
         
@@ -661,11 +661,48 @@ class Sliders
                 }
         
                 // Scroll the screen
-                await this.scrollScreen(startX, startY, endX, endY, 1, duration);
+                await this.scrollScreen(startX, startY, endX, endY, duration = 1000, 1);
             }
         
             throw new Error("Element not found after maximum scroll attempts");
         }
+
+        async Extender(driver, elementXpath, dragDistance) 
+        {
+            // Locate the element
+            const element = await $(elementXpath);
+            await element.waitForDisplayed({ timeout: 5000 });
+        
+            // Get element location and size
+            const location = await element.getLocation();
+            const size = await element.getSize();
+        
+            // Calculate start and end coordinates
+            const startX = location.x + 10; // slight offset from the left edge
+            const endX = startX + dragDistance;
+            const centerY = location.y + Math.floor(size.height / 2);
+        
+            console.log(`Sliding from (${startX}, ${centerY}) to (${endX}, ${centerY})`);
+        
+            // Perform sliding action
+            await driver.performActions([{
+                type: 'pointer',
+                id: 'finger1',
+                parameters: { pointerType: 'touch' },
+                actions: [
+                    { type: 'pointerMove', duration: 0, x: startX, y: centerY },
+                    { type: 'pointerDown', button: 0 },
+                    { type: 'pause', duration: 200 },
+                    { type: 'pointerMove', duration: 500, x: endX, y: centerY },
+                    { type: 'pointerUp', button: 0 }
+                ]
+            }]);
+        
+            console.log(`Slider moved to target position.`);
+        }
+        
+        
+        
         
 
    

@@ -269,6 +269,49 @@ class Common_function
             timeoutMsg: `Element with XPath "${xpath}" is still visible after ${timeout / 1000} seconds`
         });
     }
+
+    async longPressElement(selector, durationInSeconds = 3) {
+        const element = await $(selector);
+        const location = await element.getLocation();
+      
+        await driver.performActions([{
+          type: 'pointer',
+          id: 'finger1',
+          parameters: { pointerType: 'touch' },
+          actions: [
+            { type: 'pointerMove', duration: 0, x: Math.floor(location.x), y: Math.floor(location.y) },
+            { type: 'pointerDown', button: 0 },
+            { type: 'pause', duration: durationInSeconds * 1000 },
+            { type: 'pointerUp', button: 0 }
+          ]
+        }]);
+      
+        await driver.releaseActions();
+      }
+      
+    async waitForElementToDisappear(xpath, timeout = 15000) {
+        const element = await $(xpath);
+    
+        await browser.waitUntil(async () => {
+            return !(await element.isDisplayed()); // Wait until the element is NOT displayed
+        }, {
+            timeout: timeout, // Maximum wait time (default 15 seconds)
+            timeoutMsg: `Element with XPath "${xpath}" is still visible after ${timeout / 1000} seconds`
+        });
+    }
+
+    async waitForElementToBeVisible(xpath) 
+    {
+        const element = await $(xpath);
+    
+        await browser.waitUntil(async () => {
+            return await element.isDisplayed(); // Wait until the element is displayed
+        }, {
+            timeout: 15000, // Maximum wait time (15 seconds)
+            timeoutMsg: `Element with XPath "${xpath}" did not become visible within 15 seconds`
+        });
+    }
+      
     
     
 }

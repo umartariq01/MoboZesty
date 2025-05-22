@@ -89,7 +89,7 @@ describe('Full editor', () => {
       }
     });
 
-    it.only('should check the edit Functionality', async () => {
+    it('should check the edit Functionality', async () => {
 
       try
       {
@@ -99,6 +99,90 @@ describe('Full editor', () => {
       catch (error)
       {
         console.log('❌ Test Failed: Verify Edit.');
+        throw error;
+      }
+    });
+
+    it('should check the Preset Functionality', async () => {
+
+      try
+      {
+        await Full_Editor.Verify_Presets();
+        console.log('✅ Test Passed: Verify Preset.');
+      }
+      catch (error)
+      {
+        console.log('❌ Test Failed: Verify Preset.');
+        throw error;
+      }
+    });
+
+    it('should check the Dehazer Functionality', async () => {
+
+      try
+      {
+        await Full_Editor.Verify_Dehazer();
+        console.log('✅ Test Passed: Verify Dehazer.');
+      }
+      catch (error)
+      {
+        console.log('❌ Test Failed: Verify Dehazer.');
+        throw error;
+      }
+    });
+
+    it('should check the Tune Functionality', async () => {
+
+      try
+      {
+        await Full_Editor.Verify_Tune();
+        console.log('✅ Test Passed: Verify Tune.');
+      }
+      catch (error)
+      {
+        console.log('❌ Test Failed: Verify Tune.');
+        throw error;
+      }
+    });
+
+    it('should check the Freeze Functionality', async () => {
+
+      try
+      {
+        await Full_Editor.Verify_Freeze();
+        console.log('✅ Test Passed: Verify Freeze.');
+      }
+      catch (error)
+      {
+        console.log('❌ Test Failed: Verify Freeze.');
+        throw error;
+      }
+    });
+
+    it('should check the Overlay Functionality', async () => {
+
+      try
+      {
+        await Full_Editor.Verify_Overlay();
+        console.log('✅ Test Passed: Verify Overlay.');
+      }
+      catch (error)
+      {
+        console.log('❌ Test Failed: Verify Overlay.');
+        throw error;
+      }
+    });
+
+    it('should check the Chroma Functionality', async () => {
+
+      try
+      {
+        await Full_Editor.Verify_Chroma();
+        console.log('✅ Test Passed: Verify Chroma.');
+      }
+      catch (error)
+      {
+        console.log('❌ Test Failed: Verify Chroma.');
         throw error;
       }
     });

@@ -2,6 +2,7 @@ import { $, browser, driver } from '@wdio/globals' ;
 import Sliders from '../pageobjects/sliders.page.js' ;
 import assert from 'assert' ;
 import Subscription from '../pageobjects/BuyPremium.page.js';
+import Common_function from '../pageobjects/commonfun.page.js';
 
 
 class QC_Adv_Edit
@@ -79,17 +80,17 @@ class QC_Adv_Edit
 
     get filter2()
     {
-        return $('(//android.widget.ImageView[@resource-id="com.myzesty:id/imageView"])[2]');
+        return $('(//android.widget.ImageView[@resource-id="com.myzesty:id/image_view"])[2]');
     }
 
     get filter3()
     {
-        return $('(//android.widget.ImageView[@resource-id="com.myzesty:id/imageView"])[3]') ;
+        return $('(//android.widget.ImageView[@resource-id="com.myzesty:id/image_view"])[3]') ;
     }
 
     get filter4()
     {
-        return $('(//android.widget.ImageView[@resource-id="com.myzesty:id/imageView"])[4]') ;
+        return $('(//android.widget.ImageView[@resource-id="com.myzesty:id/image_view"])[4]') ;
     }
 
     get sort()
@@ -232,10 +233,6 @@ class QC_Adv_Edit
     {
         return $('//android.widget.ImageView[@resource-id="com.myzesty:id/redo"]')
     }
-
-
-
-
 
     //=========================================================================
 
@@ -603,172 +600,192 @@ class QC_Adv_Edit
         throw new Error("Element not found after maximum scroll attempts");
     }
 
-    async waitForElementToBeVisible(xpath) 
-    {
-        const element = await $(xpath);
-    
-        await browser.waitUntil(async () => {
-            return await element.isDisplayed(); // Wait until the element is displayed
-        }, {
-            timeout: 15000, // Maximum wait time (15 seconds)
-            timeoutMsg: `Element with XPath "${xpath}" did not become visible within 15 seconds`
-        });
-    }
-
-    async waitForElementToDisappear(xpath, timeout = 15000) {
-        const element = await $(xpath);
-    
-        await browser.waitUntil(async () => {
-            return !(await element.isDisplayed()); // Wait until the element is NOT displayed
-        }, {
-            timeout: timeout, // Maximum wait time (default 15 seconds)
-            timeoutMsg: `Element with XPath "${xpath}" is still visible after ${timeout / 1000} seconds`
-        });
-    }
-
     get filter2()
     {
         return $('(//android.widget.ImageView[@resource-id="com.myzesty:id/image_view"])[2]');
     }
     async Click_Fiilter_3()
     {
-        (await this.filter3).click();
+        await (await this.filter3).click();
     }
     
     
 
     // ========= Main Function =======
 
-    async Adv_Edit_Run()
+    async Adv_Edit_Media_Selection()
     {
+        try
+        {
+            await Subscription.Check_Subscription('Processing')
+            await this.Try_QC();
 
-        await Subscription.Check_Subscription('Processing')
-        await this.Try_QC();
+            await this.select_img_tab();
+            await this.select_img1();
+            await this.select_img2();
 
-        await this.select_img_tab();
-        await this.select_img1();
-        await this.select_img2();
+            await this.select_video_tab();
+            await this.click_sort();
+            await Sliders.scrollScreen(500, 400, 500, 1700, 500);
+            await  this.Select_vid1();
+            await this.Select_vid2();
+            await this.Click_done();
+            await Common_function.waitForElementToBeVisible('//android.widget.TextView[@resource-id="com.myzesty:id/tv_edit"]');
+            await  browser.pause(3000);
+            await this.Click_Fiilter_3();
+            await Sliders.Slider(driver, 18, 1062, 1494, 1546, 0.3);
+            await browser.pause(1500);
+        }
+        catch (error)
+        {
+            console.log('❌ Adv_Edit_Media_Selection FAILED.', error.message);
+            throw error;
+        }
+    }
 
-        await this.select_video_tab();
-        await this.click_sort();
-        Sliders.scrollScreen(500, 400, 500, 1700, 500);
-        await  this.Select_vid1();
-        await this.Select_vid2();
-        await this.Click_done();
-        await this.waitForElementToDisappear('//android.widget.TextView[@resource-id="com.myzesty:id/trans_label"]');
-        await this.waitForElementToBeVisible('//android.widget.TextView[@resource-id="com.myzesty:id/tv_edit"]');
-        await this.Click_Fiilter_3();
-        await Sliders.Slider(driver, 18, 1062, 1494, 1546, 0.3);
+    async Full_Editor_Add_Media()
+    {
+        try
+        {
+            await this.click_edit();
+            await this.Advance_edit();
+            await this.Click_wizard_popup();
+            await browser.pause(1000);
+            await this.Click_full_editor();
+            await this.scrollUntilElementIsVisible('//android.widget.ImageView[@resource-id="com.myzesty:id/image"]', 47, 1620, 836, 1620);
+            await this.Click_mute_all();
+            await this.play_video();
+            // await browser.pause(3000);
+            // await Sliders.play_pause(539, 1422);
+            await this.Adv_add_img();
+            await this.select_img_tab();
+            await this.select_img10();
+            await this.Click_done();
 
+            await this.Adv_add_img();
+            await this.select_video_tab();
+            await this.click_sort();
+            await Sliders.scrollScreen(500, 400, 500, 1700, 500);
+            await browser.pause(1000);
+            await this.Select_vid7();
+            await this.Click_done();
+            await browser.pause(3000);
+            await this.Adv_add_img();
+            await this.select_img_tab();
+            await this.select_img11();
+            await this.select_video_tab();
+            await this.click_sort();
+            await Sliders.scrollScreen(500, 400, 500, 1700, 500);
+            await this.Select_vid8();
+            await this.Click_done();
+            await Common_function.waitForElementToBeVisible('(//android.widget.ImageView[@resource-id="com.myzesty:id/icon"])[3]'); // Verify edit Effects Bar
+            await this.Timeline_slider(0, 1080, 1830);
+            await browser.pause(2000);
 
-        await this.click_edit();
-        await this.Advance_edit();
-        await this.Click_wizard_popup();
-        await browser.pause(1000);
-        await this.Click_full_editor();
+        }
+        catch (error)
+        {
+            console.log('❌ Full_Editor_Add_Media FAILED.', error.message);
+            throw error;
+        }
+    }
 
-        await this.scrollUntilElementIsVisible('//android.widget.ImageView[@resource-id="com.myzesty:id/image"]', 47, 1620, 836, 1620);
-        await this.Click_mute_all();
-        await this.play_video();
-        await browser.pause(3000),
-        await Sliders.play_pause(539, 1422),
+    async Full_Editor_Zoom_Functionality()
+    {
+        try
+        {
+            await Sliders.scrollScreen(534, 1635, 50, 1635);
+            await browser.pause(3000);
 
-        await this.Adv_add_img();
-        await this.select_img_tab();
-        await this.select_img10();
-        await this.Click_done();
+            await this.zoomin   //  Need to make them correct
+            (
+                468, 1843, // Stary X1, Y1
+                443, 1843, // Start X2, Y2
+                90, 1843, // End X1, Y1
+                950, 1843 // End X2, Y2
+            );
+            await Sliders.zoomout // Needs correction
+            (
+                50, 1843,  // Start X1, y1
+                940, 1843, // Start X2, Y2
+                400, 1843, // End X1, Y1
+                580, 1843 // End X2, Y2
+            );
+            await  browser.pause(1500);
+        }
+        catch (error)
+        {
+            console.log('❌ Full_Editor_Add_Media FAILED.', error.message);
+            throw error;
+        }
+    }
 
-        await this.Adv_add_img();
-        await this.select_video_tab();
-        await this.click_sort();
-        Sliders.scrollScreen(500, 400, 500, 1700, 500);
-        await browser.pause(1000);
-        await this.Select_vid7();
-        await this.Click_done();
-        await this.waitForElementToDisappear('//android.widget.TextView[@resource-id="com.myzesty:id/trans_label"]');
-        // await browser.pause(3000);
+    async Full_Editor_Audio_Functionality()
+    {
+        try
+        {
+            await this.Timeline_slider(0, 1080, 1830);   
+            await this.Click_Edit_Audio();
+            await this.Verify_Audio_Bar();
+            //Before recording audio scroll the seekbar  to start
+            await this.scrollUntilElementIsVisible('//android.widget.ImageView[@resource-id="com.myzesty:id/image"]', 70, 1860, 900, 1860);
+            await this.Click_record_audio();
 
-        await this.Adv_add_img();
-        await this.select_img_tab();
-        await this.select_img11();
-        await this.select_video_tab();
-        await this.click_sort();
-        await Sliders.scrollScreen(500, 400, 500, 1700, 500);
-        await this.Select_vid8();
-        await this.Click_done();
-        await this.waitForElementToDisappear('//android.widget.TextView[@resource-id="com.myzesty:id/trans_label"]');
-        await this.waitForElementToBeVisible('(//android.widget.ImageView[@resource-id="com.myzesty:id/icon"])[3]'); // Verify edit Effects Bar
+            Promise.all([
+                this.Click_start_record(),
+                browser.pause(50000),
+                this.Click_stop_record()
+            ])
 
-        await this.Timeline_slider(0, 1080, 1830);
-        await browser.pause(2000);
+            await this.Click_done_record();
+            await this.Confirm_voice_record();
+            await this.Main_return_button();
+    
+            await this.Click_close_editing();
+            await this.Open_draft();
+            await this.Click_maximize_minimize();
 
-        //== This slides the timeline in Advance editor==
-        await Sliders.scrollScreen(534, 1635, 50, 1635);
-        await browser.pause(3000);
+            await Promise.all([
+                this.Play_video(),
+                browser.pause(3000),
+                Sliders.play_pause(80, 2329)
+            ])
 
-        await this.zoomin   //  Need to make them correct
-        (
-            468, 1843, // Stary X1, Y1
-            443, 1843, // Start X2, Y2
-            90, 1843, // End X1, Y1
-            950, 1843 // End X2, Y2
-        
-        );
-        await Sliders.zoomout // Needs correction
-        (
-            50, 1843,  // Start X1, y1
-            940, 1843, // Start X2, Y2
-            400, 1843, // End X1, Y1
-            580, 1843 // End X2, Y2
-        );
-        await  browser.pause(1500);
+            await this.Click_maximize_minimize();
+            await browser.pause(2000);
+            await Sliders.play_pause(539, 1422);
 
-        await this.Click_Edit_Audio();
-        await this.Verify_Audio_Bar();
+            await Promise.all([
+                browser.pause(5000),
+                Sliders.play_pause(539, 1422)
+            ])
+        }
+        catch (error)
+        {
+            console.log('❌ Full_Editor  Audio Functionality FAILED.', error.message);
+            throw error;
+        }
+    }
 
-        //Before recording audio scroll the seekbar  to start
-        await this.scrollUntilElementIsVisible('//android.widget.ImageView[@resource-id="com.myzesty:id/image"]', 70, 1860, 900, 1860);
-        await this.Click_record_audio();
-
-        Promise.all([
-            this.Click_start_record(),
-            browser.pause(50000),
-            this.Click_stop_record()
-        ])
-
-        await this.Click_done_record();
-        await this.Confirm_voice_record();
-        await this.Main_return_button();
-
-        await this.Click_close_editing();
-        await this.Open_draft();
-        await this.Click_maximize_minimize();
-
-        await Promise.all([
-            this.Play_video(),
-            browser.pause(3000),
-            Sliders.play_pause(80, 2329)
-        ])
-
-        await this.Click_maximize_minimize();
-        await browser.pause(2000);
-        await Sliders.play_pause(539, 1422);
-
-        await Promise.all([
-            browser.pause(5000),
-            Sliders.play_pause(539, 1422)
-        ])
-
-        await this.Undo_changes();
-        await browser.pause(1000);
-        await this.Redo_changes(); 
-        
-        await this.click_resolution();
-        await this.Cliick_close_resolution_or_record();
-        await this.click_resolution();
-        await this.click_resolution_720();
-        await this.Click_export();
-
+    async Undo_Redo_Export()
+    {
+        try
+        {
+            await this.Undo_changes();
+            await browser.pause(1000);
+            await this.Redo_changes(); 
+            
+            await this.click_resolution();
+            await this.Cliick_close_resolution_or_record();
+            await this.click_resolution();
+            await this.click_resolution_720();
+            await this.Click_export();
+        }
+        catch (error)
+        {
+            console.log('❌ Full_Editor Undo,  redo & Export FAILED.', error.message);
+            throw error;
+        }
     }
 
 }
