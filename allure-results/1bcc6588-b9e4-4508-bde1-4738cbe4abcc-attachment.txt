@@ -1,0 +1,4 @@
+{
+  "using": "xpath",
+  "value": "//android.widget.GridView[@resource-id=\"com.myzesty:id/effect_list\"]/android.widget.LinearLayout[2]/android.widget.FrameLayout"
+}

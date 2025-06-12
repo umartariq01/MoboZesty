@@ -1,0 +1,4 @@
+{
+  "using": "xpath",
+  "value": "//android.widget.ImageView[@resource-id=\"com.myzesty:id/adding_rearrange_dialog_help_icon\"]"
+}

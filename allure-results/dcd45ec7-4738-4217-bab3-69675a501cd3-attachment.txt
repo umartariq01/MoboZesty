@@ -1,0 +1,4 @@
+{
+  "using": "xpath",
+  "value": "//android.widget.SeekBar[@resource-id=\"com.myzesty:id/saturation_bar\"]"
+}

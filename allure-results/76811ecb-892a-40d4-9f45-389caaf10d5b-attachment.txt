@@ -1,0 +1,4 @@
+{
+  "using": "xpath",
+  "value": "//android.widget.TextView[@text=\"Press, hold, and drag your media to change its placement.\"]"
+}
