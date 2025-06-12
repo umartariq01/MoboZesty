@@ -725,3 +725,4 @@ class QC_Edit
 }
 
 export default new QC_Edit();
+//
